@@ -1,8 +1,7 @@
-import { Form as AntdForm, FormProps } from 'antd';
+import { Form as AntdForm } from 'antd';
 import { FormListProps } from 'antd/lib/form/FormList';
 import styled from '@emotion/styled';
 import { ErrorListProps } from 'antd/lib/form';
-// import useTranslation from 'next-translate/useTranslation';
 
 const FormWrapper = styled.div`
   .ant-form-item-explain-error {
@@ -37,8 +36,7 @@ export const messages = {
   },
 };
 
-export function Form(props: FormProps & { containerClass?: string }) {
-  // const { t } = useTranslation('common');
+export function Form(props: any & { containerClass?: string }) {
 
   const validateMessages = {
     required: messages.required.key,

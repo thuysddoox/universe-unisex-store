@@ -8,6 +8,7 @@
     "build-test": "env-cmd -f .env.development next build",
     "build-prod": "env-cmd -f .env.production next build",
     "start": "next start",
+    "build": "next build",
     "type-check": "tsc"
   },
   "dependencies": {
