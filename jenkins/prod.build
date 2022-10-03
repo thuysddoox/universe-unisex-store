@@ -1,0 +1,31 @@
+env.DEPLOYMENT_SERVER = '52.63.227.6'
+env.DEPLOYMENT_USER = 'fruitful'
+env.DEPLOYMENT_APP_PATH = '/home/fruitful/bloodstockexchange/deploy/pro'
+env.WORKING_APP_PATH = '/var/www/bloodstockexchange'
+
+def preBuild(script) {
+}
+
+def build(script) {
+}
+
+def postBuild(script) {
+  sh """
+    ssh ${env.DEPLOYMENT_USER}@${env.DEPLOYMENT_SERVER} /bin/bash -ex <<'ENDSSH'
+      cd ${env.DEPLOYMENT_APP_PATH}
+      git fetch
+      git checkout ${env.BRANCH} -f
+      git pull
+      yarn install
+      export NODE_OPTIONS="--max-old-space-size=4096" && yarn build-prod
+      
+      rsync -a --delete --exclude ".git" ${env.DEPLOYMENT_APP_PATH}/  ${env.WORKING_APP_PATH}/
+
+      cd ${env.WORKING_APP_PATH} 
+      env-cmd -f .env.production pm2 startOrReload ecosystem-prod.config.js
+    
+      exit
+  """ 
+}
+
+return this;

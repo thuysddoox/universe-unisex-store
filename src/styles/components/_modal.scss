@@ -1,0 +1,45 @@
+.confirm-modal {
+  .ant-btn {
+    &:not(.ant-btn-link, .ant-btn-text) {
+      background-color: transparent;
+      border: 1px solid var(--gray);
+      color: var(--gray);
+      margin-bottom: 10px;
+      &:hover {
+        background-color: var(--gray);
+        color: #fff;
+        img {
+          filter: invert(1);
+        }
+      }
+      &.ant-btn-primary {
+        background-color: var(--gray);
+        color: #fff;
+        border: 1px solid transparent;
+        &:hover {
+          background-color: transparent;
+          border: 1px solid var(--gray);
+          color: var(--gray);
+        }
+        &:disabled {
+          opacity: 0.6;
+        }
+      }
+    }
+    &.ant-btn-link {
+      color: var(--navy);
+      &:hover {
+        color: #3c90b8;
+      }
+      > span {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+.anticon-close.ant-modal-close-icon {
+  vertical-align: 0.25em;
+}
+.anticon-close.ant-tag-close-icon {
+  vertical-align: 0.4em;
+}

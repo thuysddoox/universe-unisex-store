@@ -1,0 +1,28 @@
+@mixin menu-position($width) {
+  width: $width;
+  margin-left: calc((100vw - #{$width}) / 2);
+}
+
+.ant-menu-submenu.menu-talent {
+  font-family: var(--font-title);
+  left: 0!important;
+  @media (min-width: 576px) {
+    @include menu-position(536px);
+  }
+  @media (min-width: 768px) {
+    @include menu-position(728px);
+  }
+  @media (min-width: 992px) {
+    @include menu-position(952px);
+  }
+  @media (min-width: 1200px) {
+    @include menu-position(1160px);
+  }
+  @media (min-width: 1440px) {
+    @include menu-position(1400px);
+  }
+  ul.ant-menu {
+    overflow: visible !important;
+    background: transparent !important;
+  }
+}

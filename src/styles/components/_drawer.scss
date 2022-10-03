@@ -1,0 +1,18 @@
+.drawer-hidden-mask {
+  height: auto !important;
+  .ant-drawer-mask {
+    opacity: 0 !important;
+  }
+}
+.ant-drawer-body {
+  .ant-menu-inline{
+    .ant-menu-title-content .anticon{
+      display: none!important;
+    }
+  }
+}
+.ant-drawer-close{
+  margin: 0!important;
+  order: 2;
+}
+

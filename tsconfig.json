@@ -1,0 +1,96 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@components": [
+        "src/components"
+      ],
+      "@containers/*": [
+        "src/containers/*"
+      ],
+      "@containers": [
+        "src/containers"
+      ],
+      "@public/*": [
+        "src/public/*"
+      ],
+      "@public": [
+        "src/public"
+      ],
+      "@interfaces/*": [
+        "src/interfaces/*"
+      ],
+      "@interfaces": [
+        "src/interfaces"
+      ],
+      "@styles/*": [
+        "src/styles/*"
+      ],
+      "@styles": [
+        "src/styles"
+      ],
+      "@api/*": [
+        "src/network/*"
+      ],
+      "@api": [
+        "src/network"
+      ],
+      "@ui/*": [
+        "src/ui/*"
+      ],
+      "@ui": [
+        "src/ui"
+      ],
+      "@constants/*": [
+        "src/constants/*"
+      ],
+      "@utils": [
+        "src/utils"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@queries": [
+        "src/queries"
+      ],
+      "@queries/*": [
+        "src/queries/*"
+      ],
+      "@contexts": [
+        "src/contexts"
+      ],
+      "@contexts/*": [
+        "src/contexts/*"
+      ]
+    },
+    "incremental": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
