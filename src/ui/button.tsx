@@ -14,7 +14,7 @@ const ButtonWrapper: StyledComponent<any> = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: transparent;
+      background-color: ${(props:any) => props?.bgColor || 'transparent'};
       border: 1px solid ${(props:any) => props?.bordercolor || 'var(--gray)'};
       color: ${(props: any) => props?.textcolor || '#000'};
       &.bg-white {
@@ -81,6 +81,7 @@ export interface ButtonProps extends AntdButtonProps {
   textcolor?: string;
   hoverTextColor?: string;
   hoverBgColor?: string;
+  bgColor?: string;
 }
 
 export function Button({

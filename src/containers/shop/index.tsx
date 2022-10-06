@@ -1,16 +1,17 @@
 import Filter from "@components/Filter";
+import SortBy from "@components/Filter/SortBy";
 import styled from "@emotion/styled";
 import { Col, Row } from "antd";
 
 const Shop = () =>{
   return (
-    <ShopWrapper>
+    <ShopWrapper className="container">
       <Row>
-        <Col span={8}>
+        <Col span={5}>
           <Filter />
         </Col>
-        <Col span={16}>
-          <Filter />
+        <Col span={19} className='px-6'>
+          <SortBy />
         </Col>
       </Row>
     </ShopWrapper>

@@ -4,9 +4,10 @@ import { Pagination } from "antd";
 const listSort = ['Latest','Sale','Price: Low To High','Price: High To Low']
 const SortBy = ()=>{
   return (
-    <SortByWrap>
+    <SortByWrap className="flex justify-between items-center">
       <Select defaultValue={'Latest'} borderradius={'0px'} options={listSort.map(item=>({label: item, value:item}))} />
       <Pagination
+      className="flex flex-wrap"
       total={85}
       showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
       defaultPageSize={20}

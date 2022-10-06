@@ -56,15 +56,15 @@ export function Header() {
   const items: MenuItem[] = useMemo(() => [
     getItem(<Label title="Shop" url="/shop" />, 'shop'),
     getItem(<Label title="Sale" url="/sale" />, 'sale'),
-    getItem(<Label title="Categories" url="/categories" isSuper />, 'categories', null, [
-      getItem(<Label title="T-Shirt" url="/categories/t-shirt" />, 't-shirt'),
-      getItem(<Label title="Shirt" url="/categories/shirt" />, 'shirt'),
-      getItem(<Label title="Hoodie/Sweater" url="/categories/t-shirt" />, 'Hoodie/Sweater'),
-      getItem(<Label title="Jacket" url="/categories/t-shirt" />, 'Jacket'),
-      getItem(<Label title="Jeans/Pants" url="/categories/t-shirt" />, 'Jeans/Pants'),
-      getItem(<Label title="Short" url="/categories/t-shirt" />, 'Short'),
-      getItem(<Label title="Accessories" url="/categories/accessories" />, 'Accessories'),
-      getItem(<Label title="Other" url="/categories/other" />, 'Other'),
+    getItem(<Label title="Categories" url="/category" isSuper />, 'category', null, [
+      getItem(<Label title="T-Shirt" url="/category/t-shirt" />, 't-shirt'),
+      getItem(<Label title="Shirt" url="/category/shirt" />, 'shirt'),
+      getItem(<Label title="Hoodie/Sweater" url="/category/t-shirt" />, 'Hoodie/Sweater'),
+      getItem(<Label title="Jacket" url="/category/t-shirt" />, 'Jacket'),
+      getItem(<Label title="Jeans/Pants" url="/category/t-shirt" />, 'Jeans/Pants'),
+      getItem(<Label title="Short" url="/category/t-shirt" />, 'Short'),
+      getItem(<Label title="Accessories" url="/category/accessories" />, 'Accessories'),
+      getItem(<Label title="Other" url="/category/other" />, 'Other'),
     ]),
     getItem(<Label title="About us" url="/about" isSuper />, 'about', null, [
       getItem(<Label title="Us" url="/about" />, 'about'),
@@ -93,7 +93,7 @@ export function Header() {
     else isHome && setIsHome(false)
   },[router.pathname])
   return (
-    <HeaderWrapper className={`z-30 w-full transition-all fixed ${isScroll || !isHome ? 'text-white bg-blue-500 ' : 'py-2'}`}>
+    <HeaderWrapper className={`z-[55] w-full transition-all fixed ${isScroll || !isHome ? 'text-white bg-blue-500 ' : 'py-2'}`}>
       <div className="flex justify-between container items-center flex-wrap">
           <span onClick={() => setIsOpened(true)} className="block lg:hidden">
             {isOpened ? (

@@ -6,7 +6,7 @@ import TabsManageAccount from "./Tabs";
 
 const MyAccount = ()=>{
   return (
-    <MyAccountWrapper className="pt-32 pb-24">
+    <MyAccountWrapper className="pt-32">
       <div className="container">
 
             {/* <ProfilePhoto />       */}

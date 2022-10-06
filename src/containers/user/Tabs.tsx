@@ -6,6 +6,7 @@ import ManagePurchases from "./ManagePurchases";
 import { Col } from "antd";
 import ProfilePhoto from "./ProfilePhoto";
 import HeadingSection from '@components/HeadingSection';
+import { BiLogOutCircle } from "react-icons/bi";
 
 const TabsManageAccount = ()=>{
   const tabs = useMemo(() => [
@@ -22,12 +23,18 @@ const TabsManageAccount = ()=>{
     {
       key: 'Tab-3',
       label: 'My Purchases',
-      children: <><HeadingSection title="My Purchases" className="my-0 capitalize pb-2"/><ManagePurchases /></>,
+      children: <><ManagePurchases /></>,
+      // <HeadingSection title="My Purchases" className="my-0 capitalize pb-2"/>
     },
     {
       key: 'Tab-4',
       label: 'My Wishlist',
       children: <><HeadingSection title="My Wishlist" className="my-0 capitalize pb-2"/><ManagePurchases /></>,
+    },
+    {
+      key: 'Tab-5',
+      label: <span className="flex items-center"><BiLogOutCircle className="text-2xl mr-2"/>Logout</span>,
+      children: <></>,
     }
   ],[])
   return (

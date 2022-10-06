@@ -200,7 +200,7 @@ export const ChangePasswordForm =()=>{
               ]}>
               <Password placeholder="" size="large" />
             </FormItem>
-            <Row className="m-0 btn-group">
+            <Row className="m-0 mt-5 btn-group">
               <Col span={11}>
                 <FormItem>
                   <Button

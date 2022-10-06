@@ -8,17 +8,17 @@ import { useState } from 'react';
 import { IoTrash } from 'react-icons/io5';
 const Quantity = dynamic(() => import('@components/Quantity'), { ssr: false });
 
-const OrderItem = ({ isCheckout = false }: { isCheckout?: boolean }) => {
+const OrderItem = ({ isCheckout = false ,className}: { isCheckout?: boolean, className?: string; }) => {
   const router = useRouter();
   const [quantity, setQuantity] = useState<number>(1);
   return (
-    <OrderItemWrap className={`${isCheckout ? '' : 'p-4'} border-b border-gray-500 `}>
+    <OrderItemWrap className={`${isCheckout ? '' : 'p-4'} border-b border-gray-500 ${className}`}>
       <Row className="items-center">
         <Col span={isCheckout ? 6 : 5} className={`${isCheckout ? '' : 'py-4 px-2'} bg-gray-200 rounded-md`}>
           <NextImage
             src={`${router.basePath}/assets/images/background/bg1.jpg`}
             layout="fill"
-            containerClass="h-20 md:h-24 relative mx-auto lg:m-0"
+            containerClass="h-20 md:h-24 relative mx-auto lg:m-0 "
           />
         </Col>
         <Col span={isCheckout ? 18 : 19} className="px-5">

@@ -2,12 +2,13 @@ import Advertisement from '@components/Advertisement';
 import HeadingSection from '@components/HeadingSection';
 import ShopByCategory from '@components/ShopByCategory';
 import withLayout from '@containers/layout/withLayout';
+import Shop from '@containers/shop';
 import styled from '@emotion/styled';
 import { Search } from '@ui/input';
 
 export function ShopPage() {
   return (
-    <ShopPageWrapper className="pt-36 pb-24">
+    <ShopPageWrapper className="pt-32 pb-24">
       <div className='container'>
         <Search
           placeholder="Search products"
@@ -18,11 +19,15 @@ export function ShopPage() {
           className="mx-4 search-desktop"
           onSearch={() => {}}
         />
-        <div className='mt-8 mb-20'>
+        <div className='mt-8 mb-24'>
           <HeadingSection title='Shop Sale' />
           <Advertisement bannersList={[]}/>
         </div>
         <ShopByCategory />
+        <div className='pt-8'>
+          <HeadingSection title='Shop Now' />
+          <Shop />
+        </div>  
       </div>
     </ShopPageWrapper>
   );
