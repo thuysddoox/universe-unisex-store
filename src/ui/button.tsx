@@ -4,7 +4,7 @@ import { up } from 'styled-breakpoints';
 
 const ButtonWrapper: StyledComponent<any> = styled.div`
   .ant-btn {
-    height: auto!important;
+    height: auto !important;
     line-height: ${(props: any) => props?.lineheight || '34px'};
     padding: 2px 12px;
     font-family: var(--font-title);
@@ -14,14 +14,14 @@ const ButtonWrapper: StyledComponent<any> = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: ${(props:any) => props?.bgColor || 'transparent'};
-      border: 1px solid ${(props:any) => props?.bordercolor || 'var(--gray)'};
+      background-color: ${(props: any) => props?.bgColor || 'transparent'};
+      border: 1px solid ${(props: any) => props?.bordercolor || 'var(--gray)'};
       color: ${(props: any) => props?.textcolor || '#000'};
       &.bg-white {
         background: #fff;
       }
       &:hover {
-        background-color: ${(props:any) => props?.hoverBgColor || 'var(--gray)'};
+        background-color: ${(props: any) => props?.hoverBgColor || 'var(--gray)'};
         color: ${(props: any) => props?.hoverTextColor || '#000'};
         ${up('md')} {
           // background-color: var(--gray);
@@ -84,21 +84,14 @@ export interface ButtonProps extends AntdButtonProps {
   bgColor?: string;
 }
 
-export function Button({
-  containerClass,
-  containerStyle,
-  borderless,
-  ...buttonProps
-}: ButtonProps) {
+export function Button({ containerClass, containerStyle, borderless, loading = false, ...buttonProps }: ButtonProps) {
   return (
     <ButtonWrapper
-      className={`${containerClass || ''} ${
-        borderless ? 'ant-btn-borderless' : ''
-      }`}
+      className={`${containerClass || ''} ${borderless ? 'ant-btn-borderless' : ''}`}
       style={containerStyle}
       {...buttonProps}
     >
-      <AntdButton {...buttonProps} />
+      <AntdButton loading={loading} {...buttonProps} />
     </ButtonWrapper>
   );
 }

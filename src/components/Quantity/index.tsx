@@ -6,9 +6,11 @@ const Quantity = ({
   containClass,
   quantity,
   setQuantity,
+  maxQuantity,
 }: {
   containClass?: string;
   quantity: number;
+  maxQuantity: number;
   setQuantity: any;
 }) => {
   return (
@@ -32,7 +34,7 @@ const Quantity = ({
             size="large"
             min={1}
             value={quantity}
-            onChange={(value) => setQuantity(value > 0 ? value : 1)}
+            onChange={(value) => setQuantity(value > maxQuantity ? maxQuantity : value <= 0 ? 1 : value)}
           />
         </Col>
         <Col xs={8}>
@@ -40,7 +42,7 @@ const Quantity = ({
             containerClass="h-full"
             className="flex items-center justify-center h-full"
             style={{ borderColor: 'transparent' }}
-            onClick={() => setQuantity(quantity + 1)}
+            onClick={() => quantity === maxQuantity && setQuantity(quantity + 1)}
             borderradius={'2px'}
           >
             <PlusOutlined />

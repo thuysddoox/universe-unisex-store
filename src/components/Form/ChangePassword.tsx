@@ -1,236 +1,141 @@
-
-import { localStorageSet, StorageKeys } from '@api/storage';
+import { useChangePassword } from '@api/queries';
 import NextImage from '@components/NextImage';
 import messages from '@constants/messages';
-import { UserContext } from '@contexts';
 import styled from '@emotion/styled';
-import { Button, Form, FormItem, Message, Password, useForm, Modal } from '@ui';
+import { UserPopupType } from '@interfaces/common';
+import { Button, Form, FormItem, Message, Password, useForm } from '@ui';
 import { Col, Row } from 'antd';
-import { isEmpty } from 'lodash';
-import md5 from 'md5';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useContext, useState } from 'react';
+import { MouseEvent } from 'react';
+import { UpdatePasswordRequest } from '../../interfaces/common';
 
-export const ChangePasswordPopup = ({
-  visible,
-  setVisible,
+const ChangePasswordPopup = ({
+  changePopup,
+  handleModal,
 }: {
-  visible: boolean;
-  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  changePopup: (type: UserPopupType) => void;
+  handleModal: (e?: MouseEvent<HTMLElement, globalThis.MouseEvent>) => void;
 }) => {
   const [form] = useForm();
   const router = useRouter();
-  const [formValid, setFormValid] = useState(false);
-  const userContext = useContext(UserContext);
-  const [showRoleSelect, setShowRoleSelect] = useState<boolean>(false);
-  const handleShowRoleSelect = () => {
-    setShowRoleSelect(!showRoleSelect);
+  const { mutate: userChangePassword, isLoading } = useChangePassword({
+    onSuccess: (response) => {
+      const isUpdated = response?.data?.responseData?.isUpdated ?? false;
+      const error = response?.data?.error;
+      if (isUpdated) {
+        Message.success(messages.resetPassword);
+        form.resetFields();
+        handleModal();
+      } else if (error) {
+        Message.error(error?.message);
+      }
+    },
+    onError: (error) => {
+      Message.error(error?.response?.data?.message ?? error.message);
+    },
+  });
+
+  const submitLoginForm = (data: UpdatePasswordRequest) => {
+    const { newPassword, currentPassword } = data;
+    userChangePassword({ newPassword, currentPassword });
   };
-  const submitChangePasswordForm = async () => {
-   
-  };
+
   return (
-    <Modal visible={visible} footer={null} onCancel={() => setVisible(!visible)}>
-      <ChangePassWordWrap>
-        <Link href="/" passHref>
-          <NextImage
-            src={`${router.basePath}/assets/images/logo/logo.png`}
-            layout={'fill'}
-            objectFit="contain"
-            alt="BloodStock"
-            className="mx-auto object-contain h-16 mt-2 mb-4 cursor-pointer w-52 "
-          />
-        </Link>
-        <Form
-          className="form font-title py-4 mx-2 border-t border-solid border-gray-400"
-          containerClass="w-full lg:w-auto"
-          form={form}
-          layout="vertical"
-          onFinish={submitChangePasswordForm}
-          onValuesChange={() => setFormValid(!!(form.getFieldValue('username') && form.getFieldValue('password')))}>
-          <FormItem
-            label="Old Password"
-            name="oldPassword"
-            required={true}
-            rules={[
-              {
-                required: true,
-                // message: 'Username/Email is required!',
+    <ChangePasswordWrap>
+      <Link href="/" passHref>
+        <NextImage
+          src={`${router.basePath}/assets/images/logo/logo-color.png`}
+          layout={'fill'}
+          alt="BloodStock"
+          containerClass="h-12 sm:h-16 my-3 cursor-pointer relative mx-auto"
+        />
+      </Link>
+      <Form
+        className="form font-title py-4 mx-2"
+        containerclass="w-full lg:w-auto"
+        form={form}
+        layout="vertical"
+        onFinish={submitLoginForm}
+      >
+        <FormItem
+          label="Current Password"
+          name="currentPassword"
+          required={true}
+          rules={[
+            {
+              required: true,
+              message: 'Please enter your current password!',
+            },
+          ]}
+        >
+          <Password type="text" placeholder="" />
+        </FormItem>
+        <FormItem
+          label="New Password"
+          className="mt-4"
+          name="newPassword"
+          required={true}
+          rules={[
+            { required: true, message: 'Please enter your new password!' },
+            () => ({
+              validator(_, value: string) {
+                if (value?.includes(' ')) {
+                  return Promise.reject('Password can not contain space.');
+                }
+                return Promise.resolve();
               },
-            ]}>
-            <Password type="text" placeholder="" size="large" />
-          </FormItem>
-          <FormItem
-            label="New Password"
-            className="mt-4"
-            name="newPassword"
-            required={true}
-            rules={[
-              { required: true, message: 'Password is required!' },
-              () => ({
-                validator(_, value: string) {
-                  if (value?.includes(' ')) {
-                    return Promise.reject('Password can not contain space.');
-                  }
-                  return Promise.resolve();
-                },
-              }),
-            ]}>
-            <Password placeholder="" size="large" />
-          </FormItem>
-          <FormItem
-            label="Confirm Password"
-            className="mt-4"
-            name="confirmPassword"
-            required={true}
-            rules={[
-              { required: true, message: 'Password is required!' },
-              () => ({
-                validator(_, value: string) {
-                  if (value?.includes(' ')) {
-                    return Promise.reject('Password can not contain space.');
-                  }
-                  return Promise.resolve();
-                },
-              }),
-            ]}>
-            <Password placeholder="" size="large" />
-          </FormItem>
-          <Row className="m-0 btn-group">
-            <Col span={11}>
-              <FormItem>
-                <Button
-                  className="rounded-md w-full font-semibold transition-all py-4"
-                  textcolor="var(--navy)"
-                  bordercolor="var(--navy)"
-                  hoverTextColor="#fff"
-                  hoverBgColor="var(--navy)"
-                  onClick={() => {
-                    setVisible(!visible);
-                  }}>
-                  Cancel
-                </Button>
-              </FormItem>
-            </Col>
-            <Col span={11}>
-              <FormItem>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="rounded-md w-full font-semibold btn-login transition-all py-4"
-                  // loading={useChangePasswordMutation.isLoading}
-                  >
-                  Change Password
-                </Button>
-              </FormItem>
-            </Col>
-          </Row>
-        </Form>
-        {/* <RoleSelectModal visible={showRoleSelect} setVisible={handleShowRoleSelect} user={userContext.currentUser} /> */}
-      </ChangePassWordWrap>
-    </Modal>
+            }),
+          ]}
+        >
+          <Password placeholder="" />
+        </FormItem>
+        <FormItem
+          label="Confirm Password"
+          className="mt-4"
+          name="confirmPassword"
+          required={true}
+          rules={[
+            { required: true, message: 'Please confirm you password!' },
+            () => ({
+              validator(_, value: string) {
+                if (value?.includes(' ')) {
+                  return Promise.reject('Password can not contain space.');
+                }
+                return Promise.resolve();
+              },
+            }),
+          ]}
+        >
+          <Password placeholder="" />
+        </FormItem>
+        <Row className="mt-6 btn-group">
+          <Col span={11}>
+            <FormItem>
+              <Button
+                className="font-semibold"
+                block
+                bordercolor="var(--navy)"
+                borderradius={'3px'}
+                onClick={() => changePopup('login')}
+              >
+                Cancel
+              </Button>
+            </FormItem>
+          </Col>
+          <Col span={11}>
+            <FormItem>
+              <Button type="primary" htmlType="submit" block borderradius={'3px'} loading={isLoading}>
+                Change Password
+              </Button>
+            </FormItem>
+          </Col>
+        </Row>
+      </Form>
+    </ChangePasswordWrap>
   );
 };
-export const ChangePasswordForm =()=>{
-  const [form] = useForm();
-  const [formValid, setFormValid] = useState(false);
-  const userContext = useContext(UserContext);
-  const [showRoleSelect, setShowRoleSelect] = useState<boolean>(false);
-  const handleShowRoleSelect = () => {
-    setShowRoleSelect(!showRoleSelect);
-  };
-  const submitChangePasswordForm = async () => {
-   
-  };
-  return (
-    <ChangePassWordWrap>
-      <Form
-            className="form font-title py-4 mx-2 border-t border-solid border-gray-400"
-            containerClass="w-full lg:w-auto"
-            form={form}
-            layout="vertical"
-            onFinish={submitChangePasswordForm}
-            onValuesChange={() => setFormValid(!!(form.getFieldValue('username') && form.getFieldValue('password')))}>
-            <FormItem
-              label="Old Password"
-              name="oldPassword"
-              required={true}
-              rules={[
-                {
-                  required: true,
-                  // message: 'Username/Email is required!',
-                },
-              ]}>
-              <Password type="text" placeholder="" size="large" />
-            </FormItem>
-            <FormItem
-              label="New Password"
-              className="mt-4"
-              name="newPassword"
-              required={true}
-              rules={[
-                { required: true, message: 'Password is required!' },
-                () => ({
-                  validator(_, value: string) {
-                    if (value?.includes(' ')) {
-                      return Promise.reject('Password can not contain space.');
-                    }
-                    return Promise.resolve();
-                  },
-                }),
-              ]}>
-              <Password placeholder="" size="large" />
-            </FormItem>
-            <FormItem
-              label="Confirm Password"
-              className="mt-4"
-              name="confirmPassword"
-              required={true}
-              rules={[
-                { required: true, message: 'Password is required!' },
-                () => ({
-                  validator(_, value: string) {
-                    if (value?.includes(' ')) {
-                      return Promise.reject('Password can not contain space.');
-                    }
-                    return Promise.resolve();
-                  },
-                }),
-              ]}>
-              <Password placeholder="" size="large" />
-            </FormItem>
-            <Row className="m-0 mt-5 btn-group">
-              <Col span={11}>
-                <FormItem>
-                  <Button
-                    className="rounded-md w-full font-semibold transition-all py-4"
-                    textcolor="var(--navy)"
-                    bordercolor="var(--navy)"
-                    hoverTextColor="#fff"
-                    hoverBgColor="var(--navy)">
-                    Cancel
-                  </Button>
-                </FormItem>
-              </Col>
-              <Col span={11}>
-                <FormItem>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    className="rounded-md w-full font-semibold btn-login transition-all py-4"
-                    // loading={useChangePasswordMutation.isLoading}
-                    >
-                    Change Password
-                  </Button>
-                </FormItem>
-              </Col>
-            </Row>
-      </Form>
-    </ChangePassWordWrap>
-  )
-}
-const ChangePassWordWrap = styled.div`
+const ChangePasswordWrap = styled.div`
   .btn-group {
     justify-content: space-between;
   }

@@ -1,12 +1,11 @@
-import { Empty } from "@ui/empty";
+import { Empty } from '@ui/empty';
 
-const NoResults = ({description}:{description?: string})=>{
+const NoResults = ({ description }: { description?: string }) => {
   return (
     <div>
-      <Empty description={'false'} />;
-      <h3>{description || 'No Data'}</h3>
+      <Empty description={description || 'No Data'} />
     </div>
-  )
-}
+  );
+};
 
 export default NoResults;

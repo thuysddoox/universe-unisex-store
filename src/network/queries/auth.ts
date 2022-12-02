@@ -1,14 +1,9 @@
-import API from '../axios';
-import { ENDPOINTS } from '../endpoints';
-import {
-  LoginRequest,
-  LoginResponse,
-  BaseResponse,
-} from '@interfaces';
-const { post } = API;
+import { useMutation, UseMutationOptions } from 'react-query';
+import { login, register } from '@api';
+import { BaseResponse, ErrorResponse, LoginResponse, User, LoginRequest } from '@interfaces';
 
-export const login = async (
-  payload: LoginRequest
-): Promise<BaseResponse<LoginResponse>> => {
-  return post(ENDPOINTS.LOGIN, payload);
-};
+export const useLogin = (options: UseMutationOptions<BaseResponse<LoginResponse>, ErrorResponse, LoginRequest>) =>
+  useMutation((params: LoginRequest) => login(params), options);
+
+export const useSignup = (options: UseMutationOptions<BaseResponse<User>, ErrorResponse, User>) =>
+  useMutation((params: User) => register(params), options);

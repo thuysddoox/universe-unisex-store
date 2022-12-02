@@ -13,42 +13,21 @@ export interface LayoutProps {
 }
 const withLayout = (Component) => {
   const Wrapper = (props: LayoutProps) => {
-    const {
-      headerStyle,
-      transparentProps = null,
-      pathName
-    } = props;
+    const { headerStyle, transparentProps = null, pathName } = props;
 
     return (
       <div className="page">
         <Head>
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, maximum-scale=1"
-          />
-          <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/favicon/apple-touch-icon.png"
-          />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/favicon/favicon-32x32.png"
-          />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/favicon/favicon-16x16.png"
-          />
-          <link rel="manifest" href="/favicon/site.webmanifest"/>
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+          <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png" />
+          <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+          <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
+          {/* <link rel="manifest" href="/favicon/site.webmanifest"/> */}
         </Head>
-        <Header/>
+        <Header />
         <Component {...props} />
-        <Footer/>
-        <BackTop duration={900} style={{zIndex: 1100}} visibilityHeight={300}>
+        <Footer />
+        <BackTop duration={900} style={{ zIndex: 1100 }} visibilityHeight={300}>
           <BackTopBtn
             style={{
               zIndex: 1100,
@@ -56,12 +35,12 @@ const withLayout = (Component) => {
             }}
             className="h-10 w-10 rounded-sm text-white text-2xl flex items-center justify-center"
           >
-            <VerticalAlignTopOutlined/>
+            <VerticalAlignTopOutlined />
           </BackTopBtn>
         </BackTop>
       </div>
-    )
-  }
+    );
+  };
 
   Wrapper.getInitialProps = async (ctx: NextPageContext) => {
     const componentProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : null;
@@ -71,9 +50,9 @@ const withLayout = (Component) => {
   };
 
   return Wrapper;
-}
+};
 
-const BackTopBtn = styled.div`
+export const BackTopBtn = styled.div`
   z-index: 100;
   background: rgba(41, 99, 126, 0.45);
   transition: background 0.3s;

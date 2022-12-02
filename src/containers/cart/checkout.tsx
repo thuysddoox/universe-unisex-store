@@ -1,11 +1,11 @@
-import styled from "@emotion/styled";
-import { Col, Row } from "antd";
-import OrderInfo from "./OrderInfo";
-import CheckoutForm from "@components/Form/Checkout";
-import Button from "@ui/button";
-import BackButton from "@components/BackButton";
+import styled from '@emotion/styled';
+import { Col, Row } from 'antd';
+import OrderInfo from './OrderInfo';
+import CheckoutForm from '@components/Form/Checkout';
+import Button from '@ui/button';
+import BackButton from '@components/BackButton';
 import HeadingSection from '../../components/HeadingSection/index';
-import OrderItemList from "./OderItemList";
+import OrderItemList from './OderItemList';
 
 const Checkout = () => {
   return (
@@ -18,8 +18,8 @@ const Checkout = () => {
             <CheckoutForm />
           </Col>
           <Col xs={24} md={8}>
-            <OrderItemList />
-            <OrderInfo subtotal={35} shipCost={10}/>
+            <OrderItemList data={[]} />
+            <OrderInfo subtotal={35} shipCost={10} />
             <Button
               borderradius={'3px'}
               hoverBgColor={'var(--navy)'}
@@ -34,11 +34,11 @@ const Checkout = () => {
         </Row>
       </div>
     </CheckoutWrapper>
-  )
-}
+  );
+};
 const CheckoutWrapper = styled.div`
-  textarea{
+  textarea {
     resize: none;
   }
-`
+`;
 export default Checkout;

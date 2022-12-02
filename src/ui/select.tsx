@@ -21,14 +21,14 @@ export interface SelectControlProps extends SelectProps<SafeAny> {
 const FormWrapper: StyledComponent<SelectControlProps> = styled.div`
   .ant-select {
     .ant-select-selector {
-      border: 1px solid var(--gray);
+      // border: 1px solid var(--gray);
       border: 1px solid ${(props: SafeAny) => props?.bordercolor || 'var(--gray)'};
       border-radius: ${(props: SafeAny) => props?.borderradius || '30px'};
     }
   }
-  .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
-    .ant-select-selector {
-    box-shadow: none;
+  .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    // box-shadow: none;
+    border-color: var(--primary-hover);
   }
   .ant-select-item-option {
     &.highlight {
@@ -47,9 +47,23 @@ const FormWrapper: StyledComponent<SelectControlProps> = styled.div`
     }
   }
   -webkit-tap-highlight-color: transparent;
-  .ant-select-selection-placeholder{
+  .ant-select-selection-placeholder {
     font-size: 14px;
-    color: var(--light-gray-4)!important;
+    color: var(--light-gray-4) !important;
+  }
+  .ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector,
+  .ant-select-single.ant-select-show-arrow .ant-select-selection-search {
+    font-size: 14px;
+    line-height: 34px;
+    height: 34px;
+    padding: 0px 12px;
+  }
+  input,
+  .ant-select-single.ant-select-lg:not(.ant-select-customize-input)
+    .ant-select-selector
+    .ant-select-selection-placeholder {
+    height: 34px;
+    line-height: 34px;
   }
 `;
 

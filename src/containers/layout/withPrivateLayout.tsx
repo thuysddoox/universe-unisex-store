@@ -14,7 +14,7 @@ interface LayoutPrivateProps {
   transparentProps?: boolean;
   pathName?: string;
 }
-const PERMISSION_DENIED = 'You dont have permission to access this page.';
+export const PERMISSION_DENIED = 'You dont have permission to access this page.';
 
 const withPrivateLayout = (Component: NextComponentType<NextPageContext, object, Record<string, unknown>>) => {
   const Wrapper = (props: LayoutPrivateProps) => {
@@ -50,13 +50,16 @@ const withPrivateLayout = (Component: NextComponentType<NextPageContext, object,
               zIndex: 1100,
               lineHeight: '40px',
             }}
-            className="h-10 w-10 rounded-sm text-white text-2xl flex items-center justify-center">
+            className="h-10 w-10 rounded-sm text-white text-2xl flex items-center justify-center"
+          >
             <VerticalAlignTopOutlined />
           </BackTopBtn>
         </BackTop>
       </div>
     ) : (
-      <div className="page text-center pt-28"><p>{PERMISSION_DENIED}</p></div>
+      <div className="page text-center pt-28">
+        <p>{PERMISSION_DENIED}</p>
+      </div>
     );
   };
 

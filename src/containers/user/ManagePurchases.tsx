@@ -8,6 +8,7 @@ import { TbTruckDelivery } from 'react-icons/tb';
 import { MdStars } from 'react-icons/md';
 import PurchaseOrder from '@components/PurchaseOrder';
 import { Col, Row } from 'antd';
+import UserLayout from './userLayout';
 
 const ManagePurchases = () => {
   const tabs = useMemo(
@@ -75,12 +76,14 @@ const ManagePurchases = () => {
     [],
   );
   return (
-    <ManagePurchasesWrapper>
-      <Tabs
-        // defaultActiveKey="2"
-        items={tabs}
-      />
-    </ManagePurchasesWrapper>
+    <UserLayout title={'My Purchases'}>
+      <ManagePurchasesWrapper>
+        <Tabs
+          // defaultActiveKey="2"
+          items={tabs}
+        />
+      </ManagePurchasesWrapper>
+    </UserLayout>
   );
 };
 const ManagePurchasesWrapper = styled.div`

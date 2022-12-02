@@ -6,7 +6,7 @@ import FormItem from '@ui/formitem';
 const SubcribeForm = () => {
   const [form] = useForm();
   return (
-    <Form name="subcribe" form={form}>
+    <Form form={form}>
       <Row>
         <Col span={12}>
           <FormItem
@@ -44,7 +44,13 @@ const SubcribeForm = () => {
           </FormItem>
         </Col>
         <Col>
-          <Button borderradius={'0px'} lineheight={'26px'} containerClass="m-2 bg-[#808080]" textcolor={'#fff'} htmlType="submit">
+          <Button
+            borderradius={'0px'}
+            lineheight={'26px'}
+            containerClass="m-2 bg-[#808080]"
+            textcolor={'#fff'}
+            htmlType="submit"
+          >
             Subscribe
           </Button>
         </Col>

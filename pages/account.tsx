@@ -1,12 +1,12 @@
-import withLayout from '@containers/layout/withLayout';
-import MyAccount from '@containers/user/account';
+import withPrivateLayout from '@containers/layout/withPrivateLayout';
 import PageWapper from '@components/PageWrapper';
+import MyAccount from '@containers/user/account';
 
 export function AccountPage() {
   return (
-    <PageWapper>
+    <PageWapper bgColor="var(--primary-lighter)">
       <MyAccount />
     </PageWapper>
   );
 }
-export default withLayout(AccountPage);
+export default withPrivateLayout(AccountPage);

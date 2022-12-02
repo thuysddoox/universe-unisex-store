@@ -9,33 +9,33 @@ const InputWrapper: StyledComponent<SafeAny> = styled.div`
   font-family: var(--font-title);
   .ant-input,
   .ant-input-password,
-  .ant-input-affix-wrapper{
+  .ant-input-affix-wrapper {
     border: 1px solid ${(props: SafeAny) => props?.bordercolor || 'var(--gray)'};
     border-radius: ${(props: SafeAny) => props?.borderradius || '30px'};
   }
-  .ant-input::placeholder{
-    color: var(--light-gray-4)!important;
+  .ant-input::placeholder {
+    color: var(--light-gray-4) !important;
   }
-  .ant-input-group-addon{
+  .ant-input-group-addon {
     background: transparent;
   }
-  .ant-input-search input{
+  .ant-input-search input {
     border-right-width: 0;
     border-color: ${(props: SafeAny) => props?.bordercolor || 'var(--gray)'};
   }
   .ant-input-search-button {
-    border-left-width: 0!important;
+    border-left-width: 0 !important;
     border-color: ${(props: SafeAny) => props?.bordercolor || 'var(--gray)'};
     border-top-right-radius: ${(props: SafeAny) => props?.borderradius || '30px'}!important;
     border-bottom-right-radius: ${(props: SafeAny) => props?.borderradius || '30px'}!important;
   }
-  .ant-input-search .ant-input:focus{
+  .ant-input-search .ant-input:focus {
     box-shadow: none;
   }
   .ant-input-group-addon .ant-input-affix-wrapper-focused,
   .ant-input-affix-wrapper:focus,
   .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
-    border-color: var(--gray);
+    border-color: var(--primary-hover);
     // box-shadow: none;
   }
   .ant-input-affix-wrapper-lg {
@@ -85,7 +85,8 @@ export function Input(props: InputProps) {
       className={`${containerClass || ''}`}
       style={containerStyle}
       borderradius={borderradius}
-      id={inputWrapId}>
+      id={inputWrapId}
+    >
       <AntdInput id={inputId} {...rests} />
     </InputWrapper>
   );
@@ -100,7 +101,7 @@ export const Password = React.forwardRef<any, InputProps>((props, ref) => {
   );
 });
 export const Search = React.forwardRef<any, InputProps>((props, ref) => {
-  const { containerClass,bordercolor, onSearch } = props;
+  const { containerClass, bordercolor, onSearch } = props;
   return (
     <InputWrapper className={`${containerClass || ''}`} style={props.containerStyle} bordercolor={bordercolor}>
       <AntdInput.Search {...props} ref={ref} onSearch={onSearch} />
@@ -115,7 +116,7 @@ export function TextArea(
     borderradius?: string;
   },
 ) {
-  const { containerClass,borderradius } = props;
+  const { containerClass, borderradius } = props;
   return (
     <InputWrapper className={`${containerClass || ''}`} style={props.containerStyle} borderradius={borderradius}>
       <AntdInput.TextArea {...props} />
@@ -126,6 +127,7 @@ export interface InputNumberMaskProps extends NumberFormatPropsBase<SafeAny> {
   containerStyle?: CSSProperties;
   containerClass?: string;
   tooltip?: string;
+  placeholder?: string;
 }
 
 export function InputNumberMask(props: InputNumberMaskProps) {
@@ -133,7 +135,7 @@ export function InputNumberMask(props: InputNumberMaskProps) {
   return (
     <InputWrapper className={`${containerClass || ''}`} style={props.containerStyle}>
       <Tooltip title={props.tooltip} zIndex={1100} trigger={['click', 'hover']}>
-        <NumberFormat  customInput={Input} {...props} />
+        <NumberFormat customInput={Input} {...props} />
       </Tooltip>
     </InputWrapper>
   );

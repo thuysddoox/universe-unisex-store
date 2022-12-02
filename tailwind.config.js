@@ -1,6 +1,7 @@
 module.exports = {
-  content: ['./src/**/*.{js,ts,jsx,tsx}','./pages/**/*.{js,ts,jsx,tsx}'],
+  content: ['./src/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}'],
   theme: {
+
     fontSize: {
       xs: '0.75rem',
       sm: '0.9rem',
@@ -39,6 +40,8 @@ module.exports = {
         },
       },
       fontFamily: {
+        sans: ['Poppins', 'sans-serif'],
+        body: ['Poppins', 'sans-serif'],
         sourcecodepro: ['Poppins', 'sans-serif'],
       },
       screens: {

@@ -1,12 +1,12 @@
 export const AppConfig = {
-  site_name: 'Bloodstock Exchange',
+  site_name: 'Universe Unisex Store',
   locale: 'vi',
-  title: 'Bloodstock Exchange',
-  description: 'Bloodstock Exchange is the largest Australian marketplace for the sale, lease and syndication of Bloodstock...',
-  keywords: 'Bloodstock Exchange, BEx, horse for sale, horse for lease, horse for syndication...',
-  author: 'Bloodstock Exchange',
+  title: 'Universe Unisex Store',
+  description: 'Universe Unisex Store is the marketplace for the clothes, fashion of unisex...',
+  keywords: 'Universe Unisex Store, Unisex, clothes,...',
+  author: 'thuysddoox',
   website: 'https://bloodstockexchange.horse/',
-  image: 'https://bloodstockexchange.horse/default.jpg',
+  image: 'https://bloodstockexchange.horse/default.png',
   facebook: 'https://www.facebook.com/BloodstockEx',
   facebookName: 'Bloodstock Exchange',
   facebookUsername: 'BloodstockEx',
@@ -15,5 +15,4 @@ export const AppConfig = {
   twitterUsername: 'bloodstockex',
   instagram: 'https://www.instagram.com/bloodstockexchange/',
   instagramUsername: 'bloodstockexchange',
-
 };

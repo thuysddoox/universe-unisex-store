@@ -1,31 +1,23 @@
-import styled from "@emotion/styled";
-import { Col, Row } from "antd";
-import CheckoutForm from '@components/Form/Checkout';
-import ProfilePhoto from "./ProfilePhoto";
-import TabsManageAccount from "./Tabs";
+import ProfileForm from '@components/Form/Profile';
+import { Col, Row } from 'antd';
+import ProfilePhoto from './ProfilePhoto';
+import UserLayout from './userLayout';
 
-const MyAccount = ()=>{
+const MyAccount = () => {
   return (
-    <MyAccountWrapper className="pt-32">
-      <div className="container">
+    <UserLayout title={'Profile'}>
+      <Row className="justify-between">
+        <Col className="w-full sm:w-1/3 lg:w-1/4">
+          <ProfilePhoto />
+        </Col>
+        <Col className="flex-grow ml-5">
+          <div className="bg-white rounded-sm p-4">
+            <ProfileForm />
+          </div>
+        </Col>
+      </Row>
+    </UserLayout>
+  );
+};
 
-            {/* <ProfilePhoto />       */}
-          <TabsManageAccount />
-
-
-      </div>
-    </MyAccountWrapper>
-  )
-}
-
-const MyAccountWrapper = styled.div`
-.ant-tabs-left > .ant-tabs-content-holder, .ant-tabs-left > div > .ant-tabs-content-holder{
-  border: 0;
-}
-  .ant-tabs-tab{
-    margin-top: 4px!important;
-    font-size: 16px;
-    font-weight: 500;
-  }
-`;
 export default MyAccount;

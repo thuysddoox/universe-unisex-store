@@ -1,19 +1,19 @@
 export default {
-  title: 'Bloodstock Exchange',
+  title: 'Uninex Universe Store',
   description:
-    'Bloodstock Exchange is the largest Australian marketplace for the sale, lease and syndication of Bloodstock...',
+    'Uninex Universe Store is the largest Asia marketplace for clothes',
   canonical: 'https://bloodstockexchange.horse/',
   openGraph: {
     url: 'https://bloodstockexchange.horse/',
     title: 'Bloodstock Exchange',
     description:
-      'Bloodstock Exchange is the largest Australian marketplace for the sale, lease and syndication of Bloodstock...',
+      'Uninex Universe Store is the largest Asia marketplace for clothes',
     images: [
       {
         url: 'https://bloodstockexchange.horse/default.jpg',
         width: 800,
         height: 420,
-        alt: 'Bloodstock Exchange',
+        alt: 'Uninex Universe Store',
       },
     ],
   },

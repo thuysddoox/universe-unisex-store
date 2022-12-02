@@ -4,13 +4,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const nextConfig = {
   experimental: {
-      images: {
-          layoutRaw: true
-      },
-      scrollRestoration: true
+    images: {
+      layoutRaw: true
+    },
+    scrollRestoration: true
   },
   images: {
-    domains: ['cdn.prism.horse'],
+    domains: ['res.cloudinary.com'],
   },
   eslint: {
     ignoreDuringBuilds: true

@@ -17,10 +17,11 @@ const Advertisement = ({ bannersList }: { bannersList: Banner[] }) => {
     },
   ];
   return (
-    <div className='mb-8'>
+    <div className="mb-8">
       <Slider slidesToShow={1} arrows={false} fade={true} speed={2000} autoplaySpeed={3000}>
         {bannersList.map((banner, id) => (
           <NextImage
+            key={id}
             src={banner.imgUrl}
             layout="fill"
             objectFit="cover"

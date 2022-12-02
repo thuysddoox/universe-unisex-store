@@ -1,3 +1,21 @@
+export const Colors = [
+  'red',
+  'orange',
+  'yellow',
+  'green',
+  'blue',
+  'indigo',
+  'violet',
+  'purple',
+  'pink',
+  'silver',
+  'gold',
+  'beige',
+  'brown',
+  'grey',
+  'black',
+  'white',
+];
 export const HorseMediaType = {
   IMAGE: 1,
   VIDEO: 3,
@@ -280,7 +298,7 @@ export const HorseType = {
 export const QueryParam = {
   orderBy: 'publishedDate',
   orderDirection: 'desc',
-  pageSize: 30,
+  pageSize: 5,
   pageIndex: 0,
 };
 
@@ -337,80 +355,5 @@ export const orderByShortList = [
     orderDirection: 'asc',
     name: 'Oldest to Newest date',
     image: '/assets/images/icons/arrown-date-up.png',
-  },
-];
-
-export const horsePriceList = [
-  {
-    value: '0-10000',
-    label: 'Under $10,000',
-  },
-  {
-    value: '10000-20000',
-    label: '$10,000-$20,000',
-  },
-  {
-    value: '20000-50000',
-    label: '$20,000-$50,000',
-  },
-  {
-    value: '50000-100000',
-    label: '$50,000-$100,000',
-  },
-  {
-    value: '100000-200000',
-    label: '$100,000-$200,000',
-  },
-  {
-    value: '200000-400000',
-    label: '$200,000-$400,000',
-  },
-  {
-    value: '400000',
-    label: '$400,000 & above',
-  },
-];
-
-export const horseList = [
-  {
-    id: '1',
-    name: 'Horse Demo A',
-  },
-  {
-    id: '2',
-    name: 'Horse Demo B',
-  },
-];
-
-export const trainerList = [
-  {
-    id: '1',
-    name: 'Trainer Demo A',
-  },
-  {
-    id: '2',
-    name: 'Trainer Demo B',
-  },
-];
-
-export const outletList = [
-  {
-    id: '1',
-    name: 'Outlet Demo A',
-  },
-  {
-    id: '2',
-    name: 'Outlet Demo B',
-  },
-];
-
-export const locationList = [
-  {
-    id: '1',
-    name: 'Location Demo A',
-  },
-  {
-    id: '2',
-    name: 'Location Demo B',
   },
 ];

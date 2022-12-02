@@ -1,23 +1,21 @@
-import Product from '@components/Product';
+import ProductComponent from '@components/Product';
+import { Product } from '@interfaces/common';
 import { Col, Row } from 'antd';
 import React from 'react';
 type ProductsListProp = {
   className?: string;
-}
-const ProductsList = ({className}:ProductsListProp)=>{
+  data?: Product[];
+};
+const ProductsList = ({ data = [], className }: ProductsListProp) => {
   return (
     <Row className={`w-full ${className}`}>
-      <Col xs={24} sm={12} md={8} xl={6}>
-        <Product />
-      </Col>
-      <Col xs={24} sm={12} md={8} xl={6}>
-        <Product />
-      </Col>
-      <Col xs={24} sm={12} md={8} xl={6}>
-        <Product />
-      </Col>
+      {data?.map((product) => (
+        <Col xs={24} sm={12} md={8} xl={6} key={product?._id}>
+          <ProductComponent product={product} />
+        </Col>
+      ))}
     </Row>
-  )
-}
+  );
+};
 
 export default ProductsList;

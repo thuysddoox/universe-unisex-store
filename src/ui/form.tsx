@@ -36,8 +36,7 @@ export const messages = {
   },
 };
 
-export function Form(props: any & { containerClass?: string }) {
-
+export function Form(props: any & { containerclass?: string }) {
   const validateMessages = {
     required: messages.required.key,
     string: {
@@ -47,13 +46,11 @@ export function Form(props: any & { containerClass?: string }) {
   };
 
   return (
-    <FormWrapper className={`${props.containerClass}`}>
+    <FormWrapper className={`${props.containerclass}`}>
       <AntdForm
         {...props}
         validateMessages={
-          props.validateMessages
-            ? { ...validateMessages, ...props.validateMessages }
-            : validateMessages
+          props.validateMessages ? { ...validateMessages, ...props.validateMessages } : validateMessages
         }
       />
     </FormWrapper>

@@ -1,9 +1,9 @@
-import React from "react";
-import { AppProps } from "next/app";
-import { theme } from "@styles/theme";
-import { QueryClient, QueryClientProvider } from "react-query";
+import React from 'react';
+import { AppProps } from 'next/app';
+import { theme } from '@styles/theme';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { ThemeProvider } from "@emotion/react";
+import { ThemeProvider } from '@emotion/react';
 import NextNProgress from 'nextjs-progressbar';
 import {
   UserContextProvider,

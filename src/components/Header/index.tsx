@@ -1,20 +1,26 @@
 import { CloseOutlined, DownOutlined, MenuOutlined } from '@ant-design/icons';
 import NextImage from '@components/NextImage';
+import SignupLoginModal from '@components/SignupLoginModal';
 import { useBreakpoints, UserContext } from '@contexts';
 import styled from '@emotion/styled';
 import Button from '@ui/button';
 import { Drawer } from '@ui/drawer';
+import { Dropdown } from '@ui/dropdown';
 import { Search } from '@ui/input';
-import { Menu } from '@ui/menu';
-import { Grid, MenuProps } from 'antd';
+import { Menu, MenuItem } from '@ui/menu';
+import { confirm } from '@ui/modal';
+import { Badge, MenuProps } from 'antd';
 import { isEmpty } from 'lodash';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { FaUserCircle } from "react-icons/fa";
-type MenuItem = Required<MenuProps>['items'][number];
+import { AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
+import { FaUserCircle } from 'react-icons/fa';
+import { UserPopupType } from '../../interfaces/common';
+import { useQueryCart } from '../../network/queries/cart';
+export type MenuItem = Required<MenuProps>['items'][number];
 
-function getItem(
+export function getItem(
   label: React.ReactNode,
   key: React.Key,
   icon?: React.ReactNode,
@@ -52,26 +58,65 @@ export function Header() {
   const [isDesktop, setIsDesktop] = useState<boolean>(width > 992);
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const [isHome, setIsHome] = useState<boolean>(true);
+  const [isShowLoginSignup, setIsShowLoginSignup] = useState<boolean>(false);
+  const [typePopup, setTypePopup] = useState<UserPopupType>('login');
   const router = useRouter();
-  const items: MenuItem[] = useMemo(() => [
-    getItem(<Label title="Shop" url="/shop" />, 'shop'),
-    getItem(<Label title="Sale" url="/sale" />, 'sale'),
-    getItem(<Label title="Categories" url="/category" isSuper />, 'category', null, [
-      getItem(<Label title="T-Shirt" url="/category/t-shirt" />, 't-shirt'),
-      getItem(<Label title="Shirt" url="/category/shirt" />, 'shirt'),
-      getItem(<Label title="Hoodie/Sweater" url="/category/t-shirt" />, 'Hoodie/Sweater'),
-      getItem(<Label title="Jacket" url="/category/t-shirt" />, 'Jacket'),
-      getItem(<Label title="Jeans/Pants" url="/category/t-shirt" />, 'Jeans/Pants'),
-      getItem(<Label title="Short" url="/category/t-shirt" />, 'Short'),
-      getItem(<Label title="Accessories" url="/category/accessories" />, 'Accessories'),
-      getItem(<Label title="Other" url="/category/other" />, 'Other'),
-    ]),
-    getItem(<Label title="About us" url="/about" isSuper />, 'about', null, [
-      getItem(<Label title="Us" url="/about" />, 'about'),
-      getItem(<Label title="Jobs" url="/jobs" />, 'jobs'),
-      getItem(<Label title="Contact" url="/contact" />, 'contact'),
-    ]),
-  ],[]);
+  const userContext = useContext(UserContext);
+  const items: MenuItem[] = useMemo(
+    () => [
+      getItem(<Label title="Shop" url="/shop" />, 'shop'),
+      getItem(<Label title="Sale" url="/sale" />, 'sale'),
+      getItem(<Label title="Categories" url="/category" isSuper />, 'category', null, [
+        getItem(<Label title="T-Shirt" url="/category/t-shirt" />, 't-shirt'),
+        getItem(<Label title="Shirt" url="/category/shirt" />, 'shirt'),
+        getItem(<Label title="Hoodie/Sweater" url="/category/t-shirt" />, 'Hoodie/Sweater'),
+        getItem(<Label title="Jacket" url="/category/t-shirt" />, 'Jacket'),
+        getItem(<Label title="Jeans/Pants" url="/category/t-shirt" />, 'Jeans/Pants'),
+        getItem(<Label title="Short" url="/category/t-shirt" />, 'Short'),
+        // getItem(<Label title="Accessories" url="/category/accessories" />, 'Accessories'),
+        // getItem(<Label title="Other" url="/category/other" />, 'Other'),
+      ]),
+      getItem(<Label title="About us" url="/about" isSuper />, 'about', null, [
+        getItem(<Label title="Us" url="/about" />, 'us'),
+        getItem(<Label title="Jobs" url="/jobs" />, 'jobs'),
+        getItem(<Label title="Contact" url="/contact" />, 'contact'),
+      ]),
+    ],
+    [],
+  );
+  const ACCOUNT_TABS = useMemo(
+    () => [
+      { url: '/account', title: 'Profile' },
+      { url: '/favourite', title: 'My Favorites' },
+      { url: '/purchases', title: 'Purchases' },
+      {
+        title: 'Change Password',
+        handleClick: () => {
+          setTypePopup('changepassword');
+          setIsShowLoginSignup(true);
+        },
+      },
+      {
+        title: 'Logout',
+        handleClick: () => {
+          confirm({
+            title: 'Confirm',
+            content: 'Do you want to logout?',
+            onOk: userContext.logout,
+          });
+        },
+      },
+    ],
+    [],
+  );
+  const isLoggedIn = useMemo(() => {
+    if (userContext.contextLoaded) {
+      const user = userContext.currentUser;
+      return !!user;
+    }
+    return false;
+  }, [userContext.contextLoaded, userContext.currentUser]);
+
   const handleScroll = () => {
     if (typeof Window !== undefined) {
       window.scrollY >= 30 && !isScroll ? setIsScroll(true) : window.scrollY < 30 && isScroll ? setIsScroll(false) : '';
@@ -88,31 +133,36 @@ export function Header() {
     else setShowIconSearch(false);
     width > 992 ? setIsDesktop(true) : setIsDesktop(false);
   }, [width]);
-  useEffect(()=>{
-    if (router.asPath === '/') !isHome && setIsHome(true)
-    else isHome && setIsHome(false)
-  },[router.pathname])
+  useEffect(() => {
+    if (router.asPath === '/') !isHome && setIsHome(true);
+    else isHome && setIsHome(false);
+  }, [router.pathname]);
+
   return (
-    <HeaderWrapper className={`z-[55] w-full transition-all fixed ${isScroll || !isHome ? 'text-white bg-blue-500 ' : 'py-2'}`}>
+    <HeaderWrapper
+      className={`z-[55] w-full transition-all fixed ${isScroll || !isHome ? 'text-white bg-blue-500 ' : 'py-2'}`}
+    >
       <div className="flex justify-between container items-center flex-wrap">
-          <span onClick={() => setIsOpened(true)} className="block lg:hidden">
-            {isOpened ? (
-              <CloseOutlined style={{ fontSize: '22px', color: '#fff' }} />
-            ) : (
-              <MenuOutlined style={{ fontSize: '22px', color: '#fff' }} />
-            )}
-          </span>
-        <Link href="/" passHref >
-          <a className='flex-grow lg:flex-grow-0'>
+        <span onClick={() => setIsOpened(true)} className="block lg:hidden">
+          {isOpened ? (
+            <CloseOutlined style={{ fontSize: '22px', color: '#fff' }} />
+          ) : (
+            <MenuOutlined style={{ fontSize: '22px', color: '#fff' }} />
+          )}
+        </span>
+        <Link href="/" passHref>
+          <a className="flex-grow lg:flex-grow-0">
             <NextImage
               src={`${router.basePath}/assets/images/logo/logo.png`}
               layout="fill"
-              containerClass="h-14 relative w-56 mx-auto lg:m-0"
+              containerClass="h-12 relative w-40 mx-auto lg:m-0"
             />
           </a>
         </Link>
-        <div className='w-0 lg:w-auto overflow-hidden'><Menu mode="horizontal" items={items} className="w-max"  defaultSelectedKeys={[router.route.split('/')[1]]}/></div>
-        <div className="hidden lg:flex">
+        <div className="w-0 lg:w-auto overflow-hidden">
+          <Menu mode="horizontal" items={items} className="w-max" defaultSelectedKeys={[router.route.split('/')[1]]} />
+        </div>
+        <div className="hidden lg:flex items-center">
           <div className="relative">
             <Search
               placeholder="Search"
@@ -135,21 +185,49 @@ export function Header() {
               />
             )}
           </div>
-          <Button className="text-white border-white btn-login hidden md:block">Login / Signup</Button>
+          {isLoggedIn ? (
+            <Account tabs={ACCOUNT_TABS} />
+          ) : (
+            <Button
+              className="text-white border-white btn-login hidden md:block"
+              onClick={() => {
+                setIsShowLoginSignup(true);
+              }}
+            >
+              Login / Signup
+            </Button>
+          )}
         </div>
       </div>
-      <Drawer title={<Title />} placement="left" bodyStyle={{ padding: '1rem' }}
-      width={mobileMode ? '60%' : '45%'} onClose={() => setIsOpened(false)} open={isOpened && !isDesktop}>
+      <Drawer
+        title={<Title />}
+        placement="left"
+        bodyStyle={{ padding: '1rem' }}
+        width={mobileMode ? '60%' : '45%'}
+        onClose={() => setIsOpened(false)}
+        open={isOpened && !isDesktop}
+        className="nav-bar"
+      >
         <Search
           placeholder="Search"
           size="large"
           style={{ width: '90%' }}
           bordercolor={'var(--light-gray-4)'}
           className="m-4"
-          onSearch={(value)=>console.log(value)}
+          onSearch={(value) => console.log(value)}
         />
-        <Menu mode="inline" items={[getItem(<Label title="Home" url="/" />, 'home'),...items]} defaultSelectedKeys={[router.route.split('/')[1]]} className="w-full" />
+        <Menu
+          mode="inline"
+          items={[getItem(<Label title="Home" url="/" />, 'home'), ...items]}
+          defaultSelectedKeys={[router.route.split('/')[1]]}
+          className="w-full"
+        />
       </Drawer>
+      <SignupLoginModal
+        visible={isShowLoginSignup}
+        setVisible={setIsShowLoginSignup}
+        {...(typePopup && { type: typePopup })}
+      />
     </HeaderWrapper>
   );
 }
@@ -162,20 +240,78 @@ const Title = ({
 }) => {
   const userContext = useContext(UserContext);
   const userCurrent = userContext.currentUser;
-  
+
   return (
     <div
-      className='flex items-center'
+      className="flex items-center"
       onClick={() => {
         setIsShowLoginSignup(!isShowLoginSignup);
-      }}>
-      <FaUserCircle style={{color: 'var(--navy)', fontSize: '40px'}}/>
-      <span className='ml-2 text-base cursor-pointer w-[120px] md:w-[200px] truncate capitalize'>
+      }}
+    >
+      <FaUserCircle style={{ color: 'var(--navy)', fontSize: '40px' }} />
+      <span className="ml-2 text-base cursor-pointer w-[120px] md:w-[200px] truncate capitalize">
         {isEmpty(userCurrent) ? 'LOGIN/SIGNUP' : userCurrent?.username}
       </span>
     </div>
   );
 };
+interface Tab {
+  title: string;
+  url?: string;
+  handleClick?: () => void;
+}
+const Account = ({ tabs }: { tabs: Tab[] }) => {
+  const userContext = useContext(UserContext);
+  const userCurrent = userContext.currentUser;
+  const { data: CartResp, refetch } = useQueryCart();
+  const menu = useMemo(() => {
+    return (
+      <>
+        <Menu className="py-2">
+          {tabs.map((item) => (
+            <MenuItem key={item.title} onClick={item?.handleClick}>
+              {item.url ? (
+                <Link href={item.url} passHref>
+                  <a className="p-1">{item.title}</a>
+                </Link>
+              ) : (
+                <span className="p-1">{item.title}</span>
+              )}
+            </MenuItem>
+          ))}
+        </Menu>
+      </>
+    );
+  }, [tabs]);
+  console.log(CartResp);
+  useEffect(() => {
+    refetch();
+  }, [userCurrent]);
+  return (
+    <>
+      <Link href="/cart" passHref>
+        <a className="ml-5 mr-2 flex">
+          <Badge count={CartResp?.data?.responseData?.products?.length ?? 0} overflowCount={5}>
+            <AiOutlineShoppingCart style={{ color: '#ffff', fontSize: '30px' }} />
+          </Badge>
+        </a>
+      </Link>
+      {/* <Link href="/account" passHref> */}
+      <Dropdown overlay={menu} placement="bottom">
+        <span className="flex items-center justify-start cursor-pointer ">
+          <span className="ml-5 mr-2 text-base max-w-[80px] truncate capitalize text-white">
+            {userCurrent?.username ?? userCurrent?.lastName ?? 'User'}
+          </span>
+          <span className=" border-2 border-white rounded-full p-1">
+            <AiOutlineUser style={{ color: '#ffff', fontSize: '20px' }} />
+          </span>
+        </span>
+      </Dropdown>
+      {/* </Link> */}
+    </>
+  );
+};
+
 const HeaderWrapper = styled.div`
   .ant-menu-horizontal > .ant-menu-item a,
   .ant-menu-overflow-item,

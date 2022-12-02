@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StorageKeys, localStorageGet } from '@api';
+import { StorageKeys, localStorageGet, storageClear } from '@api';
 import { User } from '@interfaces';
 import { isEmpty } from 'lodash';
 import { useRouter } from 'next/router';
@@ -8,6 +8,7 @@ interface UserContextProps {
   currentUser?: User;
   contextLoaded: boolean;
   setCurrentUser?: (val: any) => void;
+  logout?: () => void;
 }
 export const UserContext = React.createContext<UserContextProps>({
   currentUser: null,
@@ -28,7 +29,12 @@ export const UserContextProvider = (props) => {
     }
     setContextLoaded(true);
   };
-
+  const logout = async () => {
+    storageClear();
+    setCurrentUser(null);
+    setContextLoaded(false);
+    router.reload();
+  };
   useEffect(() => {
     getUserInfo();
   }, []);
@@ -38,7 +44,8 @@ export const UserContextProvider = (props) => {
       value={{
         currentUser,
         setCurrentUser,
-        contextLoaded
+        contextLoaded,
+        logout,
       }}
     >
       {React.Children.toArray(props.children)}
