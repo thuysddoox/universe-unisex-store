@@ -34,7 +34,7 @@ const AdminHomePage = () => {
           <OverviewCategory className="my-4 shadow" />
         </div>
       </div>
-      <TableCategory />
+      <TableCategory data={[]} />
     </>
   );
 };

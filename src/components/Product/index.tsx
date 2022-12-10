@@ -13,7 +13,7 @@ import { FaShoppingCart } from 'react-icons/fa';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/userContext';
 
-const ProductComponent = ({ product }: { product: Product }) => {
+const ProductComponent = ({ product }: { product?: Product }) => {
   const router = useRouter();
   const imgUrl = router.basePath + '/assets/images/background/default.png';
   const { currentUser } = useContext(UserContext);

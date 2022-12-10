@@ -24,7 +24,7 @@ export interface TableProps {
   pageSize?: number;
   loading?: boolean;
   name?: string;
-  handleChangePageIndex: (page: number, pageSize: number) => void;
+  handleChangePageIndex?: (page: number, pageSize: number) => void;
 }
 const TableProduct = ({
   handleOpenEdit,

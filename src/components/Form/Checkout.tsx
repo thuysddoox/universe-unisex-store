@@ -14,10 +14,10 @@ const CheckoutFrom = ({
   getData,
   handleSubmitCheckout,
 }: {
-  data: SafeAny;
-  form: FormInstance<SafeAny>;
-  getData: React.Dispatch<SafeAny>;
-  handleSubmitCheckout: (data: SafeAny) => void;
+  data?: SafeAny;
+  form?: FormInstance<SafeAny>;
+  getData?: React.Dispatch<SafeAny>;
+  handleSubmitCheckout?: (data: SafeAny) => void;
 }) => {
   const handleChangeValues = useCallback((_, allValues) => {
     getData({ ...data, ...allValues });
