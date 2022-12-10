@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StorageKeys, localStorageGet, storageClear } from '@api';
-import { User } from '@interfaces';
+import { CartItem, User } from '@interfaces';
 import { isEmpty } from 'lodash';
 import { useRouter } from 'next/router';
 

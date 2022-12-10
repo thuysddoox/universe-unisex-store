@@ -1,36 +1,21 @@
 import { SearchOutlined } from '@ant-design/icons';
 import { Comment } from '@interfaces/common';
 import { Ellipsis } from '@ui/ellipsis';
-import { Image, InputRef } from 'antd';
-import { Button, Input, Space, Table } from 'antd';
+import { Button, Image, Input, InputRef, Space, Table } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import dayjs from 'dayjs';
-import React, { useRef, useState, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
-import { AiOutlineDelete, AiOutlineEdit, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { AiOutlineDelete } from 'react-icons/ai';
 import { BsReply } from 'react-icons/bs';
 import { MdVisibility } from 'react-icons/md';
-import { TbDiscount2 } from 'react-icons/tb';
 import { RiDeleteBackLine } from 'react-icons/ri';
+import { TableProps } from './TableProduct';
 
 type DataIndex = keyof Comment;
 
-const data: Comment[] = [
-  {
-    id: '1',
-    rate: 4,
-    content: 'cnotent',
-    publishedAt: '2022-10-22',
-  },
-  {
-    id: '1',
-    rate: 4,
-    content: 'cnotent',
-    publishedAt: '2022-10-22',
-  },
-];
-const TableComment = () => {
+const TableComment = ({ data, total, pageSize, loading, handleChangePageIndex }: TableProps) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
@@ -119,10 +104,11 @@ const TableComment = () => {
     () => [
       {
         title: 'ID',
-        dataIndex: 'id',
+        dataIndex: '_id',
         key: 'id',
         width: '4%',
         className: 'min-w-[40px]',
+        render: (value, record, index) => <>{index + 1}</>,
       },
 
       {
@@ -209,7 +195,14 @@ const TableComment = () => {
     [],
   );
 
-  return <Table columns={columns} dataSource={data} pagination={{ pageSize: 1, total: 100 }} />;
+  return (
+    <Table
+      columns={columns}
+      dataSource={data}
+      loading={loading}
+      pagination={{ pageSize: pageSize ?? 5, total: total ?? data.length, onChange: handleChangePageIndex }}
+    />
+  );
 };
 
 export default React.memo(TableComment);

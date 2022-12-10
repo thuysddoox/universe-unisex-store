@@ -75,7 +75,6 @@ export const UploadImage = ({
       })),
     );
   }, [fileListUrl]);
-  console.log('upload', fileList);
   return (
     <>
       <Upload

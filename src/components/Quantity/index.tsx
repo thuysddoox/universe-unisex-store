@@ -42,7 +42,7 @@ const Quantity = ({
             containerClass="h-full"
             className="flex items-center justify-center h-full"
             style={{ borderColor: 'transparent' }}
-            onClick={() => quantity === maxQuantity && setQuantity(quantity + 1)}
+            onClick={() => quantity < maxQuantity && setQuantity(quantity + 1)}
             borderradius={'2px'}
           >
             <PlusOutlined />

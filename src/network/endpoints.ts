@@ -18,8 +18,11 @@ export const ENDPOINTS = {
 
   ORDER: '/order',
   ORDER_USER: '/order/user',
+  ORDER_PAY: '/api/order/pay',
 
   PAYMENT: '/payment',
+  CHECKOUT: '/checkout',
+  WISHLIST: '/wishlist',
 
   UPLOAD_SINGLE: '/upload/single',
   UPLOAD_MULTIPLE: '/upload/multiple',

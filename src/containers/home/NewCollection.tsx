@@ -5,7 +5,6 @@ import { Tabs } from '@ui/tabs';
 import { SafeAny } from '../../interfaces/common';
 const Categories = ['T-Shirt', 'Shirt', 'Hoodie/Sweater', 'Jacket', 'Jeans/Pants', 'Short'];
 const NewCollection = ({ data = [] }: { data?: SafeAny[] }) => {
-  console.log(data);
   return (
     <NewCollectionWrapper className="py-8">
       <HeadingSection title="New Collection" mode="center" />

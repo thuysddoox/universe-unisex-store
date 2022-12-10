@@ -1,13 +1,78 @@
-import styled from '@emotion/styled';
-import { Col, Row } from 'antd';
-import OrderInfo from './OrderInfo';
-import CheckoutForm from '@components/Form/Checkout';
-import Button from '@ui/button';
+import { useCreateCheckout, useQueryCart } from '@api/api';
 import BackButton from '@components/BackButton';
+import CheckoutForm from '@components/Form/Checkout';
+import messages from '@constants/messages';
+import styled from '@emotion/styled';
+import { CartItem, Order } from '@interfaces';
+import Button from '@ui/button';
+import { useForm } from '@ui/form';
+import { Message } from '@ui/message';
+import { covertCartItemToOrderItem, getTotal } from '@utils/convertors';
+import { Col, Row } from 'antd';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import HeadingSection from '../../components/HeadingSection/index';
+import { UserContext } from '../../contexts/userContext';
+import { SafeAny } from '../../interfaces/common';
+import { useCreateOrder } from '../../network/queries/order';
 import OrderItemList from './OderItemList';
+import OrderInfo from './OrderInfo';
 
 const Checkout = () => {
+  const { currentUser } = useContext(UserContext);
+  const { data: CartResp, refetch } = useQueryCart();
+  const cartItems: CartItem[] = useMemo(() => CartResp?.data?.responseData?.products ?? [], [CartResp]);
+  const totalCart: number = useMemo(() => getTotal(cartItems), [CartResp]);
+  const [data, setData] = useState<SafeAny>({ ...currentUser, payment: 1 });
+  const [form] = useForm();
+  const { mutate: createCheckoutFunc, isLoading: isCheckoutLoading } = useCreateCheckout({
+    onSuccess: (response) => {
+      const data = response?.data?.responseData;
+      const error = response?.data?.error;
+      console.log(data);
+      if (data?.url) {
+        Message.success(messages.requiredPayment);
+        window.location.href = data?.url;
+      } else if (error) {
+        Message.error(error?.message);
+      }
+    },
+    onError: (error) => {
+      Message.error(error?.response?.data?.message ?? error.message);
+    },
+  });
+  const { mutate: createOrderFunc, isLoading: isOrderLoading } = useCreateOrder({
+    onSuccess: (response) => {
+      const data = response?.data?.responseData;
+      const error = response?.data?.error;
+      console.log(data);
+      if (data) {
+        Message.success(messages.createOrderSuccess);
+        if (data.payment === 2) createCheckoutFunc(data);
+      } else if (error) {
+        Message.error(error?.message);
+      }
+    },
+    onError: (error) => {
+      Message.error(error?.response?.data?.message ?? error.message);
+    },
+  });
+  const handleSubmitCheckout = useCallback(async (data: SafeAny) => {
+    const { fullName, phone, email, payment, dob, note, noHome, address, commune, district, city } = data;
+    const order = {
+      fullname: fullName,
+      cartId: CartResp?.data?.responseData?._id,
+      isPaid: false,
+      email,
+      phone,
+      payment,
+      note,
+      address: noHome + commune + district + city,
+      total: totalCart,
+      status: payment === 1 ? 0 : 1,
+      products: covertCartItemToOrderItem(cartItems),
+    };
+    createOrderFunc(order as Order);
+  }, []);
   return (
     <CheckoutWrapper className="pt-32 pb-24">
       <div className="container">
@@ -15,11 +80,11 @@ const Checkout = () => {
           <Col xs={24} md={16} className="pr-5">
             <BackButton />
             <HeadingSection title="Shipment Details" className={'my-0 mt-4 ml-3'} />
-            <CheckoutForm />
+            <CheckoutForm handleSubmitCheckout={handleSubmitCheckout} form={form} data={data} getData={setData} />
           </Col>
           <Col xs={24} md={8}>
-            <OrderItemList data={[]} />
-            <OrderInfo subtotal={35} shipCost={10} />
+            <OrderItemList data={cartItems} />
+            <OrderInfo subtotal={totalCart} shipCost={totalCart > 200 || totalCart === 0 ? 0 : 3} />
             <Button
               borderradius={'3px'}
               hoverBgColor={'var(--navy)'}
@@ -27,8 +92,10 @@ const Checkout = () => {
               textcolor={'var(--navy)'}
               className="text-base my-5 w-full text-blue-500 font-medium"
               bordercolor={'var(--navy)'}
+              loading={isOrderLoading || isCheckoutLoading}
+              onClick={form.submit}
             >
-              Place Order
+              {data.payment === 1 ? 'Order' : 'Order and Pay'}
             </Button>
           </Col>
         </Row>

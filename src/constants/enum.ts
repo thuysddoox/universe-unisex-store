@@ -1,3 +1,43 @@
+export enum STATUS_ORDER {
+  Cancelled,
+  Approving,
+  Preparing,
+  Shipping,
+  Completed,
+  Rated,
+  // 0: cancelled
+  // 1: approving
+  // 2: preparing
+  // 3: shipping
+  // 4: completed
+  // 5: Rate
+}
+export const statusOrder = [
+  {
+    value: 0,
+    label: 'Cancelled',
+  },
+  {
+    value: 1,
+    label: 'Approving',
+  },
+  {
+    value: 2,
+    label: 'Preparing',
+  },
+  {
+    value: 3,
+    label: 'Shipping',
+  },
+  {
+    value: 4,
+    label: 'Completed',
+  },
+  {
+    value: 5,
+    label: 'Rated',
+  },
+];
 export const Colors = [
   'red',
   'orange',
@@ -122,138 +162,6 @@ export const statusesOfHorseVendorView = {
   DELETED: 6,
 };
 
-export const typeListNoSyndication = [
-  {
-    id: 1,
-    type: 'For Sale',
-  },
-  {
-    id: 2,
-    type: 'For Lease',
-  },
-];
-
-export const typeRequest = [
-  {
-    id: 1,
-    type: 'Horse Listing - $99 for six months',
-  },
-  {
-    id: 2,
-    type: 'Priority Placement Horse Listing Upgrade - $99/month anytime',
-  },
-  {
-    id: 3,
-    type: 'Business Listing - FREE',
-  },
-  {
-    id: 4,
-    type: 'Business Listing plus Tile Ad - $250/month',
-  },
-  {
-    id: 5,
-    type: 'Business Listing plus Banner Ad - $500/month',
-  },
-  {
-    id: 6,
-    type: 'Business Listing plus Everywhere Tile Ad - $750/month',
-  },
-];
-export const typeRequestPurchaser = [
-  {
-    type: 3,
-    description: 'Business Listing - FREE',
-  },
-  {
-    type: 4,
-    description: 'Business Listing plus Tile Ad - $250/month',
-  },
-  {
-    type: 5,
-    description: 'Business Listing plus Banner Ad - $500/month',
-  },
-  {
-    type: 6,
-    description: 'Business Listing plus Everywhere Tile Ad - $750/month',
-  },
-];
-
-export const typeRequestCustorm = [
-  {
-    id: 3,
-    type: 'Business Listing - FREE',
-  },
-  {
-    id: 4,
-    type: 'Business Listing plus Tile Ad - $250/month',
-  },
-  {
-    id: 5,
-    type: 'Business Listing plus Banner Ad - $500/month',
-  },
-  {
-    id: 6,
-    type: 'Business Listing plus Everywhere Tile Ad - $750/month',
-  },
-];
-
-export const statusClassified = [
-  {
-    id: 0,
-    name: 'Pending',
-  },
-  {
-    id: 1,
-    name: 'Approved',
-  },
-  {
-    id: 2,
-    name: 'Rejected',
-  },
-  {
-    id: 3,
-    name: 'Archived',
-  },
-];
-
-export const pageClassified = [
-  {
-    id: 0,
-    name: 'Home Page',
-  },
-  {
-    id: 1,
-    name: 'Sale',
-  },
-  {
-    id: 2,
-    name: 'Lease',
-  },
-  {
-    id: 3,
-    name: 'Syndication',
-  },
-  {
-    id: 4,
-    name: 'News',
-  },
-];
-
-export const positionClassified = [
-  {
-    id: 0,
-    name: 'Banner',
-  },
-  {
-    id: 1,
-    name: 'Tile',
-  },
-  {
-    id: 2,
-    name: 'News Tile',
-  },
-];
-
 export const DateType = {
   SHORT_DATE_1: 'D/M/YYYY', // 1/1/2020
   SHORT_DATE_2: 'DD/MM/YYYY', // 01/01/2020
@@ -289,16 +197,10 @@ export enum STATUS_COLOR {
   'darkseagreen',
 }
 
-export const HorseType = {
-  SALE: 1,
-  LEASE: 2,
-  SYNDICATION: 3,
-};
-
 export const QueryParam = {
   orderBy: 'publishedDate',
   orderDirection: 'desc',
-  pageSize: 5,
+  pageSize: 10,
   pageIndex: 0,
 };
 

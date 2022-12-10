@@ -17,10 +17,10 @@ export default {
   sendContactSuccess: 'Your message has been sent successfully.',
   sendContactError: 'Your message has been sent failed',
 
-  confirmAddToWishList: 'Are you sure you want to add this horse to your favourites?',
+  confirmAddToWishList: 'Are you sure you want to add this product to your favourites?',
   confirmPinToTopList: 'Are you sure you want to upgrade Priority Placement Horse Listing for this horse?',
   removePinToTopList: 'Are you sure you want to remove Priority Placement Horse Listing for this horse?',
-  addWishListSuccess: 'Added the horse successfully to your favorites',
+  addWishListSuccess: 'Added the product successfully to your favorites',
   confirmRemoveWishList: 'Are you sure you want to remove this horse from your favorites?',
   removeWishListSuccess: 'Successfully deleted the horse from your favorites',
 
@@ -35,6 +35,11 @@ export default {
   addToCartSuccess: 'The Product is added into your cart successfully',
   updatedCartSuccess: 'Your cart has been updated successfully',
   deletedProductFromCartSuccess: 'The product has been remove from your cart successfully',
+
+  updatedOrderSuccess: 'This order has been updated successfully',
+  createOrderSuccess: 'Create order success. Please wait our store a few day!',
+  paymentSuccess: 'You paid this order. Please wait a few day to recieve your product!',
+  requiredPayment: 'Please pay for your order!',
 
   serverError: ' Server Error!',
   paymentFail: 'Sorry, the payment is failed. Please try again later or contact us at support@bloodstockexchange.horse',

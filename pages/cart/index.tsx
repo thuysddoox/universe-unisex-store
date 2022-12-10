@@ -1,4 +1,4 @@
-import withLayout from '@containers/layout/withLayout';
+import withPrivateLayout from '@containers/layout/withPrivateLayout';
 import Cart from '@containers/cart';
 import PageWapper from '@components/PageWrapper';
 
@@ -10,4 +10,4 @@ export function CartPage() {
   );
 }
 
-export default withLayout(CartPage);
+export default withPrivateLayout(CartPage);

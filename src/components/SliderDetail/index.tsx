@@ -50,7 +50,7 @@ const SliderDetail = ({ data = [] }: { data: string[] }) => {
             autoplay={false}
             infinite={true}
             arrows={true}
-            slidesToShow={3}
+            slidesToShow={data?.length < 3 ? data?.length : 3}
             speed={0}
           >
             {data?.map((item, id) => (
@@ -86,6 +86,9 @@ const SliderDetailWrapper = styled.div`
     .slick-current.slick-active img {
       background-color: rgba(0, 0, 0, 0.1);
       filter: brightness(0.5);
+    }
+    .slick-slide {
+      max-width: 140px;
     }
   }
   .slick-arrow svg {

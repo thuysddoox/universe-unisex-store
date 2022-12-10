@@ -1,4 +1,4 @@
-import withLayout from '@containers/layout/withLayout';
+import withPrivateLayout from '@containers/layout/withPrivateLayout';
 import Checkout from '@containers/cart/checkout';
 import PageWapper from '@components/PageWrapper';
 
@@ -9,4 +9,4 @@ export function CheckoutPage() {
     </PageWapper>
   );
 }
-export default withLayout(CheckoutPage);
+export default withPrivateLayout(CheckoutPage);

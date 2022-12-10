@@ -14,18 +14,18 @@ export interface Category {
   total?: number;
 }
 export interface Product {
-  name: string;
-  price: number;
+  name?: string;
+  price?: number;
   discount?: number;
-  description: string;
-  categoryId: string;
-  color: string | string[];
-  _id: string;
-  stock: number;
+  description?: string;
+  categoryId?: string;
+  color?: string | string[];
+  _id?: string;
+  stock?: number;
   sold?: number;
-  size: string | string[];
+  size?: string | string[];
   publishedAt?: string;
-  thumbnails: string[];
+  thumbnails?: string[];
   isDisabled?: boolean;
 }
 export interface OrderItem {
@@ -35,7 +35,7 @@ export interface OrderItem {
   discount?: number;
   color?: string;
   size?: string;
-  images?: string[];
+  thumbnails?: string[];
   quantity?: number;
 }
 export interface CartItem {
@@ -60,8 +60,11 @@ export interface Order {
   phone?: string;
   fullname?: string;
   note?: string;
-  status?: string;
+  status?: number;
+  payment?: number;
+  isPaid?: boolean;
   createdAt?: string;
+  shipCost?: number;
 }
 export interface Comment {
   _id?: string;

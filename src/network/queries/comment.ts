@@ -1,5 +1,5 @@
 import { BaseResponse, Comment, ErrorResponse, ReplyCommentRequest } from '@interfaces/common';
-import { useMutation, UseMutationOptions, useQuery } from 'react-query';
+import { useMutation, UseMutationOptions, useQuery, useInfiniteQuery } from 'react-query';
 import { BaseListRequest, SafeAny } from '../../interfaces/common';
 import {
   createComment,
@@ -32,6 +32,6 @@ export const useDeleteComment = (options: UseMutationOptions<BaseResponse<Commen
   useMutation((commentId: string) => deleteComment(commentId), options);
 
 export const useComments = (params: BaseListRequest) =>
-  useQuery([COMMENT_LIST, params], () => getComments(params), {
+  useInfiniteQuery([COMMENT_LIST, params], () => getComments(params), {
     refetchOnWindowFocus: false,
   });

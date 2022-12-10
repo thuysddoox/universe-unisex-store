@@ -16,7 +16,7 @@ const OrderItem = ({
 }: {
   isCheckout?: boolean;
   className?: string;
-  data: CartItem;
+  data?: CartItem;
 }) => {
   const router = useRouter();
   const [quantity, setQuantity] = useState<number>(data?.quantity ?? 1);
@@ -53,9 +53,24 @@ const OrderItem = ({
               <></>
             )}
             <span className={`${isCheckout ? 'text-xs' : 'text-sm'} text-gray-500`}>
-              <span className={`${isCheckout ? 'text-base' : 'text-lg md:text-xl'} font-semibold text-black `}>
-                ${data?.product?.price}
-              </span>{' '}
+              {data?.product?.discount > 0 ? (
+                <>
+                  <span
+                    className={`${
+                      isCheckout ? 'text-base' : 'text-base md:text-lg'
+                    } line-through font-semibold text-gray-500 mr-1`}
+                  >
+                    ${data?.product?.price}
+                  </span>
+                  <span className={`${isCheckout ? 'text-base' : 'text-lg md:text-xl'} font-semibold text-black mr-1`}>
+                    ${(data?.product?.price * (100 - data?.product?.discount)) / 100}
+                  </span>
+                </>
+              ) : (
+                <span className={`${isCheckout ? 'text-base' : 'text-lg md:text-xl'} font-semibold text-black mr-1`}>
+                  ${data?.product?.price}
+                </span>
+              )}
               x {quantity.toString().padStart(2, '0')}
             </span>
           </div>

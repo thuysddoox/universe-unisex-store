@@ -4,7 +4,7 @@ import withCMSLayout from '@containers/layout/withCMSLayout';
 
 export function CMSPage() {
   return (
-    <PageWapper>
+    <PageWapper bgColor="transparent">
       <AdminHomePage />
     </PageWapper>
   );

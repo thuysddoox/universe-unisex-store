@@ -5,7 +5,6 @@ import { Product } from '@interfaces/common';
 import { responsiveSettGeneral, Slider } from '@ui/slider';
 
 const BestSeller = ({ data = [] }: { data?: Product[] }) => {
-  console.log(data);
   return (
     <BestSellerWrapper className="py-8">
       <HeadingSection title="Best Seller" link="/sale" mode="center" />

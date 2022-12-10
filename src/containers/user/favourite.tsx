@@ -1,21 +1,33 @@
-import NextImage from '@components/NextImage';
+import NoResults from '@components/NoResults';
+import ProductComponent from '@components/Product';
 import styled from '@emotion/styled';
-import { Row } from 'antd';
+import { Product } from '@interfaces';
+import { Col, Row } from 'antd';
 import { AiOutlineHeart } from 'react-icons/ai';
 import UserLayout from './userLayout';
 
-const MyFavourite = () => {
+const MyFavourite = ({ data }: { data: Product[] }) => {
   return (
     <UserLayout title={'Profile'}>
-      <Row className="justify-between"></Row>
-      <NoResultWishlist className="text-center mt-5 pt-5">
-        <NextImage src="/assets/images/logo/logo_no_result.svg" alt="BloodStock" width="120px" height="100px" />
-        <p style={{ fontSize: '20px', fontWeight: 'bold' }}>You haven't added any horse to your Favourites.</p>
-        <p>
-          Collect all your favorite horses by clicking on the <AiOutlineHeart fontSize="25px" />
-          while you browse.
-        </p>
-      </NoResultWishlist>
+      {data?.length > 0 ? (
+        <Row className="justify-between">
+          {data.map((product) => (
+            <Col span={24} sm={12} md={8} lg={6} key={product?._id}>
+              <ProductComponent product={product} />
+            </Col>
+          ))}
+        </Row>
+      ) : (
+        <>
+          <NoResultWishlist className="text-center mt-5 pt-5">
+            <NoResults description="You haven't added any product to your Favourites." />
+            <p>
+              Collect all your favorite products by clicking on the <AiOutlineHeart fontSize="25px" />
+              while you browse.
+            </p>
+          </NoResultWishlist>
+        </>
+      )}
     </UserLayout>
   );
 };

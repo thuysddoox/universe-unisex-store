@@ -10,8 +10,8 @@ const OrderItemList = ({ data }: { data: CartItem[] }) => {
       </div>
       <SimpleBar style={{ maxHeight: 300 }}>
         <div className="mb-4">
-          {data.map((cartItem) => (
-            <OrderItem data={cartItem} isCheckout={true} />
+          {data?.map((cartItem, index) => (
+            <OrderItem data={cartItem} isCheckout={true} key={cartItem?.product?._id + index} />
           ))}
         </div>
       </SimpleBar>

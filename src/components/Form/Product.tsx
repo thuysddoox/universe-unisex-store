@@ -35,7 +35,6 @@ const ProductForm = ({
     onSuccess: (response) => {
       const productResp = response?.data?.responseData;
       const error = response?.data?.error;
-      console.log(response);
       if (productResp) {
         Message.success(messages.updatedProductSuccess);
       } else if (error) {
@@ -43,7 +42,6 @@ const ProductForm = ({
       }
     },
     onError: (error) => {
-      console.log(error);
       Message.error(error?.response?.data?.message ?? error.message);
     },
   });
@@ -88,7 +86,7 @@ const ProductForm = ({
     setFileList(product?.thumbnails ?? []);
     form.setFieldsValue(product);
   }, [product]);
-  console.log('form', fileList);
+
   return (
     <ProductFormWrapper>
       <Form form={form} className="p-0" onFinish={submitLoginForm}>

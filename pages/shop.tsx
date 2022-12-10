@@ -19,10 +19,10 @@ export function ShopPage() {
           className="mx-4 search-desktop"
           onSearch={() => {}}
         />
-        <div className="mt-8 mb-24">
+        {/* <div className="mt-8 mb-24">
           <HeadingSection title="Shop Sale" />
           <Advertisement bannersList={[]} />
-        </div>
+        </div> */}
         <ShopByCategory />
         <div className="pt-8">
           <HeadingSection title="Shop Now" />

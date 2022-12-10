@@ -200,7 +200,7 @@ export function Header() {
         </div>
       </div>
       <Drawer
-        title={<Title />}
+        title={<Title isShowLoginSignup={isShowLoginSignup} setIsShowLoginSignup={setIsShowLoginSignup} />}
         placement="left"
         bodyStyle={{ padding: '1rem' }}
         width={mobileMode ? '60%' : '45%'}
@@ -283,9 +283,8 @@ const Account = ({ tabs }: { tabs: Tab[] }) => {
       </>
     );
   }, [tabs]);
-  console.log(CartResp);
   useEffect(() => {
-    refetch();
+    userCurrent && refetch();
   }, [userCurrent]);
   return (
     <>

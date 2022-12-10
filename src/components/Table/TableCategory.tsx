@@ -5,76 +5,11 @@ import type { ColumnsType, ColumnType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
+import { TableProps } from './TableProduct';
 
 type DataIndex = keyof Category;
 
-const data: Category[] = [
-  {
-    id: '1',
-    name: 'Jeans',
-    stock: 234,
-    sold: 23,
-    total: 2345,
-    thumbnails: '',
-  },
-  {
-    id: '2',
-    name: 'Jeans',
-    stock: 234,
-    sold: 23,
-    total: 2345,
-    thumbnails: '',
-  },
-  {
-    id: '1',
-    name: 'Jeans',
-    stock: 234,
-    sold: 23,
-    total: 2345,
-    thumbnails: '',
-  },
-  {
-    id: '2',
-    name: 'Jeans',
-    stock: 234,
-    sold: 23,
-    total: 2345,
-    thumbnails: '',
-  },
-  {
-    id: '1',
-    name: 'Jeans',
-    stock: 234,
-    sold: 23,
-    total: 2345,
-    thumbnails: '',
-  },
-  {
-    id: '2',
-    name: 'Jeans',
-    stock: 234,
-    sold: 23,
-    total: 2345,
-    thumbnails: '',
-  },
-  {
-    id: '1',
-    name: 'Jeans',
-    stock: 234,
-    sold: 23,
-    total: 2345,
-    thumbnails: '',
-  },
-  {
-    id: '2',
-    name: 'Jeans',
-    stock: 234,
-    sold: 23,
-    total: 2345,
-    thumbnails: '',
-  },
-];
-const TableCategory = () => {
+const TableCategory = ({ data, total, pageSize, loading, handleChangePageIndex }: TableProps) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
@@ -163,10 +98,11 @@ const TableCategory = () => {
     () => [
       {
         title: 'ID',
-        dataIndex: 'id',
+        dataIndex: '_id',
         key: 'id',
         width: '5%',
         className: 'min-w-[40px]',
+        render: (value, record, index) => <>{index + 1}</>,
       },
       {
         title: 'Thumbnail',

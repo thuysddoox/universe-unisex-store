@@ -1,64 +1,34 @@
 import { SearchOutlined } from '@ant-design/icons';
+import { statusOrder } from '@constants/enum';
 import { Order } from '@interfaces/common';
+import { Dropdown } from '@ui/dropdown';
 import { Ellipsis } from '@ui/ellipsis';
-import { Image, InputRef } from 'antd';
-import { Button, Input, Space, Table } from 'antd';
+import { Select } from '@ui/select';
+import { Button, Input, InputRef, Space, Table } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import dayjs from 'dayjs';
-import React, { useRef, useState, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
-import { AiOutlineDelete, AiOutlineEdit, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { AiFillSave, AiOutlineEdit } from 'react-icons/ai';
 import { MdVisibility } from 'react-icons/md';
-import { TbDiscount2 } from 'react-icons/tb';
+import { TableProps } from './TableProduct';
+import { SafeAny } from '../../interfaces/common';
 
 type DataIndex = keyof Order;
 
-const data: Order[] = [
-  {
-    id: '1',
-    fullname: 'John Brown',
-    createdAt: '2022-10-22',
-  },
-  {
-    id: '2',
-    createdAt: '2022-10-22',
-    fullname: 'Joe Black',
-  },
-  {
-    id: '3',
-    fullname: 'Jim Green',
-    createdAt: '2022-10-22',
-  },
-  {
-    id: '4',
-    fullname: 'Jim Red',
-    createdAt: '2022-10-22',
-  },
-  {
-    id: '5',
-    fullname: 'Jim Green',
-    createdAt: '2022-10-22',
-  },
-  {
-    id: '6',
-    fullname: 'Jim Red',
-    createdAt: '2022-10-22',
-  },
-  {
-    id: '7',
-    fullname: 'Jim Green',
-    createdAt: '2022-10-22',
-  },
-  {
-    id: '8',
-    fullname: 'Jim Red',
-    createdAt: '2022-10-22',
-  },
-];
-const TableOrder = () => {
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
+const TableOrder = ({
+  data,
+  total,
+  pageSize,
+  loading,
+  handleChangePageIndex,
+  handleOpenEdit,
+  handleSave,
+}: TableProps) => {
+  const [searchText, setSearchText] = useState<string>('');
+  const [searchedColumn, setSearchedColumn] = useState<string>('');
+  const [rowEdit, setRowEdit] = useState<SafeAny>();
   const searchInput = useRef<InputRef>(null);
 
   const handleSearch = (
@@ -145,10 +115,11 @@ const TableOrder = () => {
     () => [
       {
         title: 'OrderID',
-        dataIndex: 'id',
+        dataIndex: '_id',
         key: 'id',
         width: '4%',
         className: 'min-w-[40px]',
+        render: (value, record, index) => <>{index + 1}</>,
       },
       {
         title: 'Full Name',
@@ -196,29 +167,51 @@ const TableOrder = () => {
         key: 'status',
         width: '12%',
         className: 'min-w-[150px]',
+        editable: true,
+        render: (value, record) => (
+          <Select
+            borderradius={'3px'}
+            bordercolor={'var(--gray)'}
+            options={statusOrder}
+            defaultValue={value}
+            disabled={record._id !== rowEdit?._id}
+            onChange={(value) => setRowEdit((prev) => ({ ...prev, status: value }))}
+          />
+        ),
       },
       {
         title: 'Actions',
         dataIndex: 'actions',
         key: 'actions',
         className: 'min-w-[150px]',
-        render: () => (
+        render: (value, record) => (
           <div className="flex items-center">
             <Ellipsis placement="top" title="Edit" className=" mr-1 cursor-pointer">
-              <AiOutlineEdit className="text-lg" />
+              <AiOutlineEdit className="text-lg" onClick={() => setRowEdit(record)} />
             </Ellipsis>
+            {rowEdit?._id === record?._id && (
+              <Ellipsis placement="top" title="Save" className=" mr-1 cursor-pointer">
+                <AiFillSave className="text-lg" onClick={() => handleSave(rowEdit)} />
+              </Ellipsis>
+            )}
             <Ellipsis placement="top" title="Detail" className=" mr-1 cursor-pointer">
-              <MdVisibility className="text-lg" />
+              <MdVisibility className="text-lg" onClick={() => handleOpenEdit(record)} />
             </Ellipsis>
-            {/* <AiOutlineEyeInvisible /> */}
           </div>
         ),
       },
     ],
-    [],
+    [rowEdit],
   );
 
-  return <Table columns={columns} dataSource={data} pagination={{ pageSize: 1, total: 100 }} />;
+  return (
+    <Table
+      columns={columns}
+      dataSource={data}
+      loading={loading}
+      pagination={{ pageSize: pageSize ?? 5, total: total ?? data.length, onChange: handleChangePageIndex }}
+    />
+  );
 };
 
 export default React.memo(TableOrder);

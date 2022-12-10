@@ -13,7 +13,6 @@ const ProfileForm = () => {
   const [form] = useForm();
   const [disableForm, setDisableForm] = useState<boolean>(true);
   const { currentUser } = useContext(UserContext);
-  console.log(currentUser);
   return (
     <ProfileWrapper>
       <Form size="large" form={form} initialValues={currentUser} disabled={disableForm}>

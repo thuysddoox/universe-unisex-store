@@ -22,7 +22,6 @@ import Subcribes from './Subcribes';
 const Banner = dynamic(() => import('@components/Banner'), { ssr: false });
 
 export const HomePage = ({ newProduct, saleProduct, bestProduct }: HomePageProps) => {
-  console.log(newProduct, saleProduct, bestProduct);
   return (
     <>
       <Banner isVideo={true} />

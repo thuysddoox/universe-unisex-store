@@ -27,7 +27,6 @@ const ManageProducts = () => {
       const productResp = response?.data?.responseData;
       const error = response?.data?.error;
       if (productResp) {
-        console.log(productResp);
         Message.error(messages.deletedProductSuccess);
       } else if (error) {
         Message.error(error?.message);
@@ -62,7 +61,6 @@ const ManageProducts = () => {
     setQueries((prev) => ({ ...prev, pageIndex: page }));
   };
 
-  console.log('form', selectedProduct);
   return (
     <div>
       <Button

@@ -18,6 +18,7 @@ type DataIndex = keyof Product;
 export interface TableProps {
   handleOpenEdit?: (product?: SafeAny) => void;
   handleDelete?: (product?: SafeAny) => void;
+  handleSave?: (product?: SafeAny) => void;
   data: SafeAny[];
   total?: number;
   pageSize?: number;
@@ -122,7 +123,7 @@ const TableProduct = ({
     () => [
       {
         title: 'ID',
-        dataIndex: 'id',
+        dataIndex: '_id',
         key: 'id',
         width: '4%',
         className: 'min-w-[40px]',

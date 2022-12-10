@@ -51,7 +51,6 @@ const LoginPopup = ({
     const account = { username: data.username, password: data.password };
     userLogin(account);
   };
-  console.log(isLoading);
   return (
     <LoginWrap>
       <Link href="/" passHref>

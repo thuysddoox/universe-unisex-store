@@ -3,7 +3,7 @@ import { StorageKeys, localStorageGet, storageClear } from './storage';
 import { StatusCodes } from 'http-status-codes';
 import { isEmpty } from 'lodash';
 
-// const API_URL = process.env.NEXT_PUBLIC_API_HOST_URL 
+// const API_URL = process.env.NEXT_PUBLIC_API_HOST_URL
 const API_URL = 'http://localhost:3000/api';
 
 const axiosInstance = axios.create({
@@ -25,7 +25,7 @@ axiosInstance.interceptors.request.use(
   },
   function (error) {
     return Promise.reject(error);
-  }
+  },
 );
 
 axiosInstance.interceptors.response.use(
@@ -44,7 +44,7 @@ axiosInstance.interceptors.response.use(
       window.location.reload();
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;

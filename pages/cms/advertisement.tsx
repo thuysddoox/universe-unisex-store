@@ -4,7 +4,7 @@ import withCMSLayout from '@containers/layout/withCMSLayout';
 
 export function CMSAdvertisementPage() {
   return (
-    <PageWapper>
+    <PageWapper bgColor="transparent">
       <MangageAdvertisement />
     </PageWapper>
   );
