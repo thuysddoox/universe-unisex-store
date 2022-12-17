@@ -1,4 +1,5 @@
-import { CartItem, Category } from '@interfaces/common';
+import { CartItem, Category, Status } from '@interfaces/common';
+import dayjs from 'dayjs';
 
 export function covertToOption(value: string) {
   return {
@@ -19,7 +20,19 @@ export function covertCartItemToOrderItem(data: CartItem[]) {
 export function getTotal(cartItems: CartItem[]) {
   return cartItems.reduce(
     (total, currItem) =>
-      (total += Math.floor((currItem.quantity * currItem.product.price * (100 - currItem.product.discount)) / 100)),
+      Math.ceil(
+        (total +
+          Math.floor((currItem?.quantity * currItem?.product?.price * (100 - currItem?.product?.discount)) / 100)) *
+          100,
+      ) / 100,
     0,
   );
 }
+export const getDateOfStatus = (status, statusList: Status[]) => {
+  const values = statusList?.find((item) => item?.status === status);
+  return values ? dayjs(values?.date, 'DD-MM-YYYY, HH:mm:ss').toString() : '--';
+};
+export const getDisableOptions = (status) => {
+  if (status === 0) return [1, 2, 3, 4];
+  else return Array.from({ length: status }, (_, i) => status - i);
+};

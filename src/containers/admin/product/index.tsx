@@ -27,7 +27,8 @@ const ManageProducts = () => {
       const productResp = response?.data?.responseData;
       const error = response?.data?.error;
       if (productResp) {
-        Message.error(messages.deletedProductSuccess);
+        Message.success(messages.deletedProductSuccess);
+        refetch();
       } else if (error) {
         Message.error(error?.message);
       }
@@ -53,7 +54,6 @@ const ManageProducts = () => {
       content: 'Do you want to delete this product?',
       onOk: () => {
         delProduct(product._id);
-        refetch();
       },
     });
   };
@@ -83,7 +83,7 @@ const ManageProducts = () => {
         handleOpenEdit={handleOpenEditProduct}
         handleDelete={handleDeleteProduct}
         handleChangePageIndex={handleChangePageIndex}
-        loading={isFetching}
+        loading={isFetching || isLoading}
       />
       <Modal
         centered

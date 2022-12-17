@@ -13,16 +13,23 @@ export const ENDPOINTS = {
   COMMENT: '/comment',
   COMMENT_REPLY: '/reply/comment',
   COMMENT_PRODUCT: '/comment/product',
+  COMMENT_RATE: '/comment/rate',
 
   CART: '/cart',
+  ADVERTISEMENT: '/advertisement',
 
   ORDER: '/order',
   ORDER_USER: '/order/user',
   ORDER_PAY: '/api/order/pay',
+  ORDER_STATISTIC: '/order/statistic',
 
   PAYMENT: '/payment',
   CHECKOUT: '/checkout',
   WISHLIST: '/wishlist',
+
+  STATISTIC: '/statistic',
+  STATISTIC_MONTH: '/statistic/month',
+  STATISTIC_USER: '/statistic/user',
 
   UPLOAD_SINGLE: '/upload/single',
   UPLOAD_MULTIPLE: '/upload/multiple',

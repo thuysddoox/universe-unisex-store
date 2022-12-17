@@ -1,11 +1,11 @@
 import PageWapper from '@components/PageWrapper';
-import ManageOrders from '@containers/admin/order';
+import ManageComment from '@containers/admin/comment';
 import withCMSLayout from '@containers/layout/withCMSLayout';
 
 export function CMSOrderPage() {
   return (
     <PageWapper bgColor="transparent">
-      <ManageOrders />
+      <ManageComment />
     </PageWapper>
   );
 }

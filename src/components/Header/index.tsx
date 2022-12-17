@@ -69,11 +69,11 @@ export function Header() {
       getItem(<Label title="Categories" url="/category" isSuper />, 'category', null, [
         getItem(<Label title="T-Shirt" url="/category/t-shirt" />, 't-shirt'),
         getItem(<Label title="Shirt" url="/category/shirt" />, 'shirt'),
-        getItem(<Label title="Hoodie/Sweater" url="/category/t-shirt" />, 'Hoodie/Sweater'),
-        getItem(<Label title="Jacket" url="/category/t-shirt" />, 'Jacket'),
-        getItem(<Label title="Jeans/Pants" url="/category/t-shirt" />, 'Jeans/Pants'),
-        getItem(<Label title="Short" url="/category/t-shirt" />, 'Short'),
-        // getItem(<Label title="Accessories" url="/category/accessories" />, 'Accessories'),
+        getItem(<Label title="Hoodie/Sweater" url="/category/hoodie&sweater" />, 'Hoodie/Sweater'),
+        getItem(<Label title="Jacket" url="/category/jacket" />, 'Jacket'),
+        getItem(<Label title="Jeans/Pants" url="/category/jeans&pants" />, 'Jeans/Pants'),
+        getItem(<Label title="Short" url="/category/short" />, 'Short'),
+        getItem(<Label title="Accessories" url="/category/accessories" />, 'Accessories'),
         // getItem(<Label title="Other" url="/category/other" />, 'Other'),
       ]),
       getItem(<Label title="About us" url="/about" isSuper />, 'about', null, [
@@ -96,6 +96,8 @@ export function Header() {
           setIsShowLoginSignup(true);
         },
       },
+      { url: '/cms', title: 'Manager Portal' },
+      { url: '/', title: 'Client Portal' },
       {
         title: 'Logout',
         handleClick: () => {
@@ -121,6 +123,17 @@ export function Header() {
     if (typeof Window !== undefined) {
       window.scrollY >= 30 && !isScroll ? setIsScroll(true) : window.scrollY < 30 && isScroll ? setIsScroll(false) : '';
     }
+  };
+  const handleSearch = (value) => {
+    router.push(
+      {
+        pathname: '/search',
+        query: {
+          keyword: value,
+        },
+      },
+      '/search',
+    );
   };
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -170,7 +183,7 @@ export function Header() {
               style={{ width: 220 }}
               bordercolor={'#fff'}
               className="mx-4 search-desktop"
-              onSearch={() => (showIconSearch ? setShowSearchPopUp(true) : '')}
+              onSearch={(value) => (showIconSearch ? setShowSearchPopUp(true) : handleSearch(value))}
             />
             {showSearchPopUp && (
               <Search
@@ -180,7 +193,7 @@ export function Header() {
                 style={{ width: 220 }}
                 bordercolor={'#fff'}
                 className="absolute mx-4 search-popup"
-                onSearch={(value) => console.log(value)}
+                onSearch={handleSearch}
                 onBlur={() => setShowSearchPopUp(false)}
               />
             )}
@@ -214,7 +227,7 @@ export function Header() {
           style={{ width: '90%' }}
           bordercolor={'var(--light-gray-4)'}
           className="m-4"
-          onSearch={(value) => console.log(value)}
+          onSearch={handleSearch}
         />
         <Menu
           mode="inline"
@@ -260,7 +273,7 @@ interface Tab {
   url?: string;
   handleClick?: () => void;
 }
-const Account = ({ tabs }: { tabs: Tab[] }) => {
+export const Account = ({ tabs }: { tabs: Tab[] }) => {
   const userContext = useContext(UserContext);
   const userCurrent = userContext.currentUser;
   const { data: CartResp, refetch } = useQueryCart();

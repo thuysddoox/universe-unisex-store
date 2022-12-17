@@ -3,10 +3,18 @@ import styled from '@emotion/styled';
 import { Upload as AntdUpload, UploadProps } from 'antd';
 import { ReactNode } from 'react';
 
-export const UploadButton = ({ isLoading }: { isLoading?: boolean }) => (
+export const UploadButton = ({
+  isLoading,
+  icon,
+  hide = false,
+}: {
+  isLoading?: boolean;
+  icon?: ReactNode;
+  hide?: boolean;
+}) => (
   <div>
-    {isLoading ? <LoadingOutlined /> : <PlusOutlined />}
-    <div style={{ marginTop: 8 }}>Upload</div>
+    {isLoading ? <LoadingOutlined /> : icon ? icon : <PlusOutlined />}
+    <div style={{ marginTop: 8 }}>{!hide && 'Upload'}</div>
   </div>
 );
 

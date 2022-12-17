@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,6 +11,7 @@ import {
   Filler,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { StatisticMonth } from '../../../interfaces/common';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend);
 export const options = {
@@ -40,22 +41,25 @@ export const options = {
 
 const labels = ['January', 'February', 'March', 'April'];
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      fill: true,
-      label: 'Dataset 1',
-      data: [234, 23, 234, 234],
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-  ],
-};
-const Chart = ({ className }: { className?: string }) => {
+const Chart = ({ className, data }: { className?: string; data: StatisticMonth[] }) => {
+  const dataChart = useMemo(
+    () => ({
+      labels: data?.map((item) => item?._id?.month + '-' + item?._id?.year),
+      datasets: [
+        {
+          fill: true,
+          label: 'Profit',
+          data: data?.map((item) => item?.total),
+          borderColor: 'rgb(255, 99, 132)',
+          backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        },
+      ],
+    }),
+    [data],
+  );
   return (
     <div className={` ${className}`}>
-      <Line options={options} data={data} />
+      <Line options={options} data={dataChart} />
     </div>
   );
 };

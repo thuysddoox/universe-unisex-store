@@ -5,28 +5,21 @@ import Link from 'next/link';
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import NextImage, { FixedRatioImage } from '@components/NextImage';
 import { useRouter } from 'next/router';
+import { Category } from '../../interfaces/common';
 
-export const CategoryItem = ({
-  category,
-  size,
-}: {
-  category?: string;
-  size?: 'large' | 'normal';
-}) => {
+export const CategoryItem = ({ category, size }: { category?: Category; size?: 'large' | 'normal' }) => {
   const breakpoints = useBreakpoint();
   const router = useRouter();
   return (
     <CategoryItemWrapper>
       <Link
-        href={{
-          pathname: '/shop/category/[category]',
+        href={
+          `/shop/${category?.name.toLowerCase().split('/').join('&')}`
           // query: { category: category.slug },
-        }}
+        }
       >
         <a>
-          <div
-            className={`text-center shadow-md hover:shadow-lg shop-category relative overflow-hidden`}
-          >
+          <div className={`text-center shadow-md hover:shadow-lg shop-category relative overflow-hidden`}>
             {!breakpoints.xs && (
               <div
                 className="absolute category-name tracking-wider hover:bottom-10 left-4 text-white font-medium text-xs md:text-2xl uppercase"
@@ -34,7 +27,7 @@ export const CategoryItem = ({
                   textShadow: '2px 3px 3px rgba(0, 0, 0, 0.4)',
                 }}
               >
-                T-SHIRT
+                {category?.name}
               </div>
             )}
 
@@ -50,15 +43,14 @@ export const CategoryItem = ({
               </Button>
             )}
 
-            <FixedRatioImage
-              ratio={size === 'large' ? [8, 9] : [16, 9]}
-              additionHeight={size === 'large' ? 16 : 0}
-            >
+            <FixedRatioImage ratio={size === 'large' ? [8, 9] : [16, 9]} additionHeight={size === 'large' ? 16 : 0}>
               <NextImage
-                src={`${router.basePath}/assets/images/logo/logo.png`}
+                src={
+                  category?.thumbnail ? category?.thumbnail : `${router.basePath}/assets/images/background/default.png`
+                }
                 className="absolute top-0 w-full left-0"
-                layout='fill'
-                objectFit='cover'
+                layout="fill"
+                objectFit="cover"
                 height="100%"
                 alt="Sample"
               />
@@ -113,10 +105,7 @@ const CategoryItemWrapper = styled.div`
       }
       ::after {
         background-color: rgba(0, 0, 0, 0);
-        background-image: linear-gradient(
-          rgba(0, 0, 0, 0) 60%,
-          rgba(0, 0, 0, 0.8) 100%
-        );
+        background-image: linear-gradient(rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 100%);
       }
     }
     ::after {

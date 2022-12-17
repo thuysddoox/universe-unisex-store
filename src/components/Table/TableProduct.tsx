@@ -2,23 +2,20 @@ import { SearchOutlined } from '@ant-design/icons';
 import { Product, SafeAny } from '@interfaces/common';
 import { Ellipsis } from '@ui/ellipsis';
 import { truncate } from '@utils';
-import { Image, InputRef } from 'antd';
-import { Button, Input, Space, Table } from 'antd';
+import { Button, Image, Input, InputRef, Space, Table } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import dayjs from 'dayjs';
-import React, { useRef, useState, useCallback, useMemo, SetStateAction } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { AiFillStar, AiOutlineDelete, AiOutlineEdit, AiOutlineEyeInvisible } from 'react-icons/ai';
-import { MdVisibility } from 'react-icons/md';
-import { TbDiscount2 } from 'react-icons/tb';
 
 type DataIndex = keyof Product;
 
 export interface TableProps {
   handleOpenEdit?: (product?: SafeAny) => void;
   handleDelete?: (product?: SafeAny) => void;
-  handleSave?: (product?: SafeAny) => void;
+  handleSave?: (product?: SafeAny, resetFunc?: SafeAny) => void;
   data: SafeAny[];
   total?: number;
   pageSize?: number;
@@ -170,6 +167,7 @@ const TableProduct = ({
         className: 'min-w-[120px]',
         sorter: (a, b) => a.price - b.price,
         sortDirections: ['descend', 'ascend'],
+        render: (value, record) => <span>${value}</span>,
       },
       {
         title: 'Stock',
@@ -184,6 +182,7 @@ const TableProduct = ({
         key: 'discount',
         width: '5%',
         className: 'min-w-[100px]',
+        render: (value, record) => <span>{value}%</span>,
       },
       {
         title: 'Published Date',

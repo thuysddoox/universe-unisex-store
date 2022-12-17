@@ -6,5 +6,5 @@ export const ROUTES = {
   CMS_ORDER: '/cms/orders',
   CMS_USER: '/cms/users',
   CMS_RATE: '/cms/rate&review',
-  CMS_AD: '/cms/advertisement',
+  CMS_AD: '/cms/banners',
 };

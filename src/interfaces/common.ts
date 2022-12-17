@@ -3,18 +3,18 @@
 // example, to import the interface below do:
 //
 // import { User } from 'path/to/interfaces';
-import { replyComment } from '../network/services/comment';
 
 export interface Category {
   _id?: string;
   name?: string;
-  thumbnails?: any;
+  thumbnail?: string;
   stock?: number;
   sold?: number;
   total?: number;
 }
 export interface Product {
   name?: string;
+  productName?: string;
   price?: number;
   discount?: number;
   description?: string;
@@ -27,6 +27,7 @@ export interface Product {
   publishedAt?: string;
   thumbnails?: string[];
   isDisabled?: boolean;
+  isFavorite?: boolean;
 }
 export interface OrderItem {
   productId?: string;
@@ -51,6 +52,10 @@ export interface Cart {
   owner?: string;
   products: CartItem[];
 }
+export interface Status {
+  status: string;
+  date: Date;
+}
 export interface Order {
   _id?: string;
   userId?: string;
@@ -65,15 +70,23 @@ export interface Order {
   isPaid?: boolean;
   createdAt?: string;
   shipCost?: number;
+  timeline?: Status[];
 }
 export interface Comment {
   _id?: string;
   rate?: number;
   content?: string;
-  user?: User;
+  user?: User | string;
+  owner?: User;
+  productId?: string | Product;
   product?: Product;
-  images?: any;
-  publishedAt?: string;
+  // images?: any;
+  replyComments?: Comment[];
+  isDisabled?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  username?: string;
+  avatar?: string;
 }
 
 export type UserPopupType = 'login' | 'signup' | 'changepassword' | 'forgot';
@@ -82,10 +95,11 @@ export type User = {
   address?: string;
   country?: string;
   displayName?: string;
-  dob?: number | string | Date;
+  dob?: string;
   email?: string;
+  gender?: string;
   firstName?: string;
-  _id?: number | string;
+  _id?: string;
   lastName?: string;
   location?: string;
   avatar?: string;
@@ -109,7 +123,11 @@ export interface BaseResponse<T> {
     page_size?: number;
     page?: number;
     total?: number;
+    count?: number;
+    status?: number;
+    average?: number;
   };
+  status?: number;
 }
 
 export interface ErrorResponse {
@@ -162,6 +180,8 @@ export interface BaseListRequest {
   pageSize?: number;
   pageIndex?: number;
   keyword?: string;
+  category?: string[];
+  status?: number;
 }
 export interface ListResponse {
   products: Product[];
@@ -172,12 +192,33 @@ export interface ListResponse {
 
 export interface ReplyCommentRequest {
   commentId: string;
-  replyComment: Comment;
+  replyComment: {
+    owner: string;
+    content: string;
+  };
 }
 export interface Banner {
+  _id?: string;
   imgUrl?: string;
   title1?: string;
   title2?: string;
+  description?: string;
   link?: string;
   nameLink?: string;
+}
+
+export interface StatisticData {
+  users?: number;
+  orders?: number;
+  rate?: number;
+  profit?: number;
+}
+
+export interface StatisticMonth {
+  _id: {
+    year: number;
+    month: number;
+  };
+  total?: number;
+  count?: number;
 }

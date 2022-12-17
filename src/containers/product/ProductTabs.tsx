@@ -11,7 +11,7 @@ const ProductTabs = ({ product }: { product: Product }) => {
           <div dangerouslySetInnerHTML={{ __html: product?.description ?? '' }}></div>
         </TabPane>
         <TabPane tab={<span className="uppercase text-lg md:text-xl font-medium">Review & Rate</span>} key="2">
-          <ReviewProduct />
+          <ReviewProduct productId={product?._id} />
         </TabPane>
       </Tabs>
     </ProductTabsWrapper>

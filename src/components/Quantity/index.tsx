@@ -34,7 +34,9 @@ const Quantity = ({
             size="large"
             min={1}
             value={quantity}
-            onChange={(value) => setQuantity(value > maxQuantity ? maxQuantity : value <= 0 ? 1 : value)}
+            onChange={(value) =>
+              setQuantity(maxQuantity > 0 ? (value > maxQuantity ? maxQuantity : value <= 0 ? 1 : value) : 1)
+            }
           />
         </Col>
         <Col xs={8}>

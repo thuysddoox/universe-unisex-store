@@ -9,16 +9,17 @@ import { payOrder } from '../../../../src/network/services/order';
 
 export function SuccessPage({ sessionId }: { sessionId: string }) {
   useEffect(() => {
-    (async () => {
-      try {
-        const resp = await payOrder(sessionId);
-        if (resp?.data?.responseData) {
-          Message.success(messages.paymentSuccess);
+    if (sessionId)
+      (async () => {
+        try {
+          const resp = await payOrder(sessionId);
+          if (resp?.data?.responseData) {
+            Message.success(messages.paymentSuccess);
+          }
+        } catch (error) {
+          Message.error(error?.response?.data?.message ?? error.message);
         }
-      } catch (error) {
-        Message.error(error?.response?.data?.message ?? error.message);
-      }
-    })();
+      })();
   }, [sessionId]);
   return (
     <PageWapper className="pt-32 pb-24">

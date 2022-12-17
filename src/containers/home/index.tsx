@@ -21,10 +21,10 @@ import NewCollection from './NewCollection';
 import Subcribes from './Subcribes';
 const Banner = dynamic(() => import('@components/Banner'), { ssr: false });
 
-export const HomePage = ({ newProduct, saleProduct, bestProduct }: HomePageProps) => {
+export const HomePage = ({ banners, newProduct, saleProduct, bestProduct }: HomePageProps) => {
   return (
     <>
-      <Banner isVideo={true} />
+      <Banner bannersList={banners} isVideo={true} />
       <div className="container min-h-screen">
         <HotSale data={saleProduct} />
         <Advertisement bannersList={[]} />

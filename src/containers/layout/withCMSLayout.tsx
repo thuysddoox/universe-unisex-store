@@ -12,6 +12,7 @@ import { UserContext } from '../../contexts/userContext';
 import { useRouter } from 'next/router';
 import { PERMISSION_DENIED } from './withPrivateLayout';
 import { Message } from '@ui/message';
+import { getServerSideProps } from '../../../pages/product/[id]';
 
 export interface LayoutProps {
   headerStyle?: 'transparent' | 'default';

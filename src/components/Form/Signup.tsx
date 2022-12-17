@@ -3,7 +3,7 @@ import NextImage from '@components/NextImage';
 import messages from '@constants/messages';
 import styled from '@emotion/styled';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { User, UserPopupType } from '@interfaces/common';
+import { SafeAny, User, UserPopupType } from '@interfaces/common';
 import { Button, Input, Message, Password, useForm } from '@ui';
 import { Col, Form, Row } from 'antd';
 import { isEmpty } from 'lodash';
@@ -14,9 +14,13 @@ import { useSignup } from '../../network/queries/auth';
 const SignupPopup = ({
   changePopup,
   handleModal,
+  isAddUser,
+  addUserFunc,
 }: {
   changePopup?: (type: UserPopupType) => void;
   handleModal?: () => void;
+  isAddUser?: boolean;
+  addUserFunc?: SafeAny;
 }) => {
   const [animated] = useAutoAnimate<HTMLDivElement>();
   const router = useRouter();
@@ -40,7 +44,7 @@ const SignupPopup = ({
   const submitSignupForm = (data: User) => {
     const { lastName, firstName } = data;
     const user: User = { ...data, username: lastName + firstName };
-    userRegister(user);
+    isAddUser ? addUserFunc(user) : userRegister(user);
   };
 
   return (
@@ -160,17 +164,19 @@ const SignupPopup = ({
                 loading={isLoading}
                 icon={<UserAddOutlined />}
               >
-                Sign Up
+                {isAddUser ? 'Add Staff' : 'Sign Up'}
               </Button>
             </Form.Item>
           </Col>
         </Row>
-        <p className="text-center text-gray-550 mb-4">
-          Already have an account? Please{' '}
-          <button className="text-blue-400 font-semibold" onClick={() => changePopup('login')}>
-            Login
-          </button>
-        </p>
+        {!isAddUser && (
+          <p className="text-center text-gray-550 mb-4">
+            Already have an account? Please{' '}
+            <button className="text-blue-400 font-semibold" onClick={() => changePopup('login')}>
+              Login
+            </button>
+          </p>
+        )}
       </Form>
     </SignupWrap>
   );

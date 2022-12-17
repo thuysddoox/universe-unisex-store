@@ -8,7 +8,9 @@ const del = API.delete;
 export const getCategories = async (): Promise<BaseResponse<Category[]>> => {
   return get(ENDPOINTS.CATEGORY);
 };
-
+export const updateCategory = async (categoryId: string, thumbnail: string): Promise<BaseResponse<Category>> => {
+  return post(`${ENDPOINTS.CATEGORY}/${categoryId}`, { thumbnail });
+};
 export const createProduct = async (payload: Product): Promise<BaseResponse<Product>> => {
   return post(ENDPOINTS.PRODUCT, payload);
 };

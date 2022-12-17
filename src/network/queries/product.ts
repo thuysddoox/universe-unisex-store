@@ -11,7 +11,8 @@ import {
   getBestProduct,
 } from '../services/product';
 import { Product } from '@interfaces/common';
-import { BaseResponse, ErrorResponse, SafeAny, BaseListRequest } from '../../interfaces/common';
+import { BaseResponse, ErrorResponse, SafeAny, BaseListRequest, Category } from '../../interfaces/common';
+import { updateCategory } from '../services/product';
 
 const CATEGORY_LIST = 'CATEGORY_LIST';
 const PRODUCT_DETAIL = 'PRODUCE_DETAIL';
@@ -24,6 +25,8 @@ export const useCategory = () =>
   useQuery([CATEGORY_LIST], () => getCategories(), {
     refetchOnWindowFocus: false,
   });
+export const useUpdateCategory = (options: UseMutationOptions<BaseResponse<Category>, ErrorResponse, SafeAny>) =>
+  useMutation((params: SafeAny) => updateCategory(params?.categoryId, params?.thumbnail), options);
 
 export const useCreateProduct = (options: UseMutationOptions<BaseResponse<Product>, ErrorResponse, Product>) =>
   useMutation((params: Product) => createProduct(params), options);
@@ -45,7 +48,7 @@ export const useProductsList = (payload: BaseListRequest) =>
     ({ pageParam = 0 }) => getProductsList({ ...payload, pageIndex: pageParam as number }),
     {
       initialData: () => ({
-        pages: [{ data: { responseData: [] } }],
+        pages: [],
         pageParams: [],
       }),
       getNextPageParam: (lastPage, pages) => {
@@ -73,6 +76,6 @@ export const useSaleProducts = (payload: BaseListRequest) =>
     refetchOnWindowFocus: false,
   });
 export const useBestProducts = () =>
-  useQuery([PRODUCT_LIST], () => getBestProduct(), {
+  useQuery([PRODUCT_BEST], () => getBestProduct(), {
     refetchOnWindowFocus: false,
   });

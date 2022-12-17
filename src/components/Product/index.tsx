@@ -56,7 +56,7 @@ const ProductComponent = ({ product }: { product?: Product }) => {
           </span>
         )}
         <Favorite
-          isFavorite={false}
+          isFavorite={product?.isFavorite}
           productId={product?._id}
           containerClass={'right-0 mr-5 top-5 -translate-y-1 shadow rounded-circle'}
         />

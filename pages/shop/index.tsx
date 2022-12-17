@@ -5,8 +5,12 @@ import withLayout from '@containers/layout/withLayout';
 import Shop from '@containers/shop';
 import styled from '@emotion/styled';
 import { Search } from '@ui/input';
+import { getCategories } from '../../src/network/services/product';
+import { Category } from '../../src/interfaces/common';
+import { useState } from 'react';
 
-export function ShopPage() {
+export function ShopPage({ categories }: { categories?: Category[] }) {
+  const [keyword, setKeyword] = useState<string>('');
   return (
     <ShopPageWrapper className="pt-32 pb-24">
       <div className="container">
@@ -17,25 +21,37 @@ export function ShopPage() {
           bordercolor={'#fff'}
           borderradius={'3px'}
           className="mx-4 search-desktop"
-          onSearch={() => {}}
+          onSearch={(value) => {
+            setKeyword(value);
+          }}
         />
         {/* <div className="mt-8 mb-24">
           <HeadingSection title="Shop Sale" />
           <Advertisement bannersList={[]} />
         </div> */}
-        <ShopByCategory />
+        <ShopByCategory categories={categories} />
         <div className="pt-8">
           <HeadingSection title="Shop Now" />
-          <Shop />
+          <Shop keyword={keyword} />
         </div>
       </div>
     </ShopPageWrapper>
   );
 }
 
-ShopPage.getInitialProps = () => {};
+ShopPage.getInitialProps = async () => {
+  const categoryResp = await getCategories();
+  return {
+    categories: categoryResp?.data?.responseData ?? [],
+  };
+};
 
-const ShopPageWrapper = styled.div`
+export const ShopPageWrapper = styled.div`
+  .ant-btn:hover,
+  .ant-btn:focus,
+  .ant-btn:active {
+    background: var(--navy) !important;
+  }
   .ant-input-wrapper {
     margin: auto 0 auto auto;
     width: 500px;

@@ -8,12 +8,14 @@ import { Button, Input, InputRef, Space, Table } from 'antd';
 import type { ColumnsType, ColumnType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import dayjs from 'dayjs';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
 import Highlighter from 'react-highlight-words';
 import { AiFillSave, AiOutlineEdit } from 'react-icons/ai';
 import { MdVisibility } from 'react-icons/md';
 import { TableProps } from './TableProduct';
 import { SafeAny } from '../../interfaces/common';
+import { FcOk } from 'react-icons/fc';
+import { getDisableOptions } from '@utils/convertors';
 
 type DataIndex = keyof Order;
 
@@ -29,6 +31,7 @@ const TableOrder = ({
   const [searchText, setSearchText] = useState<string>('');
   const [searchedColumn, setSearchedColumn] = useState<string>('');
   const [rowEdit, setRowEdit] = useState<SafeAny>();
+  const [selected, setSelected] = useState<SafeAny>();
   const searchInput = useRef<InputRef>(null);
 
   const handleSearch = (
@@ -114,11 +117,11 @@ const TableOrder = ({
   const columns: ColumnsType<Order> = useMemo(
     () => [
       {
-        title: 'OrderID',
+        title: 'ID',
         dataIndex: '_id',
         key: 'id',
-        width: '4%',
-        className: 'min-w-[40px]',
+        width: '3%',
+        className: 'min-w-[20px]',
         render: (value, record, index) => <>{index + 1}</>,
       },
       {
@@ -150,8 +153,21 @@ const TableOrder = ({
         title: 'Total',
         dataIndex: 'total',
         key: 'total',
-        width: '15%',
+        width: '10%',
+        className: 'min-w-[80px]',
+        render: (value, record) => (
+          <span>
+            ${value} {record?.isPaid && <FcOk />}
+          </span>
+        ),
+      },
+      {
+        title: 'Payment',
+        dataIndex: 'payment',
+        key: 'payment',
+        width: '12%',
         className: 'min-w-[120px]',
+        render: (value) => <span>{value === 1 ? 'COD' : 'Card'}</span>,
       },
       {
         title: 'Created Date',
@@ -173,9 +189,13 @@ const TableOrder = ({
             borderradius={'3px'}
             bordercolor={'var(--gray)'}
             options={statusOrder}
-            defaultValue={value}
+            disabledOptions={getDisableOptions(value)}
+            value={record._id === rowEdit?._id ? selected || value : value}
             disabled={record._id !== rowEdit?._id}
-            onChange={(value) => setRowEdit((prev) => ({ ...prev, status: value }))}
+            onChange={(value) => {
+              setSelected(value);
+              record = { ...rowEdit, status: value };
+            }}
           />
         ),
       },
@@ -183,7 +203,7 @@ const TableOrder = ({
         title: 'Actions',
         dataIndex: 'actions',
         key: 'actions',
-        className: 'min-w-[150px]',
+        className: 'min-w-[100px]',
         render: (value, record) => (
           <div className="flex items-center">
             <Ellipsis placement="top" title="Edit" className=" mr-1 cursor-pointer">
@@ -191,7 +211,12 @@ const TableOrder = ({
             </Ellipsis>
             {rowEdit?._id === record?._id && (
               <Ellipsis placement="top" title="Save" className=" mr-1 cursor-pointer">
-                <AiFillSave className="text-lg" onClick={() => handleSave(rowEdit)} />
+                <AiFillSave
+                  className="text-lg"
+                  onClick={() => {
+                    handleSave({ ...rowEdit, status: selected ?? rowEdit?.status }, setRowEdit);
+                  }}
+                />
               </Ellipsis>
             )}
             <Ellipsis placement="top" title="Detail" className=" mr-1 cursor-pointer">
@@ -201,9 +226,14 @@ const TableOrder = ({
         ),
       },
     ],
-    [rowEdit],
+    [rowEdit, selected],
   );
-
+  useEffect(() => {
+    setSelected('');
+  }, [rowEdit]);
+  useEffect(() => {
+    setRowEdit({});
+  }, [data]);
   return (
     <Table
       columns={columns}

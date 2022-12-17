@@ -1,14 +1,25 @@
-import PageWapper from "@components/PageWrapper"
-import withLayout from "@containers/layout/withLayout";
-import Shop from "@containers/shop"
+import HeadingSection from '@components/HeadingSection';
+import withLayout from '@containers/layout/withLayout';
+import Shop from '@containers/shop';
+import { ShopPageWrapper } from '../shop/index';
 
-const ShopProductPage = () =>{
+export function ShopPage({ category }: { category?: string }) {
   return (
-    <PageWapper className="py-32">
-      <Shop />
-    </PageWapper>
-  )
+    <ShopPageWrapper className="py-24">
+      <div className="container">
+        <HeadingSection title={category?.toUpperCase()} />
+        <Shop category={category} />
+      </div>
+    </ShopPageWrapper>
+  );
 }
-ShopProductPage.getInitialProps = () => {
+
+ShopPage.getInitialProps = async (context) => {
+  const { slug } = context.query;
+  console.log(context);
+  return {
+    category: slug,
+  };
 };
-export default withLayout(ShopProductPage);
+
+export default withLayout(ShopPage);

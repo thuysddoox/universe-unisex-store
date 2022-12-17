@@ -4,17 +4,17 @@ import MyFavourite from '@containers/user/favourite';
 import { getFavoriteProducts } from '@api/services';
 import { Product } from '@interfaces';
 
-export function AccountPage({ favoriteList }: { favoriteList: Product[] }) {
+export function AccountPage() {
   return (
     <PageWapper bgColor="var(--primary-lighter)">
-      <MyFavourite data={favoriteList} />
+      <MyFavourite />
     </PageWapper>
   );
 }
-AccountPage.getInitialProps = async () => {
-  const favoriteListResp = await getFavoriteProducts();
-  return {
-    favoriteList: favoriteListResp?.data?.responseData ?? [],
-  };
-};
+// AccountPage.getInitialProps = async () => {
+//   const favoriteListResp = await getFavoriteProducts();
+//   return {
+//     favoriteList: favoriteListResp?.data?.responseData ?? [],
+//   };
+// };
 export default withPrivateLayout(AccountPage);

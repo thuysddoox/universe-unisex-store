@@ -5,6 +5,7 @@ import { Footer } from '@components/Footer';
 import { Header } from '@components/Header';
 import { BackTop } from 'antd';
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
+import { getServerSideProps } from '../../../pages/product/[id]';
 
 export interface LayoutProps {
   headerStyle?: 'transparent' | 'default';

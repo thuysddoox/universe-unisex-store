@@ -9,7 +9,9 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { FaUserTimes } from 'react-icons/fa';
 import { MdVisibility } from 'react-icons/md';
+import { RiFileUserLine } from 'react-icons/ri';
 import { TableProps } from './TableProduct';
+import { ROLE } from '@constants/enum';
 
 type DataIndex = keyof User;
 
@@ -123,9 +125,12 @@ const TableUser = ({
         key: 'avatar',
         width: '10%',
         className: 'min-w-[130px]',
-        render: (value, record) => (
-          <Image preview={false} width={'100%'} className="max-h-[100px] object-contain mx-auto" src={record.avatar} />
-        ),
+        render: (value, record) =>
+          value ? (
+            <Image preview={false} width={'100%'} className="max-h-[100px] object-contain mx-auto" src={value} />
+          ) : (
+            <RiFileUserLine className="text-3xl text-center" />
+          ),
       },
       {
         title: 'Username',
@@ -159,6 +164,14 @@ const TableUser = ({
         className: 'min-w-[210px]',
       },
       {
+        title: 'Role',
+        dataIndex: 'role',
+        key: 'role',
+        width: '10%',
+        className: 'min-w-[100px]',
+        render: (value) => <span>{ROLE[value - 1]}</span>,
+      },
+      {
         title: 'Date of Birth',
         dataIndex: 'dob',
         key: 'dob',
@@ -170,14 +183,14 @@ const TableUser = ({
         title: 'Actions',
         dataIndex: 'actions',
         key: 'actions',
-        className: 'min-w-[150px]',
+        className: 'min-w-[100px]',
         render: (values, record) => (
           <div className="flex items-center">
             <Ellipsis placement="top" title="Disable" className=" mr-1 cursor-pointer">
               <FaUserTimes className="text-lg" onClick={() => handleDelete(record)} />
             </Ellipsis>
             <Ellipsis placement="top" title="Detail" className=" mr-1 cursor-pointer">
-              <MdVisibility className="text-lg" />
+              <MdVisibility className="text-lg" onClick={() => handleOpenEdit(record)} />
             </Ellipsis>
             {/* <AiOutlineEyeInvisible /> */}
           </div>

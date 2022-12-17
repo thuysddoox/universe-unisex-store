@@ -1,10 +1,11 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import React from 'react';
-
+import { TextArea } from '@ui/input';
+import React, { useState, useEffect } from 'react';
 const Editor = ({ value, onChange }) => {
   return (
     <CKEditor
+      className="min-h-[300px]"
       editor={ClassicEditor}
       data={value}
       config={{

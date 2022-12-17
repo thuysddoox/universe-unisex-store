@@ -1,10 +1,13 @@
-import { BaseResponse, Comment, Order, BaseListRequest, ReplyCommentRequest } from '../../interfaces/common';
+import { BaseResponse, Comment, Order, BaseListRequest, ReplyCommentRequest, SafeAny } from '../../interfaces/common';
 import API from '../axios';
 import { ENDPOINTS } from '../endpoints';
 const { post, patch, get } = API;
 const del = API.delete;
 
-export const createComment = async (payload: Comment): Promise<BaseResponse<Comment>> => {
+export const createComment = async (payload: {
+  comments: Comment[];
+  orderId: string;
+}): Promise<BaseResponse<Comment>> => {
   return post(ENDPOINTS.COMMENT, payload);
 };
 export const replyComment = async (payload: ReplyCommentRequest): Promise<BaseResponse<Comment>> => {
@@ -26,6 +29,10 @@ export const getCommentOfProduct = async (
 
 export const getCommentDetail = async (commentId: string): Promise<BaseResponse<Comment>> => {
   return get(`${ENDPOINTS.COMMENT}/${commentId}`);
+};
+
+export const getRateOfProduct = async (productId: string): Promise<BaseResponse<SafeAny>> => {
+  return get(`${ENDPOINTS.COMMENT_RATE}`, { params: { productId } });
 };
 
 export const getComments = async (params: BaseListRequest): Promise<BaseResponse<Comment[]>> => {

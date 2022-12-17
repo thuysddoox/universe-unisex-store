@@ -399,3 +399,9 @@ label.ant-form-item-required {
     transform: scale3d(1, 1, 1) rotate(0deg) translateY(-50%)!important;
   }
 }
+.ck-editor__editable {
+  min-height: 150px;
+}
+.rate-modal .ant-modal-footer{
+  padding: 20px!important;
+}

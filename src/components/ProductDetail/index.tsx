@@ -51,9 +51,10 @@ const ProductDetail = ({ product }: { product: Product }) => {
           <Rate allowClear={true} defaultValue={3} allowHalf={true} className={'text-sm'} />
           <span className="text-sm text-gray-500">| Đã Bán {product?.sold ?? 0}</span>
         </div>
+
         <div className="flex">
           <Favorite
-            isFavorite={false}
+            isFavorite={product?.isFavorite}
             productId={product?._id}
             containerClass="relative text-red-500 mr-4"
             heartClass="text-sm py-1 px-2"
@@ -71,6 +72,7 @@ const ProductDetail = ({ product }: { product: Product }) => {
             ${(product?.price * (100 - product?.discount)) / 100}
           </span>
         </div>
+        <span className="italic">Stock: {product?.stock > 0 ? product?.stock : 'Out of stock'}</span>
         <RadioGroup
           options={colors}
           size="large"
@@ -85,7 +87,7 @@ const ProductDetail = ({ product }: { product: Product }) => {
           <span>Subtotal</span>
           <span>${(((product?.price * (100 - product?.discount)) / 100) * quantity).toFixed(2)}</span>
         </div>
-        <Button borderradius={'3px'} className="w-1/2" loading={isLoading}>
+        <Button borderradius={'3px'} className="w-1/2" loading={isLoading} disabled={product?.stock === 0}>
           <div className="flex items-center" onClick={handleAddToCart}>
             <FaShoppingCart className="text-lg" />
             <span className="ml-2 text-base font-medium">Add to cart</span>

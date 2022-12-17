@@ -20,7 +20,9 @@ export const changePassword = async (payload: UpdatePasswordRequest): Promise<Ba
 export const updateUser = async (payload: User): Promise<BaseResponse<User>> => {
   return patch(`${ENDPOINTS.USER}/${payload._id}`, payload);
 };
-
+export const addUser = async (payload: User): Promise<BaseResponse<User>> => {
+  return post(`${ENDPOINTS.USER}`, payload);
+};
 export const deleteUser = async (userId: string): Promise<BaseResponse<string>> => {
   return del(`${ENDPOINTS.USER}/${userId}`);
 };

@@ -29,8 +29,7 @@ const items: MenuItem[] = [
   getItem(<NavItem label="Orders" url={ROUTES.CMS_ORDER} />, 'orders', <DollarOutlined />),
   getItem(<NavItem label="Rate&Reviews" url={ROUTES.CMS_RATE} />, 'Reviews', <AiOutlineStar />),
   getItem(<NavItem label="Users" url={ROUTES.CMS_USER} />, 'users', <SolutionOutlined />),
-  getItem(<NavItem label="Adverstiment" url={ROUTES.CMS_AD} />, 'advertisement', <PictureOutlined />),
-  getItem(<NavItem label="Logout" />, '6', <AiOutlineLogout />),
+  getItem(<NavItem label="Banners" url={ROUTES.CMS_AD} />, 'banners', <PictureOutlined />),
 ];
 const Sidebar = () => {
   const [theme, setTheme] = useState<MenuTheme>('dark');

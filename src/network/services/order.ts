@@ -9,9 +9,11 @@ export const createOrder = async (payload: Order): Promise<BaseResponse<Order>> 
 };
 
 export const updateOrder = async (payload: Order): Promise<BaseResponse<Order>> => {
-  return patch(`${ENDPOINTS.ORDER}/${payload._id}`, payload);
+  return patch(`${ENDPOINTS.ORDER}/${payload._id}`, { status: payload.status });
 };
-
+export const updateOrderByCustomer = async (orderId: string): Promise<BaseResponse<SafeAny>> => {
+  return post(`${ENDPOINTS.ORDER}/${orderId}`);
+};
 export const getOrderOfUser = async (params: BaseListRequest): Promise<BaseResponse<Order[]>> => {
   return get(ENDPOINTS.ORDER_USER, { params });
 };
@@ -19,7 +21,9 @@ export const getOrderOfUser = async (params: BaseListRequest): Promise<BaseRespo
 export const getOrders = async (params: BaseListRequest): Promise<BaseResponse<Order[]>> => {
   return get(ENDPOINTS.ORDER, { params });
 };
-
+export const getStatisticOrders = async (): Promise<BaseResponse<SafeAny>> => {
+  return get(ENDPOINTS.ORDER_STATISTIC);
+};
 export const getOrderDetail = async (orderId: string): Promise<BaseResponse<Order>> => {
   return get(`${ENDPOINTS.ORDER}/${orderId}`);
 };

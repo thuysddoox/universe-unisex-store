@@ -34,7 +34,7 @@ const OrderItem = ({
         <Col span={isCheckout ? 18 : 19} className="px-5">
           <div className="flex justify-between items-center">
             <h4 className={`${isCheckout ? 'text-base' : 'sm:text-base lg:text-lg'} font-semibold`}>
-              {data?.product?.name}
+              {data?.product?.name ?? data?.product?.productName}
             </h4>
             {!isCheckout ? <IoTrash className="text-red-600 text-2xl cursor-pointer" /> : <></>}
           </div>

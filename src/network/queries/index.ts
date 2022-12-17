@@ -6,3 +6,5 @@ export * from './cart';
 export * from './comment';
 export * from './order';
 export * from './favorite';
+export * from './banner';
+export * from './statistic';

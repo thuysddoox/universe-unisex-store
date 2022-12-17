@@ -1,26 +1,76 @@
 import { useGetUsers } from '@api/api';
 import TableUser from '@components/Table/TableUser';
+import UserCard from '@components/UserCard';
 import { QueryParam } from '@constants/enum';
+import messages from '@constants/messages';
 import styled from '@emotion/styled';
 import { BaseListRequest, User } from '@interfaces/common';
 import Button from '@ui/button';
 import { Search } from '@ui/input';
-import { confirm } from '@ui/modal';
-import { useState, useEffect } from 'react';
+import { Message } from '@ui/message';
+import { Modal, confirm } from '@ui/modal';
+import { Grid } from 'antd';
+import { useEffect, useState } from 'react';
+import { useDeleteUser, useAddUser } from '../../../network/queries/user';
+import SignupPopup from '@components/Form/Signup';
+const { useBreakpoint } = Grid;
 const ManageUsers = () => {
+  const screens = useBreakpoint();
   const [queries, setQueries] = useState<BaseListRequest>(QueryParam);
+  const [selectedUser, setSelectedUser] = useState<User>();
+  const [openModal, setIsOpenModal] = useState<boolean>(false);
+  const [isAddForm, setIsAddForm] = useState<boolean>(false);
   const { data: usersResp, refetch, isFetching } = useGetUsers();
+  const { mutate: deleteUserFunc } = useDeleteUser({
+    onSuccess: (response) => {
+      const error = response?.data?.error;
+      if (response?.status === 200) {
+        Message.success(messages.disabledUserSuccess);
+        refetch();
+      } else if (error) {
+        Message.error(error?.message);
+      }
+    },
+    onError: (error) => {
+      Message.error(error?.response?.data?.message ?? error.message);
+    },
+  });
+  const { mutate: addUserFunc } = useAddUser({
+    onSuccess: (response) => {
+      const error = response?.data?.error;
+      if (response?.status === 201 || response?.data?.responseData) {
+        Message.success(messages.addUserSuccess);
+        refetch();
+      } else if (error) {
+        Message.error(error?.message);
+      }
+    },
+    onError: (error) => {
+      Message.error(error?.response?.data?.message ?? error.message);
+    },
+  });
   const handleDeleteUser = (user: User) => {
     confirm({
       title: 'Confirm',
       content: 'Do you want to delete this user?',
       onOk: () => {
-        // delUser(product._id);
+        deleteUserFunc(user?._id);
       },
     });
   };
   const handleChangePageIndex = (page: number, pageSize: number) => {
     setQueries((prev) => ({ ...prev, pageIndex: page }));
+  };
+  const handleOpenModal = () => {
+    setIsOpenModal(!openModal);
+  };
+  const handleOpenDetail = (record: User) => {
+    handleOpenModal();
+    setSelectedUser(record);
+  };
+  const handleAddUser = (user: User) => {
+    addUserFunc(user);
+    setIsOpenModal(!openModal);
   };
   useEffect(() => {
     refetch();
@@ -37,6 +87,10 @@ const ManageUsers = () => {
           className="font-medium my-3"
           bordercolor={'rgba(16, 185, 129,1)'}
           lineheight="30px"
+          onClick={() => {
+            handleOpenModal();
+            setIsAddForm(!isAddForm);
+          }}
         >
           Add +
         </Button>
@@ -46,7 +100,7 @@ const ManageUsers = () => {
           allowClear={true}
           bordercolor={'#fff'}
           borderradius={'3px'}
-          className="mx-4 search-desktop"
+          // className="mx-4 search-desktop"
           onSearch={() => {}}
         />
       </div>
@@ -57,7 +111,27 @@ const ManageUsers = () => {
         handleChangePageIndex={handleChangePageIndex}
         loading={isFetching}
         handleDelete={handleDeleteUser}
+        handleOpenEdit={handleOpenDetail}
       />
+      <Modal
+        centered
+        closable
+        title={isAddForm ? 'Add Staff' : 'Review detail'}
+        open={openModal}
+        footer={null}
+        // onOk={handleOpenProductForm}
+        onCancel={handleOpenModal}
+        className="my-10"
+        width={screens.xs ? '90vw' : screens.md ? '60vw' : screens.lg ? '55vw' : '50vw'}
+        bodyStyle={{
+          background: '#ffffff',
+          margin: '0',
+        }}
+      >
+        <div className="w-full h-full">
+          {isAddForm ? <SignupPopup isAddUser={true} addUserFunc={handleAddUser} /> : <UserCard user={selectedUser} />}
+        </div>
+      </Modal>
     </MangageUsersWrapper>
   );
 };

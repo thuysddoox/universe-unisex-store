@@ -1,3 +1,14 @@
+export const BannerInitial = {
+  title1: '',
+  title2: '',
+  description: '',
+  imgUrl: '',
+};
+export enum ROLE {
+  Customer,
+  Admin,
+  Staff,
+}
 export enum STATUS_ORDER {
   Cancelled,
   Approving,
@@ -33,10 +44,10 @@ export const statusOrder = [
     value: 4,
     label: 'Completed',
   },
-  {
-    value: 5,
-    label: 'Rated',
-  },
+  // {
+  //   value: 5,
+  //   label: 'Rated',
+  // },
 ];
 export const Colors = [
   'red',
@@ -198,7 +209,7 @@ export enum STATUS_COLOR {
 }
 
 export const QueryParam = {
-  orderBy: 'publishedDate',
+  orderBy: 'updatedAt',
   orderDirection: 'desc',
   pageSize: 10,
   pageIndex: 0,

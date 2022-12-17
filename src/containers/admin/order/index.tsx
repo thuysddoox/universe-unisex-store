@@ -7,6 +7,7 @@ import { BaseListRequest, Order } from '@interfaces';
 import { Message } from '@ui/message';
 import { confirm } from '@ui/modal';
 import { useState } from 'react';
+import { SafeAny } from '../../../interfaces/common';
 
 const ManageOrders = () => {
   const [queries, setQueries] = useState<BaseListRequest>(QueryParam);
@@ -18,7 +19,8 @@ const ManageOrders = () => {
       const orderResp = response?.data?.responseData;
       const error = response?.data?.error;
       if (orderResp) {
-        Message.error(messages.updatedOrderSuccess);
+        Message.success(messages.updatedOrderSuccess);
+        refetch();
       } else if (error) {
         Message.error(error?.message);
       }
@@ -34,15 +36,19 @@ const ManageOrders = () => {
     setIsOpen((prev) => !prev);
     setOrder(order);
   };
-  const handleSave = (order: Order) => {
+  const handleSave = (order: Order, resetFunc: SafeAny) => {
     confirm({
       title: 'Confirm',
       content: 'Do you want to update status for this order!',
       onOk: () => {
         updateStatusOrder(order);
       },
+      onCancel: () => {
+        resetFunc({});
+      },
     });
   };
+
   return (
     <>
       <TableOrder
@@ -52,9 +58,9 @@ const ManageOrders = () => {
         handleChangePageIndex={handleChangePageIndex}
         handleOpenEdit={handleOpenOrder}
         handleSave={handleSave}
-        loading={isFetching}
+        loading={isFetching || isLoading}
       />
-      <PurchaseOrderDetail handleOpen={() => setIsOpen((prev) => !prev)} isOpen={isOpen} />
+      <PurchaseOrderDetail data={order} handleOpen={() => setIsOpen((prev) => !prev)} isOpen={isOpen} />
     </>
   );
 };

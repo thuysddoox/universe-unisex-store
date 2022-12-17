@@ -150,8 +150,8 @@ const CheckoutFrom = ({
               <RadioGroup
                 name="payment"
                 options={[
-                  { label: 'SHIP CODE', value: 1 },
-                  { label: 'Pay Online', value: 2 },
+                  { label: 'Cash on Delivery', value: 1 },
+                  { label: 'Payment via card', value: 2 },
                 ]}
               />
             </FormItem>
