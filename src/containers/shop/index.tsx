@@ -7,13 +7,14 @@ import styled from '@emotion/styled';
 import { BaseListRequest, SafeAny } from '@interfaces';
 import { Select } from '@ui/select';
 import { Col, Row } from 'antd';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useContext } from 'react';
 import NoResults from '../../components/NoResults/index';
 import { Pagination } from 'antd';
 import Button from '@ui/button';
 import Spin from '@ui/spin';
 import { useSaleProducts } from '../../network/queries/product';
 import { useQueryCart } from '../../network/queries/cart';
+import { UserContext } from '../../contexts/userContext';
 
 const listSort = ['Latest', 'Price: Low To High', 'Price: High To Low'];
 const Shop = ({
@@ -37,7 +38,8 @@ const Shop = ({
   const { data: productsResp, refetch, isFetching } = salePage ? useSaleProducts(queries) : useProducts(queries);
   const products = useMemo(() => productsResp?.data?.responseData, [productsResp]);
   const total = useMemo(() => productsResp?.data?.total, [productsResp?.data?.total]);
-  const { refetch: refetchCart } = useQueryCart();
+  const { currentUser } = useContext(UserContext);
+  const { refetch: refetchCart } = currentUser ? useQueryCart() : { refetch: undefined };
   const handleChangePageIndex = (page: number, pageSize: number) => {
     setQueries((prev) => ({ ...prev, pageIndex: page - 1 }));
   };

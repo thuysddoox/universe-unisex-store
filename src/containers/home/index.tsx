@@ -14,16 +14,18 @@ import ReviewComponent from '@components/Review/ReviewComponent';
 import SliderDetail from '@components/SliderDetail';
 import dynamic from 'next/dynamic';
 import { HomePageProps } from 'pages';
-import React from 'react';
+import React, { useContext } from 'react';
 import BestSeller from './BestSeller';
 import HotSale from './HotSale';
 import NewCollection from './NewCollection';
 import Subcribes from './Subcribes';
 import { useQueryCart } from '../../network/queries/cart';
+import { UserContext } from '../../contexts/userContext';
 const Banner = dynamic(() => import('@components/Banner'), { ssr: false });
 
 export const HomePage = ({ banners }: HomePageProps) => {
-  const { refetch: refetchCart } = useQueryCart();
+  const { currentUser } = useContext(UserContext);
+  const { refetch: refetchCart } = currentUser ? useQueryCart() : { refetch: undefined };
   return (
     <>
       <Banner bannersList={banners} />

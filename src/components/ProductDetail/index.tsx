@@ -24,7 +24,7 @@ const ProductDetail = ({ product }: { product: Product }) => {
   ];
   const [quantity, setQuantity] = useState<number>(1);
   const { currentUser } = useContext(UserContext);
-  const { data: CartResp, refetch } = useQueryCart();
+  const { refetch } = currentUser ? useQueryCart() : { refetch: undefined };
   const { mutate: addToCartFunc, isLoading } = useAddToCart({
     onSuccess: (response) => {
       const cartDataResp = response?.data?.responseData;

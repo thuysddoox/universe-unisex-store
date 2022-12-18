@@ -17,8 +17,11 @@ import { useProducts } from '../../src/network/queries/product';
 import { QueryParam } from '../../src/constants/enum';
 import { useQueryCart } from '../../src/network/queries/cart';
 import Spin from '../../src/ui/spin';
+import { UserContext } from '../../src/contexts/userContext';
+import { useContext } from 'react';
 
 export function ProductDetailPage({ productDetailSSR }: { productDetailSSR: Product }) {
+  const { currentUser } = useContext(UserContext);
   const {
     data: relateResp,
     refetch,
@@ -31,7 +34,7 @@ export function ProductDetailPage({ productDetailSSR }: { productDetailSSR: Prod
     size: productDetailSSR?.size,
     category: [productDetailSSR?.categoryId],
   });
-  const { refetch: refetchCart } = useQueryCart();
+  const { refetch: refetchCart } = currentUser ? useQueryCart() : { refetch: undefined };
   return (
     <div className="page">
       <Head>
