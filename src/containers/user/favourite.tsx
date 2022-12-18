@@ -13,10 +13,10 @@ const MyFavourite = () => {
   return (
     <UserLayout title={'My Favorite'}>
       {wishlistResp?.data?.responseData?.length > 0 ? (
-        <Row className="justify-between">
+        <Row className="justify-start pb-8">
           {wishlistResp?.data?.responseData?.map((product) => (
             <Col span={24} sm={12} md={8} lg={6} key={product?._id}>
-              <ProductComponent product={product} />
+              <ProductComponent product={product} refetch={refetch} />
             </Col>
           ))}
         </Row>

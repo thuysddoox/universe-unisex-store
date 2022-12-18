@@ -18,6 +18,9 @@ import { AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import { FaUserCircle } from 'react-icons/fa';
 import { UserPopupType } from '../../interfaces/common';
 import { useQueryCart } from '../../network/queries/cart';
+import OrderItem from '@components/OrderItem';
+import SimpleBar from 'simplebar-react';
+import NoResults from '@components/NoResults';
 export type MenuItem = Required<MenuProps>['items'][number];
 
 export function getItem(
@@ -275,6 +278,8 @@ interface Tab {
 }
 export const Account = ({ tabs }: { tabs: Tab[] }) => {
   const userContext = useContext(UserContext);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { width, mobileMode } = useBreakpoints();
   const userCurrent = userContext.currentUser;
   const { data: CartResp, refetch } = useQueryCart();
   const menu = useMemo(() => {
@@ -301,13 +306,34 @@ export const Account = ({ tabs }: { tabs: Tab[] }) => {
   }, [userCurrent]);
   return (
     <>
-      <Link href="/cart" passHref>
-        <a className="ml-5 mr-2 flex">
-          <Badge count={CartResp?.data?.responseData?.products?.length ?? 0} overflowCount={5}>
-            <AiOutlineShoppingCart style={{ color: '#ffff', fontSize: '30px' }} />
-          </Badge>
-        </a>
-      </Link>
+      <span className="px-3 flex items-center cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+        <Badge count={CartResp?.data?.responseData?.products?.length ?? 0} overflowCount={5}>
+          <AiOutlineShoppingCart style={{ color: '#ffff', fontSize: '30px' }} />
+        </Badge>
+      </span>
+      <Drawer
+        placement="right"
+        bodyStyle={{ padding: '1rem' }}
+        width={mobileMode ? '60%' : '40%'}
+        onClose={() => setIsOpen(false)}
+        open={isOpen}
+        className="nav-bar"
+      >
+        {CartResp?.data?.responseData?.products?.length > 0 ? (
+          <SimpleBar style={{ maxHeight: '100vh' }}>
+            {CartResp?.data?.responseData?.products?.map((cartItem, index) => (
+              <OrderItem data={cartItem} key={cartItem?.product?._id + index} isDropdown={true} />
+            ))}
+          </SimpleBar>
+        ) : (
+          <NoResults description="No product in cart" />
+        )}
+        <div className="text-right">
+          <Link href="/cart" passHref>
+            <a className="text-center underline inline-block mx-auto py-2">See all</a>
+          </Link>
+        </div>
+      </Drawer>
       {/* <Link href="/account" passHref> */}
       <Dropdown overlay={menu} placement="bottom">
         <span className="flex items-center justify-start cursor-pointer ">

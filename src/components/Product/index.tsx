@@ -12,18 +12,19 @@ import { useRouter } from 'next/router';
 import { FaShoppingCart } from 'react-icons/fa';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/userContext';
+import { SafeAny } from '../../interfaces/common';
 
-const ProductComponent = ({ product }: { product?: Product }) => {
+const ProductComponent = ({ product, refetch }: { product?: Product; refetch?: SafeAny }) => {
   const router = useRouter();
   const imgUrl = router.basePath + '/assets/images/background/default.png';
-  const { currentUser } = useContext(UserContext);
-  // const { data: CartResp, refetch } = useQueryCart();
+  const { currentUser, refetchCart } = useContext(UserContext);
   const { mutate: addToCartFunc, isLoading } = useAddToCart({
     onSuccess: (response) => {
       const cartDataResp = response?.data?.responseData;
       const error = response?.data?.error;
       if (cartDataResp) {
         Message.success(messages.addToCartSuccess);
+        refetchCart();
       } else if (error) {
         Message.error(error?.message);
       }
@@ -33,10 +34,12 @@ const ProductComponent = ({ product }: { product?: Product }) => {
     },
   });
   const handleAddToCart = () => {
-    if (currentUser) addToCartFunc({ productId: product?._id, quantity: 1 });
-    else Message.warning(messages.loginRequired);
+    console.log('add');
+    // if (currentUser) addToCartFunc({ productId: product?._id, quantity: 1 });
+    // else Message.warning(messages.loginRequired);
     // refetch();
   };
+  console.log('render');
   return (
     <ProductWrap className="w-full py-4 px-2">
       <Card hoverable className="card relative">
@@ -59,6 +62,7 @@ const ProductComponent = ({ product }: { product?: Product }) => {
           isFavorite={product?.isFavorite}
           productId={product?._id}
           containerClass={'right-0 mr-5 top-5 -translate-y-1 shadow rounded-circle'}
+          refetch={refetch}
         />
         <div className="product-info p-2">
           <Link href={`/product/${product?._id}`} passHref>
@@ -75,7 +79,13 @@ const ProductComponent = ({ product }: { product?: Product }) => {
             </div>
             <Rate allowClear={true} defaultValue={0} allowHalf={true} className={'text-sm'} />
           </div>
-          <Button borderradius={'3px'} loading={isLoading} onClick={handleAddToCart} className="w-full hidden btn-add">
+          <Button
+            borderradius={'3px'}
+            loading={isLoading}
+            disabled={product?.stock < 1}
+            onClick={handleAddToCart}
+            className="w-full hidden btn-add"
+          >
             <FaShoppingCart className="text-lg" />
             <span className="ml-2 font-medium">Add to cart</span>
           </Button>

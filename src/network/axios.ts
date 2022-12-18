@@ -40,8 +40,10 @@ axiosInstance.interceptors.response.use(
     const statusCode = error?.response?.status;
     if (statusCode === StatusCodes.UNAUTHORIZED) {
       //if user uses wrong or expired token, clear it then reload
-      storageClear();
-      window.location.reload();
+      if (typeof window !== 'undefined') {
+        storageClear();
+        window.location.reload();
+      }
     }
     return Promise.reject(error);
   },

@@ -21,7 +21,7 @@ export default {
   confirmPinToTopList: 'Are you sure you want to upgrade Priority Placement Horse Listing for this horse?',
   removePinToTopList: 'Are you sure you want to remove Priority Placement Horse Listing for this horse?',
   addWishListSuccess: 'Added the product successfully to your favorites',
-  confirmRemoveWishList: 'Are you sure you want to remove this horse from your favorites?',
+  confirmRemoveWishList: 'Are you sure you want to remove this product from your favorites?',
   removeWishListSuccess: 'Successfully deleted the product from your favorites',
 
   changePasswordSuccess: 'Change Password successfully!',
