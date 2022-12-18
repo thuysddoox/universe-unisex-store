@@ -20,7 +20,7 @@ export const ENDPOINTS = {
 
   ORDER: '/order',
   ORDER_USER: '/order/user',
-  ORDER_PAY: '/api/order/pay',
+  ORDER_PAY: '/order/pay',
   ORDER_STATISTIC: '/order/statistic',
 
   PAYMENT: '/payment',

@@ -23,7 +23,9 @@ const Cart = () => {
         <Row className="pt-5">
           <Col xs={24} md={16} className="pr-10">
             {cartItems?.length > 0 ? (
-              cartItems?.map((cartItem, index) => <OrderItem data={cartItem} key={cartItem?.product?._id + index} />)
+              cartItems?.map((cartItem, index) => (
+                <OrderItem refetchCart={refetch} data={cartItem} key={cartItem?.product?._id + index} />
+              ))
             ) : (
               <NoResults description="You didn't add any product into your cart!" />
             )}

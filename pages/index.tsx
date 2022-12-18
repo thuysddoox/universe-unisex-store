@@ -9,42 +9,26 @@ import { getBanners } from '../src/network/services/banner';
 import { Banner } from '../src/interfaces/common';
 
 export interface HomePageProps {
-  saleProduct?: Product[];
-  bestProduct?: Product[];
-  newProduct?: SafeAny[];
   banners?: Banner[];
 }
 if (typeof window !== 'undefined') {
   smoothscroll.polyfill();
 }
-export function Index({ banners, saleProduct, bestProduct, newProduct }: HomePageProps) {
+export function Index({ banners }: HomePageProps) {
   return (
     <HomeWrapper>
       <Head>
         <meta content="width=device-width, height=device-height,  initial-scale=1.0, user-scalable=no;user-scalable=0; maximum-scale=1" />
         <title>Unisex Universe Store</title>
       </Head>
-      <HomePage banners={banners} saleProduct={saleProduct} bestProduct={bestProduct} newProduct={newProduct} />
+      <HomePage banners={banners} />
     </HomeWrapper>
   );
 }
 
 Index.getInitialProps = async () => {
-  const [
-    // newsProductResp,
-    saleProductsResp,
-    bestProductsResp,
-    bannersResp,
-  ] = await Promise.all([
-    // getNewProduct(),
-    getSaleProduct({ pageSize: 5 }),
-    getBestProduct(),
-    getBanners(),
-  ]);
+  const bannersResp = await getBanners();
   return {
-    // newProduct: newsProductResp?.data?.responseData ?? [],
-    saleProduct: saleProductsResp?.data?.responseData ?? [],
-    bestProduct: bestProductsResp?.data?.responseData ?? [],
     banners: bannersResp?.data?.responseData ?? [],
   };
 };

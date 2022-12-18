@@ -36,6 +36,6 @@ export const getCheckout = async (sessionId: string): Promise<BaseResponse<Order
   return get(`${ENDPOINTS.CHECKOUT}/${sessionId}`);
 };
 
-export const payOrder = async (sessionId: string): Promise<BaseResponse<SafeAny>> => {
-  return get(`${ENDPOINTS.ORDER_PAY}/${sessionId}`);
+export const payOrder = async (orderId: string): Promise<BaseResponse<SafeAny>> => {
+  return get(`${ENDPOINTS.ORDER_PAY}/${orderId}`);
 };

@@ -14,18 +14,20 @@ export function Footer() {
     <FooterWrapper className="pt-4 border-t ">
       <div className="container m-auto text-gray-750">
         <Row className="flex flex-wrap justify-between py-4 lg:py-10">
-          <Col span={24} md={{ span: 14 }} className="order-1 md:order-0 mt-10 md:mt-0">
+          <Col
+            span={24}
+            sm={{ span: 11 }}
+            lg={{ span: 8 }}
+            xl={{ span: 6 }}
+            className="mt-10 md:mt-0 order-3 lg:order-1"
+          >
             <ul className="flex">
               {[
                 [
                   { label: 'Sale', link: '/sale' },
-                  { label: 'Best Seller', link: '/' },
                   { label: 'Shop', link: '/shop' },
-                ],
-                [
                   { label: 'About', link: '/about' },
                   { label: 'Contact', link: '/contact' },
-                  { label: 'Jobs', link: '/jobs' },
                 ],
                 [
                   { label: 'Privacy Policy', link: '/privacy#policy' },
@@ -47,7 +49,15 @@ export function Footer() {
               ))}
             </ul>
           </Col>
-          <Col span={24} sm={{ span: 20 }} md={{ span: 10 }} xl={{ span: 8 }} className="order-0 md:order-1">
+          <Col span={24} md={{ span: 8 }} xl={{ span: 10 }} className="hidden lg:block lg:order-2">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3725.2926381717425!2d105.78486297517514!3d20.98090348065657!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135accdd8a1ad71%3A0xa2f9b16036648187!2zSOG7jWMgdmnhu4duIEPDtG5nIG5naOG7hyBCxrB1IGNow61uaCB2aeG7hW4gdGjDtG5n!5e0!3m2!1svi!2s!4v1671357901350!5m2!1svi!2s"
+              width="90%"
+              height="200"
+              loading="lazy"
+            />
+          </Col>
+          <Col span={24} sm={{ span: 12 }} lg={{ span: 8 }} xl={{ span: 8 }} className="order-1 lg:order-3">
             <div>
               <div className="relative py-4 md:py-2 ml-0 md:ml-2 mr-2 mb-4">
                 <Link href="/" passHref>
@@ -57,9 +67,9 @@ export function Footer() {
                   />
                 </Link>
               </div>
-              <p className="mb-4 ml-0 md:ml-2 mr-2 uppercase text-base">
+              {/* <p className="mb-4 ml-0 md:ml-2 mr-2 uppercase text-base">
                 Subcribe to receive notifications <br /> of offers and discounts.
-              </p>
+              </p> */}
               <SubcribeForm />
             </div>
           </Col>

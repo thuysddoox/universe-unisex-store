@@ -7,7 +7,7 @@ import { BackTop } from 'antd';
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
 import Sidebar from '@components/Sidebar';
 import HeaderAdmin from '@components/HeaderAdmin';
-import { useContext, useMemo } from 'react';
+import { useContext, useMemo, useEffect } from 'react';
 import { UserContext } from '../../contexts/userContext';
 import { useRouter } from 'next/router';
 import { PERMISSION_DENIED } from './withPrivateLayout';
@@ -36,6 +36,11 @@ const withCMSLayout = (Component) => {
         return true;
       }
     }, [userContext.currentUser, userContext.contextLoaded, router]);
+    useEffect(() => {
+      if (!userContext.currentUser) {
+        router.push('/');
+      }
+    }, []);
     return permissions ? (
       <div className="page">
         <Head>

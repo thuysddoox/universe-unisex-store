@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { getDateOfStatus } from '@utils/convertors';
 import { Timeline } from 'antd';
-import { FcShipped } from 'react-icons/fc';
+import { FcInspection, FcPaid, FcShipped, FcShop } from 'react-icons/fc';
 import { ImTruck } from 'react-icons/im';
 import { Status } from '../../interfaces/common';
 
@@ -19,8 +19,8 @@ const TimelineItem = ({
   return (
     <li className="flex items-center mb-8 ">
       <span
-        className={`inline-block border-4 timeline-icon rounded-circle p-3 lg:p-5 ${
-          status ? 'border-green-300 text-green-300' : 'border-gray-400 text-gray-400'
+        className={`inline-block border-2 timeline-icon bg-white rounded-circle p-3 lg:p-4 ${
+          status ? 'border-green-400 text-green-400' : 'border-gray-400 text-gray-400'
         } text-center relative`}
       >
         {icon}
@@ -37,13 +37,13 @@ const OrderTimeLine = ({ timeline }: { timeline: Status[] }) => {
     <OrderTimeLineWrap>
       <Timeline mode="left" className="">
         <TimelineItem
-          icon={<ImTruck className="text-xl lg:text-2xl mx-auto" />}
+          icon={<FcInspection className="text-xl lg:text-2xl mx-auto" />}
           content={getDateOfStatus(1, timeline)}
           label="Approving"
           status={getDateOfStatus(1, timeline) !== '--'}
         />
         <TimelineItem
-          icon={<ImTruck className="text-xl lg:text-2xl mx-auto" />}
+          icon={<FcShop className="text-xl lg:text-2xl mx-auto" />}
           content={getDateOfStatus(2, timeline)}
           label="Preparing"
           status={getDateOfStatus(2, timeline) !== '--'}
@@ -55,7 +55,7 @@ const OrderTimeLine = ({ timeline }: { timeline: Status[] }) => {
           status={getDateOfStatus(3, timeline) !== '--'}
         />
         <TimelineItem
-          icon={<ImTruck className="text-xl lg:text-2xl mx-auto" />}
+          icon={<FcPaid className="text-xl lg:text-2xl mx-auto" />}
           content={getDateOfStatus(4, timeline)}
           label="Completed"
           status={getDateOfStatus(4, timeline) !== '--'}
@@ -79,7 +79,7 @@ const OrderTimeLineWrap = styled.div`
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    width: 4px;
+    width: 2px;
     background: currentColor;
     height: 2.5rem;
   }

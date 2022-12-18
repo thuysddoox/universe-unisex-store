@@ -14,17 +14,25 @@ import { useContext } from 'react';
 import { UserContext } from '../../contexts/userContext';
 import { SafeAny } from '../../interfaces/common';
 
-const ProductComponent = ({ product, refetch }: { product?: Product; refetch?: SafeAny }) => {
+const ProductComponent = ({
+  product,
+  refetch,
+  refetchCart,
+}: {
+  product?: Product;
+  refetch?: SafeAny;
+  refetchCart?: SafeAny;
+}) => {
   const router = useRouter();
   const imgUrl = router.basePath + '/assets/images/background/default.png';
-  const { currentUser, refetchCart } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const { mutate: addToCartFunc, isLoading } = useAddToCart({
     onSuccess: (response) => {
       const cartDataResp = response?.data?.responseData;
       const error = response?.data?.error;
       if (cartDataResp) {
         Message.success(messages.addToCartSuccess);
-        refetchCart();
+        refetchCart?.();
       } else if (error) {
         Message.error(error?.message);
       }
@@ -34,10 +42,9 @@ const ProductComponent = ({ product, refetch }: { product?: Product; refetch?: S
     },
   });
   const handleAddToCart = () => {
-    console.log('add');
-    // if (currentUser) addToCartFunc({ productId: product?._id, quantity: 1 });
-    // else Message.warning(messages.loginRequired);
-    // refetch();
+    if (currentUser) {
+      addToCartFunc({ productId: product?._id, quantity: 1 });
+    } else Message.warning(messages.loginRequired);
   };
   console.log('render');
   return (
@@ -77,17 +84,20 @@ const ProductComponent = ({ product, refetch }: { product?: Product; refetch?: S
                 ${(product?.price * (100 - product?.discount)) / 100}
               </span>
             </div>
-            <Rate allowClear={true} defaultValue={0} allowHalf={true} className={'text-sm'} />
+
+            <Rate
+              allowClear={true}
+              disabled={true}
+              defaultValue={product?.rate ?? 0}
+              allowHalf={true}
+              className={'text-sm'}
+            />
           </div>
-          <Button
-            borderradius={'3px'}
-            loading={isLoading}
-            disabled={product?.stock < 1}
-            onClick={handleAddToCart}
-            className="w-full hidden btn-add"
-          >
-            <FaShoppingCart className="text-lg" />
-            <span className="ml-2 font-medium">Add to cart</span>
+          <Button borderradius={'3px'} loading={isLoading} disabled={product?.stock < 1} className="w-full btn-add">
+            <div className="flex items-center" onClick={handleAddToCart}>
+              <FaShoppingCart className="text-lg" />
+              <span className="ml-2 font-medium">Add to cart</span>
+            </div>
           </Button>
         </div>
       </Card>

@@ -4,27 +4,49 @@ import messages from '@constants/messages';
 import styled from '@emotion/styled';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { SafeAny, User, UserPopupType } from '@interfaces/common';
-import { Button, Input, Message, Password, useForm } from '@ui';
+import { Button, Input, Message, Password, Select, useForm } from '@ui';
 import { Col, Form, Row } from 'antd';
 import { isEmpty } from 'lodash';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSignup } from '../../network/queries/auth';
+import { useUpdateUser } from '../../network/queries/user';
+import { useState, useEffect } from 'react';
+import { ROLES } from '@constants/enum';
+import { ROLE } from '../../constants/enum';
 
 const SignupPopup = ({
   changePopup,
   handleModal,
   isAddUser,
   addUserFunc,
+  data = {},
+  isEdit,
 }: {
   changePopup?: (type: UserPopupType) => void;
   handleModal?: () => void;
   isAddUser?: boolean;
+  isEdit?: boolean;
   addUserFunc?: SafeAny;
+  data?: User;
 }) => {
   const [animated] = useAutoAnimate<HTMLDivElement>();
   const router = useRouter();
   const [form] = useForm();
+  const [initialValues, setInitialValues] = useState<User>(data);
+  const { mutate: updateUserFunc, isLoading: isUpdateLoading } = useUpdateUser({
+    onSuccess: (response) => {
+      const error = response?.data?.error;
+      if (response?.status === 200) {
+        Message.success(messages.updateUserProfileSuccess);
+      } else if (error) {
+        Message.error(error?.message);
+      }
+    },
+    onError: (error) => {
+      Message.error(error?.response?.data?.message ?? error.message);
+    },
+  });
   const { mutate: userRegister, isLoading } = useSignup({
     onSuccess: (response) => {
       const data = response?.data?.responseData;
@@ -44,9 +66,11 @@ const SignupPopup = ({
   const submitSignupForm = (data: User) => {
     const { lastName, firstName } = data;
     const user: User = { ...data, username: lastName + firstName };
-    isAddUser ? addUserFunc(user) : userRegister(user);
+    isAddUser ? addUserFunc(user) : isEdit ? updateUserFunc(user) : userRegister(user);
   };
-
+  useEffect(() => {
+    setInitialValues(data);
+  }, [data]);
   return (
     <SignupWrap ref={animated}>
       <Link href="/" passHref>
@@ -57,7 +81,13 @@ const SignupPopup = ({
           containerClass="h-12 sm:h-16 my-3 cursor-pointer relative mx-auto"
         />
       </Link>
-      <Form form={form} layout="vertical" className="py-4 mx-2" onFinish={submitSignupForm}>
+      <Form
+        form={form}
+        initialValues={initialValues}
+        layout="vertical"
+        className="py-4 mx-2"
+        onFinish={submitSignupForm}
+      >
         <Row gutter={24}>
           <Col xs={24} sm={12}>
             <Form.Item
@@ -80,6 +110,42 @@ const SignupPopup = ({
             </Form.Item>
           </Col>
         </Row>
+        {(isAddUser || isEdit) && (
+          <Row gutter={24}>
+            <Col xs={24} sm={12}>
+              <Form.Item
+                name="gender"
+                rules={[{ required: true, message: 'Please select gender!' }]}
+                label="Gender"
+                hasFeedback
+              >
+                <Select
+                  placeholder="Choose gender"
+                  options={[
+                    { label: 'Male', value: 'male' },
+                    { label: 'Female', value: 'female' },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Form.Item
+                name="role"
+                rules={[{ required: true, message: 'Please select role!' }]}
+                label="Role"
+                hasFeedback
+              >
+                <Select
+                  placeholder="Choose gender"
+                  options={[
+                    { label: 'Staff', value: 3 },
+                    { label: 'Customer', value: 1 },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
         <Row gutter={24}>
           <Col xs={24} sm={12}>
             <Form.Item
@@ -105,48 +171,50 @@ const SignupPopup = ({
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={24}>
-          <Col xs={24} sm={12}>
-            <Form.Item
-              name="password"
-              rules={[
-                { required: true, message: 'Password is required!' },
-                () => ({
-                  validator(_, value: string) {
-                    if (value?.includes(' ')) {
-                      return Promise.reject('Password can not contain space.');
-                    }
-                    return Promise.resolve();
-                  },
-                }),
-              ]}
-              label="Password"
-              hasFeedback
-            >
-              <Password placeholder="Password" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={12}>
-            <Form.Item
-              name="confirmPassword"
-              dependencies={['password']}
-              rules={[
-                { required: true, message: 'Please confirm your password!' },
-                ({ getFieldValue }) => ({
-                  validator(_, value: string) {
-                    if (isEmpty(value) || value === getFieldValue('password')) {
+        {!isEdit && (
+          <Row gutter={24}>
+            <Col xs={24} sm={12}>
+              <Form.Item
+                name="password"
+                rules={[
+                  { required: true, message: 'Password is required!' },
+                  () => ({
+                    validator(_, value: string) {
+                      if (value?.includes(' ')) {
+                        return Promise.reject('Password can not contain space.');
+                      }
                       return Promise.resolve();
-                    } else return Promise.reject('Two passwords do not match!');
-                  },
-                }),
-              ]}
-              label="Confirm Password"
-              hasFeedback
-            >
-              <Password placeholder="Confirm Password" />
-            </Form.Item>
-          </Col>
-        </Row>
+                    },
+                  }),
+                ]}
+                label="Password"
+                hasFeedback
+              >
+                <Password placeholder="Password" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Form.Item
+                name="confirmPassword"
+                dependencies={['password']}
+                rules={[
+                  { required: true, message: 'Please confirm your password!' },
+                  ({ getFieldValue }) => ({
+                    validator(_, value: string) {
+                      if (isEmpty(value) || value === getFieldValue('password')) {
+                        return Promise.resolve();
+                      } else return Promise.reject('Two passwords do not match!');
+                    },
+                  }),
+                ]}
+                label="Confirm Password"
+                hasFeedback
+              >
+                <Password placeholder="Confirm Password" />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
         <Row>
           <Col span={24}>
             <Form.Item name="address" label="Address" hasFeedback>
@@ -164,12 +232,12 @@ const SignupPopup = ({
                 loading={isLoading}
                 icon={<UserAddOutlined />}
               >
-                {isAddUser ? 'Add Staff' : 'Sign Up'}
+                {isAddUser ? 'Add' : isEdit ? 'Save Changes' : 'Sign Up'}
               </Button>
             </Form.Item>
           </Col>
         </Row>
-        {!isAddUser && (
+        {(!isAddUser || !isEdit) && (
           <p className="text-center text-gray-550 mb-4">
             Already have an account? Please{' '}
             <button className="text-blue-400 font-semibold" onClick={() => changePopup('login')}>

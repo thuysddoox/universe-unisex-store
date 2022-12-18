@@ -4,6 +4,8 @@
 //
 // import { User } from 'path/to/interfaces';
 
+import { StringLiteralLike } from 'typescript';
+
 export interface Category {
   _id?: string;
   name?: string;
@@ -19,15 +21,17 @@ export interface Product {
   discount?: number;
   description?: string;
   categoryId?: string;
-  color?: string | string[];
+  color?: string;
   _id?: string;
   stock?: number;
   sold?: number;
-  size?: string | string[];
+  size?: string;
   publishedAt?: string;
   thumbnails?: string[];
   isDisabled?: boolean;
   isFavorite?: boolean;
+  rate?: number;
+  review?: number;
 }
 export interface OrderItem {
   productId?: string;
@@ -168,6 +172,7 @@ export interface UpdatePasswordRequest {
   userId?: string;
   currentPassword?: string;
   newPassword?: string;
+  isReset?: boolean;
 }
 export interface Position {
   id: number;
@@ -180,6 +185,8 @@ export interface BaseListRequest {
   pageSize?: number;
   pageIndex?: number;
   keyword?: string;
+  color?: string;
+  size?: string;
   category?: string[];
   status?: number;
 }

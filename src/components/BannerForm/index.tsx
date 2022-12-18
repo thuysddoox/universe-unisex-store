@@ -11,7 +11,7 @@ import { AiOutlineDelete, AiOutlineEdit, AiOutlineSave } from 'react-icons/ai';
 import { SafeAny } from '../../interfaces/common';
 import { useDeleteBanner, useUpdateBanner, useCreateBanner } from '../../network/queries/banner';
 import messages from '@constants/messages';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, SyntheticEvent } from 'react';
 import _ from 'lodash';
 import { confirm } from '@ui/modal';
 
@@ -69,7 +69,8 @@ const BannerForm = ({ banner, refetchList }: { banner?: Banner; refetchList?: Sa
       multiple: false,
       showUploadList: false,
       maxCount: 1,
-      action: 'http://localhost:3000/api/upload/single',
+      // action: 'http://localhost:3000/api/upload/single',
+      action: `${process.env.NEXT_PUBLIC_API_HOST_URL}/upload/single`,
       onChange(info) {
         const { status } = info.file;
         if (status === 'done') {
@@ -85,7 +86,9 @@ const BannerForm = ({ banner, refetchList }: { banner?: Banner; refetchList?: Sa
     }),
     [banner?._id],
   );
-  const handleAddBanner = () => {
+  const handleAddBanner = (e: SyntheticEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (!imgUrl) Message.error('Please upload image for banner.');
     else {
       banner?._id && isEdit
@@ -93,7 +96,9 @@ const BannerForm = ({ banner, refetchList }: { banner?: Banner; refetchList?: Sa
         : createBannerFunc({ ...banner, ...form.getFieldsValue(), imgUrl });
     }
   };
-  const handleDelete = () => {
+  const handleDelete = (e: SyntheticEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     confirm({
       title: 'Confirm',
       content: 'Do you want to delete this banner?',

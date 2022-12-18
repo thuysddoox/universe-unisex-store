@@ -13,8 +13,25 @@ import Head from 'next/head';
 import { Header } from '@components/Header';
 import { Footer } from '@components/Footer';
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
+import { useProducts } from '../../src/network/queries/product';
+import { QueryParam } from '../../src/constants/enum';
+import { useQueryCart } from '../../src/network/queries/cart';
+import Spin from '../../src/ui/spin';
 
 export function ProductDetailPage({ productDetailSSR }: { productDetailSSR: Product }) {
+  const {
+    data: relateResp,
+    refetch,
+    isFetching,
+  } = useProducts({
+    ...QueryParam,
+    pageSize: 6,
+    pageIndex: 0,
+    color: productDetailSSR?.color,
+    size: productDetailSSR?.size,
+    category: [productDetailSSR?.categoryId],
+  });
+  const { refetch: refetchCart } = useQueryCart();
   return (
     <div className="page">
       <Head>
@@ -37,7 +54,17 @@ export function ProductDetailPage({ productDetailSSR }: { productDetailSSR: Prod
             </Col>
           </Row>
           <ProductTabs product={productDetailSSR} />
-          <RelateProductList />
+          {isFetching ? (
+            <div className="text-center p-10">
+              <Spin size="large" spinning={isFetching} />
+            </div>
+          ) : (
+            <RelateProductList
+              refetch={refetch}
+              refetchCart={refetchCart}
+              data={relateResp?.data?.responseData ?? []}
+            />
+          )}
         </div>
       </PageWapper>
       <Footer />

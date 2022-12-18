@@ -1,17 +1,11 @@
-import React from 'react';
+import SubcribeForm from '@components/Form/Subcribe';
+import styled from '@emotion/styled';
+import { StyledImage } from '@ui/styledimage';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import SectionHeading from '../SectionHeading';
-import styled from '@emotion/styled';
-import JobItem from '.';
 
 const JobWrapper = styled.div`
-  a:hover {
-    color: var(--blue2-secondary) !important;
-  }
-  .btn-apply.cursor-pointer:hover {
-    right: -10px !important;
-  }
   @media screen and (max-width: 560px) {
     .note {
       font-size: 12px !important;
@@ -27,29 +21,9 @@ const JobsModule = () => {
   const ImgBaseUrl = `${router.basePath}/assets/images`;
   return (
     <JobWrapper className="mt-10 sm:mt-14 overflow-hidden">
-      <SectionHeading subTitle="Careers" mainTitle="Join Us Now" hasLine={false} lineOrder={2}/>
+      <SectionHeading subTitle="Careers" mainTitle="Join Us Now" hasLine={false} lineOrder={2} />
       <div className="block md:flex items-start my-10">
-        <div className="w-full md:w-3/5 mb-10 md:mb-0">
-          <ul className="w-full sm:px-8 lg:pr-16 lg:pl-4 ">
-            <li>
-              <JobItem
-                // job={item}
-                arrowButton={true}
-                stt={1}
-                displayDate={true}
-              />
-            </li>
-
-            {/* <li className="text-center">No Jobs Now</li> */}
-            {/* {Jobs?.length > 0 && ( */}
-            <Link href="/careers" passHref>
-              <a className="text-blue-500 underline block mt-6 text-right transition-all">See more jobs</a>
-            </Link>
-            {/* )} */}
-          </ul>
-        </div>
-
-        <div className="w-full md:w-2/5 sm:px-8 md:px-0">
+        <div className="w-full md:w-3/5 sm:px-8 md:px-0">
           <h3 className="font-semibold text-2xl md:text-3xl text-blue-900 leading-5 sm:leading-7">
             Do you want to{' '}
             <span
@@ -80,6 +54,22 @@ const JobsModule = () => {
               <p className="text-blue-900 font-normal ml-4">Paid company trip and permanent teambuilding activities.</p>
             </li>
           </ul>
+        </div>
+        <div className="w-full md:w-2/5 mb-10 md:mb-0">
+          <div className="max-w-[500px] mr-0">
+            <div className="relative py-4 md:py-2 ml-0 md:ml-2 mr-2 mb-4">
+              <Link href="/" passHref>
+                <StyledImage
+                  src={`${router.basePath}/assets/images/logo/logo-color.png`}
+                  className="contain h-8 sm:h-9 lg:h-8 xl:h-10 cursor-pointer"
+                />
+              </Link>
+            </div>
+            <p className="mb-4 ml-0 md:ml-2 mr-2 uppercase text-base">
+              Subcribe to receive notifications <br /> of offers and discounts.
+            </p>
+            <SubcribeForm />
+          </div>
         </div>
       </div>
     </JobWrapper>

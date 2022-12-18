@@ -16,8 +16,10 @@ import { SafeAny } from '../../interfaces/common';
 import { useCreateOrder } from '../../network/queries/order';
 import OrderItemList from './OderItemList';
 import OrderInfo from './OrderInfo';
+import { useRouter } from 'next/router';
 
 const Checkout = () => {
+  const router = useRouter();
   const { currentUser } = useContext(UserContext);
   const { data: CartResp, refetch } = useQueryCart();
   const cartItems: CartItem[] = useMemo(() => CartResp?.data?.responseData?.products ?? [], [CartResp]);
@@ -48,6 +50,7 @@ const Checkout = () => {
       if (data) {
         Message.success(messages.createOrderSuccess);
         if (data.payment === 2) createCheckoutFunc(data);
+        else router.push('/purchases');
       } else if (error) {
         Message.error(error?.message);
       }

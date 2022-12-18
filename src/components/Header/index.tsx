@@ -9,7 +9,7 @@ import { Dropdown } from '@ui/dropdown';
 import { Search } from '@ui/input';
 import { Menu, MenuItem } from '@ui/menu';
 import { confirm } from '@ui/modal';
-import { Badge, MenuProps } from 'antd';
+import { Avatar, Badge, Grid, MenuProps } from 'antd';
 import { isEmpty } from 'lodash';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -22,7 +22,7 @@ import OrderItem from '@components/OrderItem';
 import SimpleBar from 'simplebar-react';
 import NoResults from '@components/NoResults';
 export type MenuItem = Required<MenuProps>['items'][number];
-
+const { useBreakpoint } = Grid;
 export function getItem(
   label: React.ReactNode,
   key: React.Key,
@@ -81,7 +81,7 @@ export function Header() {
       ]),
       getItem(<Label title="About us" url="/about" isSuper />, 'about', null, [
         getItem(<Label title="Us" url="/about" />, 'us'),
-        getItem(<Label title="Jobs" url="/jobs" />, 'jobs'),
+        // getItem(<Label title="Jobs" url="/jobs" />, 'jobs'),
         getItem(<Label title="Contact" url="/contact" />, 'contact'),
       ]),
     ],
@@ -254,8 +254,7 @@ const Title = ({
   isShowLoginSignup?: boolean;
   setIsShowLoginSignup?: (isShowLoginSignup: boolean) => void;
 }) => {
-  const userContext = useContext(UserContext);
-  const userCurrent = userContext.currentUser;
+  const { currentUser } = useContext(UserContext);
 
   return (
     <div
@@ -264,9 +263,13 @@ const Title = ({
         setIsShowLoginSignup(!isShowLoginSignup);
       }}
     >
-      <FaUserCircle style={{ color: 'var(--navy)', fontSize: '40px' }} />
+      {currentUser?.avatar ? (
+        <Avatar src={currentUser?.avatar} size={40} />
+      ) : (
+        <FaUserCircle style={{ color: 'var(--navy)', fontSize: '40px' }} />
+      )}
       <span className="ml-2 text-base cursor-pointer w-[120px] md:w-[200px] truncate capitalize">
-        {isEmpty(userCurrent) ? 'LOGIN/SIGNUP' : userCurrent?.username}
+        {isEmpty(currentUser) ? 'LOGIN/SIGNUP' : currentUser?.username}
       </span>
     </div>
   );
@@ -276,10 +279,11 @@ interface Tab {
   url?: string;
   handleClick?: () => void;
 }
+
 export const Account = ({ tabs }: { tabs: Tab[] }) => {
   const userContext = useContext(UserContext);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { width, mobileMode } = useBreakpoints();
+  const screens = useBreakpoint();
   const userCurrent = userContext.currentUser;
   const { data: CartResp, refetch } = useQueryCart();
   const menu = useMemo(() => {
@@ -314,7 +318,7 @@ export const Account = ({ tabs }: { tabs: Tab[] }) => {
       <Drawer
         placement="right"
         bodyStyle={{ padding: '1rem' }}
-        width={mobileMode ? '60%' : '40%'}
+        width={screens.lg ? '45vw' : screens.md ? '60vw' : screens.sm ? '65vw' : '85vw'}
         onClose={() => setIsOpen(false)}
         open={isOpen}
         className="nav-bar"
@@ -322,7 +326,7 @@ export const Account = ({ tabs }: { tabs: Tab[] }) => {
         {CartResp?.data?.responseData?.products?.length > 0 ? (
           <SimpleBar style={{ maxHeight: '100vh' }}>
             {CartResp?.data?.responseData?.products?.map((cartItem, index) => (
-              <OrderItem data={cartItem} key={cartItem?.product?._id + index} isDropdown={true} />
+              <OrderItem data={cartItem} key={cartItem?.product?._id + index} refetchCart={refetch} isDropdown={true} />
             ))}
           </SimpleBar>
         ) : (
@@ -340,9 +344,13 @@ export const Account = ({ tabs }: { tabs: Tab[] }) => {
           <span className="ml-5 mr-2 text-base max-w-[80px] truncate capitalize text-white">
             {userCurrent?.username ?? userCurrent?.lastName ?? 'User'}
           </span>
-          <span className=" border-2 border-white rounded-full p-1">
-            <AiOutlineUser style={{ color: '#ffff', fontSize: '20px' }} />
-          </span>
+          {userCurrent?.avatar ? (
+            <Avatar src={userCurrent?.avatar} size={40} />
+          ) : (
+            <span className=" border-2 border-white rounded-full p-1">
+              <AiOutlineUser style={{ color: '#ffff', fontSize: '20px' }} />
+            </span>
+          )}
         </span>
       </Dropdown>
       {/* </Link> */}

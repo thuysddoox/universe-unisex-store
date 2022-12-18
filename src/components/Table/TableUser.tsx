@@ -12,6 +12,9 @@ import { MdVisibility } from 'react-icons/md';
 import { RiFileUserLine } from 'react-icons/ri';
 import { TableProps } from './TableProduct';
 import { ROLE } from '@constants/enum';
+import { useContext } from 'react';
+import { UserContext } from '../../contexts/userContext';
+import { AiOutlineEdit } from 'react-icons/ai';
 
 type DataIndex = keyof User;
 
@@ -22,12 +25,13 @@ const TableUser = ({
   total,
   pageSize,
   loading,
+  handleOpenDetail,
   handleChangePageIndex,
 }: TableProps) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
-
+  const { currentUser } = useContext(UserContext);
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -186,11 +190,20 @@ const TableUser = ({
         className: 'min-w-[100px]',
         render: (values, record) => (
           <div className="flex items-center">
-            <Ellipsis placement="top" title="Disable" className=" mr-1 cursor-pointer">
-              <FaUserTimes className="text-lg" onClick={() => handleDelete(record)} />
-            </Ellipsis>
+            {currentUser?.role === 2 && (
+              <>
+                <Ellipsis placement="top" title="Disable" className=" mr-1 cursor-pointer">
+                  <FaUserTimes className="text-lg" onClick={() => handleDelete(record)} />
+                </Ellipsis>
+                {record?.role === 3 && (
+                  <Ellipsis placement="top" title="Edit Staff" className=" mr-1 cursor-pointer">
+                    <AiOutlineEdit className="text-lg" onClick={() => handleOpenEdit(record)} />
+                  </Ellipsis>
+                )}
+              </>
+            )}
             <Ellipsis placement="top" title="Detail" className=" mr-1 cursor-pointer">
-              <MdVisibility className="text-lg" onClick={() => handleOpenEdit(record)} />
+              <MdVisibility className="text-lg" onClick={() => handleOpenDetail(record)} />
             </Ellipsis>
             {/* <AiOutlineEyeInvisible /> */}
           </div>

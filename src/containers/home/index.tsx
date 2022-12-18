@@ -19,19 +19,21 @@ import BestSeller from './BestSeller';
 import HotSale from './HotSale';
 import NewCollection from './NewCollection';
 import Subcribes from './Subcribes';
+import { useQueryCart } from '../../network/queries/cart';
 const Banner = dynamic(() => import('@components/Banner'), { ssr: false });
 
-export const HomePage = ({ banners, newProduct, saleProduct, bestProduct }: HomePageProps) => {
+export const HomePage = ({ banners }: HomePageProps) => {
+  const { refetch: refetchCart } = useQueryCart();
   return (
     <>
-      <Banner bannersList={banners} isVideo={true} />
+      <Banner bannersList={banners} />
       <div className="container min-h-screen">
-        <HotSale data={saleProduct} />
-        <Advertisement bannersList={[]} />
-        <BestSeller data={bestProduct} />
-        <NewCollection data={newProduct} />
+        <HotSale refetchCart={refetchCart} />
+        {/* <Advertisement bannersList={banners} /> */}
+        <BestSeller refetchCart={refetchCart} />
+        <NewCollection refetchCart={refetchCart} />
         <Subcribes />
-        <JobsModule />
+        {/* <JobsModule /> */}
       </div>
     </>
   );

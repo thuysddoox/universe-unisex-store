@@ -1,15 +1,33 @@
 import HeadingSection from '@components/HeadingSection';
 import ProductComponent from '@components/Product';
 import styled from '@emotion/styled';
-import { Product } from '@interfaces/common';
-import { responsiveSettGeneral, Slider } from '@ui/slider';
+import { Slider, renderResponseSiveSetting, responsiveSettGeneral } from '@ui/slider';
+import { useMemo } from 'react';
+import { useBestProducts } from '../../network/queries/product';
+import { SafeAny } from '../../interfaces/common';
 
-const BestSeller = ({ data = [] }: { data?: Product[] }) => {
+const BestSeller = ({ refetchCart }: { refetchCart?: SafeAny }) => {
+  const { data: dataResp, refetch } = useBestProducts();
+  const data = useMemo(() => dataResp?.data?.responseData, [dataResp]);
   return (
     <BestSellerWrapper className="py-8">
       <HeadingSection title="Best Seller" link="/sale" mode="center" />
-      <Slider slidesToShow={4} arrows={true} responsive={responsiveSettGeneral} className="mx-4 sm:mx-8">
-        {data.length > 0 && data.map((product) => <ProductComponent product={product} key={product?._id} />)}
+      <Slider
+        slidesToShow={4}
+        infinite={data?.length > 4}
+        arrows={true}
+        responsive={renderResponseSiveSetting(data?.length)}
+        className="mx-4 sm:mx-8"
+      >
+        {data?.length > 0 &&
+          data?.map((product) => (
+            <ProductComponent
+              refetchCart={refetchCart}
+              refetch={refetch}
+              product={product}
+              key={product?._id + 'best'}
+            />
+          ))}
       </Slider>
     </BestSellerWrapper>
   );

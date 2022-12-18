@@ -44,10 +44,10 @@ export const statusOrder = [
     value: 4,
     label: 'Completed',
   },
-  // {
-  //   value: 5,
-  //   label: 'Rated',
-  // },
+  {
+    value: 5,
+    label: 'Rated',
+  },
 ];
 export const Colors = [
   'red',

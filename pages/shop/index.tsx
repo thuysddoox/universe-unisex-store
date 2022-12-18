@@ -32,7 +32,7 @@ export function ShopPage({ categories }: { categories?: Category[] }) {
         <ShopByCategory categories={categories} />
         <div className="pt-8">
           <HeadingSection title="Shop Now" />
-          <Shop keyword={keyword} />
+          <Shop keyword={keyword} setKeyword={setKeyword} />
         </div>
       </div>
     </ShopPageWrapper>

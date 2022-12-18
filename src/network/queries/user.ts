@@ -1,6 +1,14 @@
 import { useMutation, UseMutationOptions, useQuery } from 'react-query';
 import { SafeAny, BaseResponse, ErrorResponse, UpdatePasswordRequest, User } from '../../interfaces/common';
-import { resetPassword, changePassword, resetPasswordFnc, getAllUser, deleteUser, addUser } from '../services/user';
+import {
+  resetPassword,
+  changePassword,
+  resetPasswordFnc,
+  getAllUser,
+  deleteUser,
+  addUser,
+  updateUser,
+} from '../services/user';
 
 const USER_LIST = 'USER_LIST';
 export const useGetUsers = () =>
@@ -20,6 +28,9 @@ export const useChangePassword = (
 
 export const useDeleteUser = (options: UseMutationOptions<BaseResponse<SafeAny>, ErrorResponse, string>) =>
   useMutation((params: string) => deleteUser(params), options);
+
+export const useUpdateUser = (options: UseMutationOptions<BaseResponse<SafeAny>, ErrorResponse, User>) =>
+  useMutation((payload: User) => updateUser(payload), options);
 
 export const useAddUser = (options: UseMutationOptions<BaseResponse<SafeAny>, ErrorResponse, User>) =>
   useMutation((payload: User) => addUser(payload), options);

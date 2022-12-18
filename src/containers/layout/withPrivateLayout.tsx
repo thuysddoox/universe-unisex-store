@@ -5,7 +5,7 @@ import { Footer } from '@components/Footer';
 import { Header } from '@components/Header';
 import { BackTop } from 'antd';
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
-import { useContext, useMemo } from 'react';
+import { useContext, useMemo, useEffect } from 'react';
 import { UserContext } from '@contexts';
 import { useRouter } from 'next/router';
 
@@ -31,7 +31,11 @@ const withPrivateLayout = (Component: NextComponentType<NextPageContext, object,
         return true;
       }
     }, [userContext.currentUser, userContext.contextLoaded, router]);
-
+    // useEffect(() => {
+    //   if (!permissions) {
+    //     router.push('/');
+    //   }
+    // }, [permissions]);
     return permissions ? (
       <div className="page">
         <Head>

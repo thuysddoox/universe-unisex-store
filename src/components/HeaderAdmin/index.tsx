@@ -9,6 +9,7 @@ import { useContext, useMemo } from 'react';
 import { Menu, MenuItem } from '@ui/menu';
 import Link from 'next/link';
 import { confirm } from '@ui/modal';
+import { FaUserCircle } from 'react-icons/fa';
 const HeaderAdmin = () => {
   const userContext = useContext(UserContext);
   const { currentUser } = userContext;
@@ -69,7 +70,11 @@ const HeaderAdmin = () => {
             <span className="ml-5 text-base max-w-[80px] truncate capitalize text-blue-500">
               Hi, {currentUser?.username ?? currentUser?.lastName ?? 'User'}
             </span>
-            <Avatar size={40} icon={<UserOutlined />} className="ml-5" />
+            {currentUser?.avatar ? (
+              <Avatar src={currentUser?.avatar} size={40} className="ml-5" />
+            ) : (
+              <FaUserCircle style={{ color: 'var(--navy)', fontSize: '40px' }} className="ml-5" />
+            )}
           </span>
         </Dropdown>
       </div>

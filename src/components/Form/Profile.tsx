@@ -9,10 +9,42 @@ import { AiOutlineSave, AiTwotoneEdit, AiTwotoneLock, AiTwotoneSave } from 'reac
 import { UserContext } from '../../contexts/userContext';
 import { Ellipsis } from '../../ui/ellipsis';
 import Form, { useForm } from '../../ui/form';
+import { useUpdateUser } from '../../network/queries/user';
+import messages from '@constants/messages';
+import { Message } from '@ui/message';
+import { confirm } from '@ui/modal';
 const ProfileForm = () => {
   const [form] = useForm();
   const [disableForm, setDisableForm] = useState<boolean>(true);
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, setCurrentUser, updateUserInfo } = useContext(UserContext);
+  const { mutate: updateUserFunc, isLoading } = useUpdateUser({
+    onSuccess: (response) => {
+      const error = response?.data?.error;
+      if (response?.status === 200) {
+        updateUserInfo(response?.data?.responseData?.user);
+        Message.success(messages.updateUserProfileSuccess);
+        setDisableForm(true);
+      } else if (error) {
+        Message.error(error?.message);
+      }
+    },
+    onError: (error) => {
+      Message.error(error?.response?.data?.message ?? error.message);
+    },
+  });
+  const handleSave = () => {
+    confirm({
+      title: 'Confirm',
+      content: 'Do you want to update your profile?',
+      onOk: () => {
+        const { firstName, lastName, ...rest } = form.getFieldsValue();
+        updateUserFunc({ ...currentUser, username: lastName + firstName, ...rest, firstName, lastName });
+      },
+      onCancel: () => {
+        form.resetFields();
+      },
+    });
+  };
   return (
     <ProfileWrapper>
       <Form size="large" form={form} initialValues={currentUser} disabled={disableForm}>
@@ -42,6 +74,7 @@ const ProfileForm = () => {
               lineheight={'30px'}
               size="small"
               disabled={false}
+              onClick={handleSave}
             >
               Save
             </Button>
@@ -120,6 +153,24 @@ const ProfileForm = () => {
                 hasFeedback
               >
                 <Input type="phone" placeholder="Phone" />
+              </FormItem>
+            </Col>
+            <Col span={24} md={12} lg={8}>
+              <FormItem
+                name="gender"
+                label="Gender"
+                required={true}
+                rules={[{ required: true, message: 'Please select your gender!' }]}
+                className="m-2"
+                hasFeedback
+              >
+                <Select
+                  placeholder="Choose gender"
+                  options={[
+                    { label: 'male', value: 'male' },
+                    { label: 'female', value: 'female' },
+                  ]}
+                />
               </FormItem>
             </Col>
           </Row>

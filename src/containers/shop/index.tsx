@@ -13,6 +13,7 @@ import { Pagination } from 'antd';
 import Button from '@ui/button';
 import Spin from '@ui/spin';
 import { useSaleProducts } from '../../network/queries/product';
+import { useQueryCart } from '../../network/queries/cart';
 
 const listSort = ['Latest', 'Price: Low To High', 'Price: High To Low'];
 const Shop = ({
@@ -36,6 +37,7 @@ const Shop = ({
   const { data: productsResp, refetch, isFetching } = salePage ? useSaleProducts(queries) : useProducts(queries);
   const products = useMemo(() => productsResp?.data?.responseData, [productsResp]);
   const total = useMemo(() => productsResp?.data?.total, [productsResp?.data?.total]);
+  const { refetch: refetchCart } = useQueryCart();
   const handleChangePageIndex = (page: number, pageSize: number) => {
     setQueries((prev) => ({ ...prev, pageIndex: page - 1 }));
   };
@@ -56,6 +58,7 @@ const Shop = ({
       ...(category ? { category: [category] } : {}),
     });
   };
+  console.log(queries);
   const handleSort = (value) => {
     switch (value) {
       case 'Price: Low To High': {
@@ -128,7 +131,12 @@ const Shop = ({
               {products?.length > 0 ? (
                 products?.map((product) => (
                   <Col sm={24} md={12} lg={8}>
-                    <ProductComponent product={product} key={product?._id} />
+                    <ProductComponent
+                      product={product}
+                      key={product?._id}
+                      refetchCart={refetchCart}
+                      refetch={refetch}
+                    />
                   </Col>
                 ))
               ) : (

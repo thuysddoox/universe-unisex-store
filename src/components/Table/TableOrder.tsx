@@ -14,7 +14,7 @@ import { AiFillSave, AiOutlineEdit } from 'react-icons/ai';
 import { MdVisibility } from 'react-icons/md';
 import { TableProps } from './TableProduct';
 import { SafeAny } from '../../interfaces/common';
-import { FcOk } from 'react-icons/fc';
+import { FcApproval, FcOk } from 'react-icons/fc';
 import { getDisableOptions } from '@utils/convertors';
 
 type DataIndex = keyof Order;
@@ -167,7 +167,16 @@ const TableOrder = ({
         key: 'payment',
         width: '12%',
         className: 'min-w-[120px]',
-        render: (value) => <span>{value === 1 ? 'COD' : 'Card'}</span>,
+        render: (value, record) => (
+          <span className="flex items-center">
+            {value === 1 ? 'COD' : 'Card'}
+            {record?.isPaid && (
+              <Ellipsis placement="top" title="Paid" className=" mx-1 cursor-pointer">
+                <FcApproval className="text-lg" />
+              </Ellipsis>
+            )}
+          </span>
+        ),
       },
       {
         title: 'Created Date',

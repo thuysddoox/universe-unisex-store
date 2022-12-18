@@ -5,14 +5,15 @@ import { Message } from '@ui/message';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { BsFillPatchCheckFill } from 'react-icons/bs';
-import { payOrder } from '../../../../src/network/services/order';
+import { payOrder, getCheckout } from '../../../../src/network/services/order';
 
-export function SuccessPage({ sessionId }: { sessionId: string }) {
+export function SuccessPage({ orderId }: { orderId: string }) {
   useEffect(() => {
-    if (sessionId)
+    console.log(orderId);
+    if (orderId)
       (async () => {
         try {
-          const resp = await payOrder(sessionId);
+          const resp = await payOrder(orderId);
           if (resp?.data?.responseData) {
             Message.success(messages.paymentSuccess);
           }
@@ -20,7 +21,7 @@ export function SuccessPage({ sessionId }: { sessionId: string }) {
           Message.error(error?.response?.data?.message ?? error.message);
         }
       })();
-  }, [sessionId]);
+  }, [orderId]);
   return (
     <PageWapper className="pt-32 pb-24">
       <div className="container min-h-[50vh] flex items-center justify-center">
@@ -41,9 +42,7 @@ export function SuccessPage({ sessionId }: { sessionId: string }) {
 SuccessPage.getInitialProps = async (context) => {
   const { id } = context.query;
   return {
-    props: {
-      sessionId: id,
-    },
+    orderId: id,
   };
 };
 export default withPrivateLayout(SuccessPage);

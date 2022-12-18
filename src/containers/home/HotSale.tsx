@@ -1,16 +1,33 @@
 import HeadingSection from '@components/HeadingSection';
 import ProductComponent from '@components/Product';
 import styled from '@emotion/styled';
-import { Product } from '@interfaces/common';
-import { NextArrow, PrevArrow, responsiveSettGeneral, Slider } from '@ui/slider';
-import React from 'react';
+import { Slider, renderResponseSiveSetting, responsiveSettGeneral } from '@ui/slider';
+import { useMemo } from 'react';
+import { SafeAny } from '../../interfaces/common';
+import { useSaleProducts } from '../../network/queries/product';
 
-const HotSale = ({ data = [] }: { data?: Product[] }) => {
+const HotSale = ({ refetchCart }: { refetchCart?: SafeAny }) => {
+  const { data: dataResp, refetch } = useSaleProducts({ pageSize: 5 });
+  const data = useMemo(() => dataResp?.data?.responseData, [dataResp]);
   return (
     <HotSaleWrapper className="py-8">
       <HeadingSection title="Hot Sale" link="/sale" mode="center" />
-      <Slider slidesToShow={4} arrows={true} responsive={responsiveSettGeneral} className="mx-4 sm:mx-8">
-        {data.length > 0 && data.map((product) => <ProductComponent product={product} key={product?._id} />)}
+      <Slider
+        slidesToShow={4}
+        infinite={data?.length > 4}
+        arrows={true}
+        responsive={renderResponseSiveSetting(data?.length)}
+        className="mx-4 sm:mx-8"
+      >
+        {data?.length > 0 &&
+          data?.map((product) => (
+            <ProductComponent
+              refetchCart={refetchCart}
+              refetch={refetch}
+              product={product}
+              key={product?._id + 'sale'}
+            />
+          ))}
       </Slider>
     </HotSaleWrapper>
   );

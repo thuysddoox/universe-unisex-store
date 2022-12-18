@@ -21,14 +21,15 @@ const OrderItem = ({
   data,
   isDropdown = false,
   className,
+  refetchCart,
 }: {
   isCheckout?: boolean;
   isDropdown?: boolean;
   className?: string;
   data?: CartItem;
+  refetchCart?: SafeAny;
 }) => {
   const router = useRouter();
-  const { refetchCart } = useContext(UserContext);
   const [quantity, setQuantity] = useState<number>(data?.quantity ?? 1);
   const defaultImg = `${router.basePath}/assets/images/logo/default.png`;
   const { mutate: deleteCartFunc, isLoading } = useDeleteCart({
@@ -36,7 +37,7 @@ const OrderItem = ({
       const error = response?.data?.error;
       if (response?.status === 200) {
         Message.success(messages.deletedProductFromCartSuccess);
-        refetchCart();
+        refetchCart?.();
       } else if (error) {
         Message.error(error?.message);
       }

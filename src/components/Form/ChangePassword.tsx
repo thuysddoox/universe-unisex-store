@@ -13,9 +13,13 @@ import { UpdatePasswordRequest } from '../../interfaces/common';
 const ChangePasswordPopup = ({
   changePopup,
   handleModal,
+  isReset = false,
+  idReset,
 }: {
-  changePopup: (type: UserPopupType) => void;
-  handleModal: (e?: MouseEvent<HTMLElement, globalThis.MouseEvent>) => void;
+  changePopup?: (type: UserPopupType) => void;
+  handleModal?: (e?: MouseEvent<HTMLElement, globalThis.MouseEvent>) => void;
+  isReset?: boolean;
+  idReset?: string;
 }) => {
   const [form] = useForm();
   const router = useRouter();
@@ -26,7 +30,8 @@ const ChangePasswordPopup = ({
       if (isUpdated) {
         Message.success(messages.resetPassword);
         form.resetFields();
-        handleModal();
+        handleModal?.();
+        isReset && router.push('/');
       } else if (error) {
         Message.error(error?.message);
       }
@@ -38,7 +43,7 @@ const ChangePasswordPopup = ({
 
   const submitLoginForm = (data: UpdatePasswordRequest) => {
     const { newPassword, currentPassword } = data;
-    userChangePassword({ newPassword, currentPassword });
+    userChangePassword({ newPassword, currentPassword, isReset, userId: idReset });
   };
 
   return (
@@ -58,19 +63,21 @@ const ChangePasswordPopup = ({
         layout="vertical"
         onFinish={submitLoginForm}
       >
-        <FormItem
-          label="Current Password"
-          name="currentPassword"
-          required={true}
-          rules={[
-            {
-              required: true,
-              message: 'Please enter your current password!',
-            },
-          ]}
-        >
-          <Password type="text" placeholder="" />
-        </FormItem>
+        {!isReset && (
+          <FormItem
+            label="Current Password"
+            name="currentPassword"
+            required={true}
+            rules={[
+              {
+                required: true,
+                message: 'Please enter your current password!',
+              },
+            ]}
+          >
+            <Password type="text" placeholder="" />
+          </FormItem>
+        )}
         <FormItem
           label="New Password"
           className="mt-4"
@@ -109,24 +116,32 @@ const ChangePasswordPopup = ({
         >
           <Password placeholder="" />
         </FormItem>
-        <Row className="mt-6 btn-group">
+        <Row className={`mt-8 ${isReset ? 'justify-center' : 'btn-group '}`}>
+          {!isReset && (
+            <Col span={11}>
+              <FormItem>
+                <Button
+                  className="font-semibold"
+                  block
+                  bordercolor="var(--navy)"
+                  borderradius={'3px'}
+                  onClick={() => changePopup('login')}
+                >
+                  Cancel
+                </Button>
+              </FormItem>
+            </Col>
+          )}
           <Col span={11}>
             <FormItem>
               <Button
-                className="font-semibold"
+                type="primary"
+                htmlType="submit"
                 block
-                bordercolor="var(--navy)"
-                borderradius={'3px'}
-                onClick={() => changePopup('login')}
+                borderradius={isReset ? '30px' : '3px'}
+                loading={isLoading}
               >
-                Cancel
-              </Button>
-            </FormItem>
-          </Col>
-          <Col span={11}>
-            <FormItem>
-              <Button type="primary" htmlType="submit" block borderradius={'3px'} loading={isLoading}>
-                Change Password
+                {isReset ? 'Reset Password' : 'Change Password'}
               </Button>
             </FormItem>
           </Col>

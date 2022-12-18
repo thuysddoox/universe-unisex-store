@@ -13,24 +13,25 @@ import { useAddToCart, useQueryCart } from '@api/api';
 import { UserContext } from '@contexts';
 import messages from '@constants/messages';
 import { Message } from '@ui/message';
+import { getDisableOptions } from '../../utils/convertors';
 const Quantity = dynamic(() => import('@components/Quantity'), { ssr: false });
 const ProductDetail = ({ product }: { product: Product }) => {
   const colors = [
-    { value: 'red', label: <span className={`m-1 bg-blue-400 w-5 h-5 block rounded-circle`}></span> },
-    { value: 'green', label: <span className={`m-1 bg-blue-400 w-5 h-5 block rounded-circle`}></span> },
-    { value: 'blue', label: <span className={`m-1 bg-blue-400 w-5 h-5 block rounded-circle`}></span> },
-    { value: 'yellow', label: <span className={`m-1 bg-blue-400 w-5 h-5 block rounded-circle`}></span> },
+    {
+      value: product?.color,
+      label: <span className={`m-1 bg-${product?.color}-400 w-5 h-5 block rounded-circle`}></span>,
+    },
   ];
   const [quantity, setQuantity] = useState<number>(1);
   const { currentUser } = useContext(UserContext);
-  // const { data: CartResp, refetch } = useQueryCart();
+  const { data: CartResp, refetch } = useQueryCart();
   const { mutate: addToCartFunc, isLoading } = useAddToCart({
     onSuccess: (response) => {
       const cartDataResp = response?.data?.responseData;
       const error = response?.data?.error;
       if (cartDataResp) {
         Message.success(messages.addToCartSuccess);
-        // refetch();
+        refetch();
       } else if (error) {
         Message.error(error?.message);
       }
@@ -77,17 +78,29 @@ const ProductDetail = ({ product }: { product: Product }) => {
           options={colors}
           size="large"
           label="Color"
+          value={product?.color}
           buttonStyle="solid"
           optionType="button"
           containerClass="color-picker"
         />
-        <RadioGroup options={['s', 'm', 'l', 'xl']} label="Size" optionType="button" buttonStyle="solid" />
+        <RadioGroup
+          options={['s', 'm', 'l', 'xl'].map((size) => ({
+            value: size,
+            label: size.toUpperCase(),
+            disabled: size !== product?.size,
+          }))}
+          defaultValue={product?.size}
+          value={product?.size}
+          label="Size"
+          optionType="button"
+          buttonStyle="solid"
+        />
         <Quantity maxQuantity={product?.stock} quantity={quantity} setQuantity={setQuantity} containClass="mt-4" />
         <div className="flex items-center justify-between font-medium text-lg my-4">
           <span>Subtotal</span>
           <span>${(((product?.price * (100 - product?.discount)) / 100) * quantity).toFixed(2)}</span>
         </div>
-        <Button borderradius={'3px'} className="w-1/2" loading={isLoading} disabled={product?.stock === 0}>
+        <Button borderradius={'3px'} className="w-1/2 min-w-[200px]" loading={isLoading} disabled={product?.stock < 1}>
           <div className="flex items-center" onClick={handleAddToCart}>
             <FaShoppingCart className="text-lg" />
             <span className="ml-2 text-base font-medium">Add to cart</span>

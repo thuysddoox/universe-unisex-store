@@ -16,6 +16,7 @@ export interface TableProps {
   handleOpenEdit?: (product?: SafeAny) => void;
   handleDelete?: (product?: SafeAny) => void;
   handleSave?: (product?: SafeAny, resetFunc?: SafeAny) => void;
+  handleOpenDetail?: (product?: SafeAny) => void;
   data: SafeAny[];
   total?: number;
   pageSize?: number;

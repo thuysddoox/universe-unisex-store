@@ -10,16 +10,20 @@ import { Search } from '@ui/input';
 import { Message } from '@ui/message';
 import { Modal, confirm } from '@ui/modal';
 import { Grid } from 'antd';
-import { useEffect, useState } from 'react';
-import { useDeleteUser, useAddUser } from '../../../network/queries/user';
+import { useEffect, useState, useContext } from 'react';
+import { useDeleteUser, useAddUser, useUpdateUser } from '../../../network/queries/user';
 import SignupPopup from '@components/Form/Signup';
+import { UserContext } from '../../../contexts/userContext';
+import { Ellipsis } from '@ui/ellipsis';
 const { useBreakpoint } = Grid;
 const ManageUsers = () => {
   const screens = useBreakpoint();
   const [queries, setQueries] = useState<BaseListRequest>(QueryParam);
   const [selectedUser, setSelectedUser] = useState<User>();
+  const { currentUser } = useContext(UserContext);
   const [openModal, setIsOpenModal] = useState<boolean>(false);
   const [isAddForm, setIsAddForm] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
   const { data: usersResp, refetch, isFetching } = useGetUsers();
   const { mutate: deleteUserFunc } = useDeleteUser({
     onSuccess: (response) => {
@@ -49,6 +53,7 @@ const ManageUsers = () => {
       Message.error(error?.response?.data?.message ?? error.message);
     },
   });
+
   const handleDeleteUser = (user: User) => {
     confirm({
       title: 'Confirm',
@@ -68,6 +73,11 @@ const ManageUsers = () => {
     handleOpenModal();
     setSelectedUser(record);
   };
+  const handleOpenEdit = (record: User) => {
+    handleOpenModal();
+    setSelectedUser(record);
+    setIsEdit(!isEdit);
+  };
   const handleAddUser = (user: User) => {
     addUserFunc(user);
     setIsOpenModal(!openModal);
@@ -77,23 +87,27 @@ const ManageUsers = () => {
   }, [...Object.values(queries)]);
   return (
     <MangageUsersWrapper>
-      <div className="flex items-center justify-between">
-        <Button
-          borderradius={'3px'}
-          size="small"
-          borderless={true}
-          bgColor="rgba(16, 185, 129,1)"
-          textcolor="#fff"
-          className="font-medium my-3"
-          bordercolor={'rgba(16, 185, 129,1)'}
-          lineheight="30px"
-          onClick={() => {
-            handleOpenModal();
-            setIsAddForm(!isAddForm);
-          }}
-        >
-          Add +
-        </Button>
+      <div className="flex items-center justify-between mb-5">
+        <Ellipsis title={currentUser?.role != 2 ? 'You dont allow to do that' : 'Add Staff For Store'}>
+          <Button
+            borderradius={'3px'}
+            size="small"
+            borderless={true}
+            bgColor="rgba(16, 185, 129,1)"
+            textcolor="#fff"
+            className="font-medium my-3"
+            bordercolor={'rgba(16, 185, 129,1)'}
+            lineheight="30px"
+            disabled={currentUser?.role != 2}
+            onClick={() => {
+              handleOpenModal();
+              setIsAddForm(!isAddForm);
+            }}
+          >
+            Add +
+          </Button>
+        </Ellipsis>
+
         <Search
           placeholder="Search..."
           size="large"
@@ -111,7 +125,8 @@ const ManageUsers = () => {
         handleChangePageIndex={handleChangePageIndex}
         loading={isFetching}
         handleDelete={handleDeleteUser}
-        handleOpenEdit={handleOpenDetail}
+        handleOpenEdit={handleOpenEdit}
+        handleOpenDetail={handleOpenDetail}
       />
       <Modal
         centered
@@ -129,7 +144,11 @@ const ManageUsers = () => {
         }}
       >
         <div className="w-full h-full">
-          {isAddForm ? <SignupPopup isAddUser={true} addUserFunc={handleAddUser} /> : <UserCard user={selectedUser} />}
+          {isAddForm || isEdit ? (
+            <SignupPopup data={selectedUser} isAddUser={isAddForm} isEdit={isEdit} addUserFunc={handleAddUser} />
+          ) : (
+            <UserCard user={selectedUser} />
+          )}
         </div>
       </Modal>
     </MangageUsersWrapper>
