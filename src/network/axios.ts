@@ -3,8 +3,8 @@ import { StorageKeys, localStorageGet, storageClear } from './storage';
 import { StatusCodes } from 'http-status-codes';
 import { isEmpty } from 'lodash';
 
-// const API_URL = process.env.NEXT_PUBLIC_API_HOST_URL;
-const API_URL = 'https://universe-unisex-store-be.onrender.com/api';
+const API_URL = process.env.NEXT_PUBLIC_API_HOST_URL;
+// const API_URL = 'https://universe-unisex-store-be.onrender.com/api';
 
 // const API_URL = 'http://localhost:3000/api';
 

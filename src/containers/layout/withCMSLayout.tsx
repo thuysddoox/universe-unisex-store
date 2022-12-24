@@ -36,11 +36,11 @@ const withCMSLayout = (Component) => {
         return true;
       }
     }, [userContext.currentUser, userContext.contextLoaded, router]);
-    useEffect(() => {
-      if (!userContext.currentUser) {
-        router.push('/');
-      }
-    }, []);
+    // useEffect(() => {
+    //   if (!userContext.currentUser) {
+    //     router.push('/');
+    //   }
+    // }, []);
     return permissions ? (
       <div className="page">
         <Head>

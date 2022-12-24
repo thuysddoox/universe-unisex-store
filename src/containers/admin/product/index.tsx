@@ -13,6 +13,7 @@ import { BaseListRequest } from '../../../interfaces/common';
 import { QueryParam } from '../../../constants/enum';
 import Spin from '@ui/spin';
 import { useCallback } from 'react';
+import { setOptions } from 'react-chartjs-2/dist/utils';
 const { useBreakpoint } = Grid;
 const ManageProducts = () => {
   const screens = useBreakpoint();
@@ -39,12 +40,15 @@ const ManageProducts = () => {
   });
   const handleOpenProductForm = () => {
     setOpenProductForm(!openProductForm);
-    setIsEdit((prev) => !prev);
+    if (isEdit) {
+      setProduct({});
+      setIsEdit((prev) => !prev);
+    }
   };
   const handleOpenEditProduct = useCallback((product: Product) => {
     if (product) {
       setProduct(product);
-      setIsEdit((prev) => !prev);
+      setIsEdit(true);
       handleOpenProductForm();
     }
   }, []);
@@ -72,7 +76,10 @@ const ManageProducts = () => {
         className="font-medium my-3"
         bordercolor={'rgba(16, 185, 129,1)'}
         lineheight="30px"
-        onClick={handleOpenProductForm}
+        onClick={() => {
+          setOpenProductForm(!openProductForm);
+          setProduct({});
+        }}
       >
         Add +
       </Button>

@@ -45,6 +45,7 @@ const ProductForm = ({
       Message.error(error?.response?.data?.message ?? error.message);
     },
   });
+  console.log(isEdit);
   const { mutate: createProduct, isLoading: uploadLoading } = useCreateProduct({
     onSuccess: (response) => {
       const productResp = response?.data?.responseData;
@@ -84,9 +85,10 @@ const ProductForm = ({
   };
   useEffect(() => {
     setFileList(product?.thumbnails ?? []);
+    form.resetFields();
     form.setFieldsValue(product);
   }, [product]);
-
+  console.log(isEdit, product);
   return (
     <ProductFormWrapper>
       <Form form={form} className="p-0" onFinish={submitLoginForm}>

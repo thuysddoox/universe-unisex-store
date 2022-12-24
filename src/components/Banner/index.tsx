@@ -39,6 +39,7 @@ const Banner = ({
                 layout="fill"
                 objectFit="cover"
                 containerClass="h-[450px] lg:h-screen relative w-screen relative"
+                alt={''}
               />
               <div className="absolute w-full text-center top-1/2 -translate-y-2/4 z-30">
                 {banner?.title1 && (
@@ -47,7 +48,7 @@ const Banner = ({
                   </h2>
                 )}
                 {banner?.title2 && (
-                  <h4 className="text-white text-base md:text-xl lg:text-2xl my-2 italic">{banner?.title2}</h4>
+                  <h4 className="text-white text-base md:text-xl lg:text-2xl my-2 ">{banner?.title2}</h4>
                 )}
                 {banner?.description && (
                   <p className="text-white text-base md:text-lg my-4 italic">{banner?.description}</p>
