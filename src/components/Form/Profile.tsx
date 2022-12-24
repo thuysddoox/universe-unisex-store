@@ -13,6 +13,7 @@ import { useUpdateUser } from '../../network/queries/user';
 import messages from '@constants/messages';
 import { Message } from '@ui/message';
 import { confirm } from '@ui/modal';
+import SyntheticEvent from 'react';
 const ProfileForm = () => {
   const [form] = useForm();
   const [disableForm, setDisableForm] = useState<boolean>(true);
@@ -32,7 +33,9 @@ const ProfileForm = () => {
       Message.error(error?.response?.data?.message ?? error.message);
     },
   });
-  const handleSave = () => {
+  const handleSave = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     confirm({
       title: 'Confirm',
       content: 'Do you want to update your profile?',

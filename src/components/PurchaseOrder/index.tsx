@@ -51,17 +51,15 @@ const PurchaseOrder = ({ data, refetch, index }: { data?: Order; refetch?: SafeA
           <strong className="text-base">ORDER #{index + 1 ?? data?._id}</strong>
           <p>({data?.products?.length} sản phẩm)</p>
         </div>
-        <div>
+        <div className="flex items-center">
           <span>{STATUS_ORDER[data?.status]}</span>
-          <span>
-            {data?.isPaid && (
-              <>
-                <span> | </span>
-                <span>Paid</span>
-                <FcPaid />
-              </>
-            )}
-          </span>
+          {data?.isPaid && (
+            <>
+              <span className="mx-1"> | </span>
+              <span className="mr-1">Paid</span>
+              <FcPaid />
+            </>
+          )}
         </div>
       </div>
       <div>
