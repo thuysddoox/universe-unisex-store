@@ -108,7 +108,12 @@ const ManageProducts = () => {
         }}
       >
         <div ref={animated} className="w-full h-full">
-          <ProductForm product={selectedProduct} isEdit={isEdit} handleCloseForm={handleOpenProductForm} />
+          <ProductForm
+            product={selectedProduct}
+            isEdit={isEdit}
+            refetchData={refetch}
+            handleCloseForm={handleOpenProductForm}
+          />
         </div>
       </Modal>
     </div>

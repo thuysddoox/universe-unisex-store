@@ -36,7 +36,7 @@ const RelateProductList = ({
     </RelateProductListWrapper>
   );
 };
-const RelateProductListWrapper = styled.div`
+export const RelateProductListWrapper = styled.div`
   .slick-dots-bottom {
     bottom: -35px !important;
     align-items: center;

@@ -10,7 +10,7 @@ import { Search } from '@ui/input';
 import { Menu, MenuItem } from '@ui/menu';
 import { confirm } from '@ui/modal';
 import { Avatar, Badge, Grid, MenuProps } from 'antd';
-import { isEmpty } from 'lodash';
+import _, { isEmpty } from 'lodash';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useMemo, useState } from 'react';
@@ -38,7 +38,17 @@ export function getItem(
     type,
   } as MenuItem;
 }
-function Label({ title, url, isSuper }: { title: string; url?: string; isSuper?: boolean }) {
+function Label({
+  title,
+  url,
+  isSuper,
+  handleClick,
+}: {
+  title: string;
+  url?: string;
+  isSuper?: boolean;
+  handleClick?: () => void;
+}) {
   return url ? (
     <Link href={url} passHref>
       <a className="text-base uppercase">
@@ -47,10 +57,10 @@ function Label({ title, url, isSuper }: { title: string; url?: string; isSuper?:
       </a>
     </Link>
   ) : (
-    <span>
+    <a onClick={() => handleClick?.()} className="text-base uppercase">
       {title}
       {isSuper && <DownOutlined style={{ fontSize: '12px', marginLeft: '0.875rem' }} />}
-    </span>
+    </a>
   );
 }
 export function Header() {
@@ -79,39 +89,77 @@ export function Header() {
         getItem(<Label title="Accessories" url="/category/accessories" />, 'Accessories'),
         // getItem(<Label title="Other" url="/category/other" />, 'Other'),
       ]),
-      getItem(<Label title="About us" url="/about" isSuper />, 'about', null, [
+      getItem(<Label title="About us" isSuper />, 'about', null, [
         getItem(<Label title="Us" url="/about" />, 'us'),
         // getItem(<Label title="Jobs" url="/jobs" />, 'jobs'),
         getItem(<Label title="Contact" url="/contact" />, 'contact'),
       ]),
+      ...(!isDesktop && userContext?.currentUser
+        ? [
+            getItem(<Label title="My Account" isSuper />, 'my_account', null, [
+              getItem(<Label title="Profile" url="/account" />, 'Profile'),
+              // getItem(<Label title="Jobs" url="/jobs" />, 'jobs'),
+              getItem(<Label title="My Favorites" url="/favourite" />, 'favourite'),
+              getItem(<Label title="Purchases" url="/purchases" />, 'purchases'),
+              getItem(
+                <Label
+                  title="Change Password"
+                  handleClick={() => {
+                    setTypePopup('changepassword');
+                    setIsShowLoginSignup(true);
+                  }}
+                />,
+                'changepassword',
+              ),
+            ]),
+            getItem(
+              <Label
+                title="Logout"
+                handleClick={() => {
+                  confirm({
+                    title: 'Confirm',
+                    content: 'Do you want to logout?',
+                    onOk: userContext.logout,
+                  });
+                }}
+              />,
+              'Logout',
+            ),
+          ]
+        : []),
     ],
-    [],
+    [isDesktop, userContext?.currentUser],
   );
   const ACCOUNT_TABS = useMemo(
-    () => [
-      { url: '/account', title: 'Profile' },
-      { url: '/favourite', title: 'My Favorites' },
-      { url: '/purchases', title: 'Purchases' },
-      {
-        title: 'Change Password',
-        handleClick: () => {
-          setTypePopup('changepassword');
-          setIsShowLoginSignup(true);
+    () =>
+      [
+        { url: '/account', title: 'Profile' },
+        { url: '/favourite', title: 'My Favorites' },
+        { url: '/purchases', title: 'Purchases' },
+        {
+          title: 'Change Password',
+          handleClick: () => {
+            setTypePopup('changepassword');
+            setIsShowLoginSignup(true);
+          },
         },
-      },
-      { url: '/cms', title: 'Manager Portal' },
-      { url: '/', title: 'Client Portal' },
-      {
-        title: 'Logout',
-        handleClick: () => {
-          confirm({
-            title: 'Confirm',
-            content: 'Do you want to logout?',
-            onOk: userContext.logout,
-          });
+        userContext?.currentUser?.role !== 1
+          ? router.asPath.split('/')[1] === 'cms'
+            ? { url: '/', title: 'Client Portal' }
+            : { url: '/cms', title: 'Manager Portal' }
+          : undefined,
+        {
+          title: 'Logout',
+          handleClick: () => {
+            confirm({
+              title: 'Confirm',
+              content: 'Do you want to logout?',
+              onOk: userContext.logout,
+            });
+          },
         },
-      },
-    ],
+      ].filter((value) => Boolean(value)),
+
     [],
   );
   const isLoggedIn = useMemo(() => {
@@ -260,7 +308,7 @@ const Title = ({
     <div
       className="flex items-center"
       onClick={() => {
-        setIsShowLoginSignup(!isShowLoginSignup);
+        !currentUser && setIsShowLoginSignup(!isShowLoginSignup);
       }}
     >
       {currentUser?.avatar ? (

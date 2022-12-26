@@ -1,23 +1,24 @@
-import { BellFilled, MenuOutlined, PlusCircleOutlined, UserOutlined } from '@ant-design/icons';
 import { Dropdown } from '@ui/dropdown';
 import { Search } from '@ui/input';
-import { Avatar, Badge } from 'antd';
-import { FiMenu } from 'react-icons/fi';
-import { IoAddCircleOutline } from 'react-icons/io5';
-import { UserContext } from '../../contexts/userContext';
-import { useContext, useMemo } from 'react';
 import { Menu, MenuItem } from '@ui/menu';
-import Link from 'next/link';
 import { confirm } from '@ui/modal';
+import { Avatar } from 'antd';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { SetStateAction, useContext, useMemo } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
-const HeaderAdmin = () => {
+import { FiMenu } from 'react-icons/fi';
+import { UserContext } from '../../contexts/userContext';
+const HeaderAdmin = ({ setIsCollapsed }: { setIsCollapsed?: React.Dispatch<SetStateAction<boolean>> }) => {
   const userContext = useContext(UserContext);
   const { currentUser } = userContext;
+  const router = useRouter();
   const ACCOUNT_TABS = useMemo(
     () => [
       { url: '/account', title: 'Profile' },
-      { url: '/cms', title: 'Manager Portal' },
-      { url: '/', title: 'Client Portal' },
+      router.asPath.split('/')[1] === 'cms'
+        ? { url: '/', title: 'Client Portal' }
+        : { url: '/cms', title: 'Manager Portal' },
       {
         title: 'Logout',
         handleClick: () => {
@@ -29,7 +30,7 @@ const HeaderAdmin = () => {
         },
       },
     ],
-    [],
+    [router],
   );
   const menu = useMemo(() => {
     return (
@@ -52,7 +53,7 @@ const HeaderAdmin = () => {
   }, [ACCOUNT_TABS]);
   return (
     <div className="py-3 px-4 flex items-center sticky top-0 w-full z-10 bg-white shadow">
-      <FiMenu className="mr-5 text-xl font-semibold cursor-pointer" />
+      <FiMenu className="mr-5 text-xl font-semibold cursor-pointer" onClick={() => setIsCollapsed((prev) => !prev)} />
       <Search
         placeholder="Search"
         size="middle"

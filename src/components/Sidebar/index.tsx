@@ -12,8 +12,9 @@ import { ROUTES } from '@constants/routes';
 import { Menu, MenuTheme } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { AiOutlineLogout, AiOutlineStar } from 'react-icons/ai';
+import React, { useState, useEffect } from 'react';
+import { AiOutlineLogout, AiOutlineRightCircle, AiOutlineStar } from 'react-icons/ai';
+
 const NavItem = ({ label, url }: { label: string; url?: string; handleClick?: () => void }) => {
   return url ? (
     <Link href={url} passHref>
@@ -31,16 +32,16 @@ const items: MenuItem[] = [
   getItem(<NavItem label="Users" url={ROUTES.CMS_USER} />, 'users', <SolutionOutlined />),
   getItem(<NavItem label="Banners" url={ROUTES.CMS_AD} />, 'banners', <PictureOutlined />),
 ];
-const Sidebar = () => {
-  const [theme, setTheme] = useState<MenuTheme>('dark');
+const Sidebar = ({ isCollapsed }: { isCollapsed?: boolean }) => {
+  const [isCollapse, setIsCollapse] = useState<boolean>(false);
   const router = useRouter();
-  const changeTheme = (value: boolean) => {
-    setTheme(value ? 'dark' : 'light');
-  };
-
+  useEffect(() => setIsCollapse(isCollapsed), [isCollapsed]);
   return (
-    // <div className="sticky z-10 top-0 h-screen">
-    <div className="sticky z-10 top-0 h-screen flex flex-col bg-[#001529]">
+    <div
+      className={`sticky z-10 top-0 h-screen flex flex-col bg-[#001529] transition-all ${
+        isCollapse ? 'w-[60px]' : 'w-[200px]'
+      }`}
+    >
       <Link href="/" passHref>
         <a className="bg-[#001529] p-3">
           <NextImage
@@ -52,15 +53,21 @@ const Sidebar = () => {
       </Link>
       <Menu
         theme="dark"
-        style={{ width: 200 }}
+        style={{ width: '100%' }}
         defaultSelectedKeys={[router.route.split('/')[2] || router.route.split('/')[1]]}
         mode="inline"
         items={items}
         className="flex-grow"
       />
-      <LeftCircleOutlined className="text-white text-3xl flex-grow text-right mr-6 cursor-pointer" />
+      <span className="text-white text-3xl mx-auto flex-grow text-right cursor-pointer">
+        {isCollapse ? (
+          <AiOutlineRightCircle onClick={() => setIsCollapse(!isCollapse)} />
+        ) : (
+          <LeftCircleOutlined onClick={() => setIsCollapse(!isCollapse)} />
+        )}
+      </span>
     </div>
   );
 };
 
-export default Sidebar;
+export default React.memo(Sidebar);

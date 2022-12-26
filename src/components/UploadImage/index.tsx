@@ -62,7 +62,7 @@ export const UploadImage = ({
     setVisible(true);
   };
   const onRemove = (file: UploadFile<any>) => {
-    handleRemove(file.response?.responseData?.listUrl[0] ?? file.response?.responseData?.url);
+    handleRemove(file?.url);
   };
   useEffect(() => {
     setImagesUrl(fileListUrl);
@@ -89,7 +89,11 @@ export const UploadImage = ({
         maxCount={maxCount ?? 1}
         fileList={fileList}
       >
-        {fileList.length > 10 ? <Image src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : <UploadButton />}
+        {fileList.length > 10 ? (
+          fileList?.map((imageUrl) => <Image src={imageUrl?.url} alt="avatar" style={{ width: '100%' }} />)
+        ) : (
+          <UploadButton />
+        )}
       </Upload>
       <div style={{ display: 'none' }}>
         <Image.PreviewGroup preview={{ visible, onVisibleChange: (vis) => setVisible(vis) }}>

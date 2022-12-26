@@ -13,13 +13,12 @@ import { useAddToCart, useQueryCart } from '@api/api';
 import { UserContext } from '@contexts';
 import messages from '@constants/messages';
 import { Message } from '@ui/message';
-import { getDisableOptions } from '../../utils/convertors';
 const Quantity = dynamic(() => import('@components/Quantity'), { ssr: false });
 const ProductDetail = ({ product }: { product: Product }) => {
   const colors = [
     {
       value: product?.color,
-      label: <span className={`m-1 bg-${product?.color}-400 w-5 h-5 block rounded-circle`}></span>,
+      label: <span style={{ background: product?.color }} className={`m-1 w-5 h-5 block rounded-circle`}></span>,
     },
   ];
   const [quantity, setQuantity] = useState<number>(1);
@@ -46,7 +45,7 @@ const ProductDetail = ({ product }: { product: Product }) => {
   };
   return (
     <ProductDetailWrap className="mt-8 md:mt-0">
-      <h3 className="product-title text-xl md:text-2xl lg:text-3xl font-semibold mb-4 md:mb-0">{product?.name}</h3>
+      <h3 className="product-title text-xl md:text-2xl xl:text-3xl font-semibold mb-4 md:mb-0">{product?.name}</h3>
       <div className="flex items-center justify-between">
         <div>
           <Rate allowClear={true} defaultValue={3} allowHalf={true} className={'text-sm'} />
@@ -100,12 +99,26 @@ const ProductDetail = ({ product }: { product: Product }) => {
           <span>Subtotal</span>
           <span>${(((product?.price * (100 - product?.discount)) / 100) * quantity).toFixed(2)}</span>
         </div>
-        <Button borderradius={'3px'} className="w-1/2 min-w-[200px]" loading={isLoading} disabled={product?.stock < 1}>
+        <Button
+          icon={<FaShoppingCart className="text-lg" />}
+          borderradius={'3px'}
+          disabled={product?.stock < 1}
+          className="w-1/2 min-w-[200px]"
+          hoverBgColor="var(--navy)"
+          bordercolor="var(--navy)"
+          textcolor="var(--navy)"
+          loading={isLoading}
+        >
+          <span onClick={handleAddToCart} className="ml-2 font-medium">
+            Add to cart
+          </span>
+        </Button>
+        {/* <Button borderradius={'3px'} className="w-1/2 min-w-[200px]">
           <div className="flex items-center" onClick={handleAddToCart}>
             <FaShoppingCart className="text-lg" />
             <span className="ml-2 text-base font-medium">Add to cart</span>
           </div>
-        </Button>
+        </Button> */}
         {/* <span>add to cart/ out of stock</span> */}
       </div>
     </ProductDetailWrap>

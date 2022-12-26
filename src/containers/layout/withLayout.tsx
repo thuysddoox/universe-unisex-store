@@ -5,8 +5,8 @@ import { Footer } from '@components/Footer';
 import { Header } from '@components/Header';
 import { BackTop } from 'antd';
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
-import { getServerSideProps } from '../../../pages/product/[id]';
-
+import dynamic from 'next/dynamic';
+// const Header = dynamic(() => import('@components/Header'), { ssr: false });
 export interface LayoutProps {
   headerStyle?: 'transparent' | 'default';
   transparentProps?: boolean;

@@ -49,8 +49,8 @@ const SliderDetail = ({ data = [] }: { data: string[] }) => {
             focusOnSelect={true}
             autoplay={false}
             infinite={true}
-            arrows={true}
-            slidesToShow={data?.length < 3 ? data?.length : 3}
+            arrows={false}
+            slidesToShow={data?.length < 5 ? data?.length : 5}
             speed={0}
           >
             {data?.map((item, id) => (

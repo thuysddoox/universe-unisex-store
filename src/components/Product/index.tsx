@@ -46,7 +46,6 @@ const ProductComponent = ({
       addToCartFunc({ productId: product?._id, quantity: 1 });
     } else Message.warning(messages.loginRequired);
   };
-  console.log('render');
   return (
     <ProductWrap className="w-full py-4 px-2">
       <Card hoverable className="card relative">
@@ -74,7 +73,9 @@ const ProductComponent = ({
         <div className="product-info p-2">
           <Link href={`/product/${product?._id}`} passHref>
             <a>
-              <h3 className="product-name transition-all font-semibold my-4 text-base">{product?.name}</h3>
+              <h3 className="product-name truncate whitespace-nowrap transition-all font-semibold my-4 text-base">
+                {product?.name}
+              </h3>
             </a>
           </Link>
           <div className="flex justify-between flex-wrap items-center py-4 border-t-2 border-blue-700">
@@ -93,11 +94,19 @@ const ProductComponent = ({
               className={'text-sm'}
             />
           </div>
-          <Button borderradius={'3px'} loading={isLoading} disabled={product?.stock < 1} className="w-full btn-add">
-            <div className="flex items-center" onClick={handleAddToCart}>
-              <FaShoppingCart className="text-lg" />
-              <span className="ml-2 font-medium">Add to cart</span>
-            </div>
+          <Button
+            icon={<FaShoppingCart className="text-lg" />}
+            borderradius={'3px'}
+            loading={isLoading}
+            disabled={product?.stock < 1}
+            className="w-full btn-add"
+            hoverBgColor="var(--navy)"
+            bordercolor="var(--navy)"
+            textcolor="var(--navy)"
+          >
+            <span onClick={handleAddToCart} className="ml-2 font-medium">
+              Add to cart
+            </span>
           </Button>
         </div>
       </Card>
@@ -121,7 +130,6 @@ const ProductWrap = styled.div`
     }
   }
   h3.product-name {
-    ${(props) => props.theme.mixin.cutString(1.25)};
     &:hover {
       color: var(--navy);
     }

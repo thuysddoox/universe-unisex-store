@@ -17,15 +17,18 @@ import { useUploadMutilple } from '../../network/queries/upload';
 import { Message } from '@ui/message';
 import { useCategory, useCreateProduct, useUpdateProduct } from '@api/api';
 import messages from '@constants/messages';
+import { SafeAny } from '../../interfaces/common';
 const Editor = dynamic(() => import('../Editor'), { ssr: false });
 const ProductForm = ({
   product,
   isEdit,
   handleCloseForm,
+  refetchData,
 }: {
   product?: Product;
   isEdit?: boolean;
   handleCloseForm: () => void;
+  refetchData: SafeAny;
 }) => {
   const [form] = useForm();
   const [fileList, setFileList] = useState<string[]>(product?.thumbnails ?? []);
@@ -37,6 +40,7 @@ const ProductForm = ({
       const error = response?.data?.error;
       if (productResp) {
         Message.success(messages.updatedProductSuccess);
+        refetchData();
       } else if (error) {
         Message.error(error?.message);
       }
@@ -45,13 +49,13 @@ const ProductForm = ({
       Message.error(error?.response?.data?.message ?? error.message);
     },
   });
-  console.log(isEdit);
   const { mutate: createProduct, isLoading: uploadLoading } = useCreateProduct({
     onSuccess: (response) => {
       const productResp = response?.data?.responseData;
       const error = response?.data?.error;
       if (productResp) {
         Message.success(messages.addNewProductSuccess);
+        refetchData();
         form.resetFields();
         setFileList([]);
       } else if (error) {
@@ -88,7 +92,6 @@ const ProductForm = ({
     form.resetFields();
     form.setFieldsValue(product);
   }, [product]);
-  console.log(isEdit, product);
   return (
     <ProductFormWrapper>
       <Form form={form} className="p-0" onFinish={submitLoginForm}>

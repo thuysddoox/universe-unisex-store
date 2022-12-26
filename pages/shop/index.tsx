@@ -29,7 +29,7 @@ export function ShopPage({ categories }: { categories?: Category[] }) {
           <HeadingSection title="Shop Sale" />
           <Advertisement bannersList={[]} />
         </div> */}
-        <ShopByCategory categories={categories} />
+        {/* <ShopByCategory categories={categories} /> */}
         <div className="pt-8">
           <HeadingSection title="Shop Now" />
           <Shop keyword={keyword} setKeyword={setKeyword} />

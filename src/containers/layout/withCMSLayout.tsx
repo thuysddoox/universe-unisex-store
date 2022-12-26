@@ -7,12 +7,11 @@ import { BackTop } from 'antd';
 import { VerticalAlignTopOutlined } from '@ant-design/icons';
 import Sidebar from '@components/Sidebar';
 import HeaderAdmin from '@components/HeaderAdmin';
-import { useContext, useMemo, useEffect } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { UserContext } from '../../contexts/userContext';
 import { useRouter } from 'next/router';
 import { PERMISSION_DENIED } from './withPrivateLayout';
 import { Message } from '@ui/message';
-import { getServerSideProps } from '../../../pages/product/[id]';
 
 export interface LayoutProps {
   headerStyle?: 'transparent' | 'default';
@@ -23,7 +22,7 @@ const withCMSLayout = (Component) => {
   const Wrapper = (props: LayoutProps) => {
     const userContext = useContext(UserContext);
     const router = useRouter();
-
+    const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
     const permissions = true;
     useMemo(() => {
       if (userContext.contextLoaded) {
@@ -51,9 +50,9 @@ const withCMSLayout = (Component) => {
           {/* <link rel="manifest" href="/favicon/site.webmanifest" /> */}
         </Head>
         <div className="flex">
-          <Sidebar />
+          <Sidebar isCollapsed={isCollapsed} />
           <div className="flex-grow bg-gray-200">
-            <HeaderAdmin />
+            <HeaderAdmin setIsCollapsed={setIsCollapsed} />
             <div className="p-5">
               <Component {...props} />
             </div>
