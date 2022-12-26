@@ -154,10 +154,7 @@ const TableProduct = ({
         width: '20%',
         className: 'max-w-[210px]',
         render: (value) => (
-          <div
-            className="truncate whitespace-pre-wrap"
-            dangerouslySetInnerHTML={{ __html: truncate(value, 200) }}
-          ></div>
+          <div className="truncate whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: truncate(value, 80) }}></div>
         ),
       },
       {

@@ -15,6 +15,7 @@ import { BaseListRequest, Order, SafeAny } from '@interfaces';
 import { QueryParam } from '../../constants/enum';
 import NoResults from '@components/NoResults';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import _ from 'lodash';
 
 const ManagePurchases = () => {
   const [queries, setQueries] = useState<BaseListRequest>({ status: 1, pageSize: 6, pageIndex: 0 });
@@ -41,7 +42,10 @@ const ManagePurchases = () => {
         key: 'Tab-' + index,
         label: (
           <div className="text-center mr-4" onClick={() => setQueries((prev) => ({ ...prev, status: item.status }))}>
-            <Badge count={statisticResp?.data?.responseData?.[item.status]?.count ?? 0} overflowCount={5}>
+            <Badge
+              count={_.find(statisticResp?.data?.responseData, (value) => value._id === item.status)?.count ?? 0}
+              overflowCount={5}
+            >
               {item?.icon}
             </Badge>
             <div>

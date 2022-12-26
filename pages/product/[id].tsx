@@ -21,7 +21,7 @@ import { UserContext } from '../../src/contexts/userContext';
 import { useContext } from 'react';
 
 export function ProductDetailPage({ productDetailSSR }: { productDetailSSR: Product }) {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, contextLoaded } = useContext(UserContext);
   const {
     data: relateResp,
     refetch,
@@ -34,7 +34,7 @@ export function ProductDetailPage({ productDetailSSR }: { productDetailSSR: Prod
     size: productDetailSSR?.size,
     category: [productDetailSSR?.categoryId],
   });
-  const { refetch: refetchCart } = currentUser ? useQueryCart() : { refetch: undefined };
+  const { refetch: refetchCart } = currentUser || contextLoaded ? useQueryCart() : { refetch: undefined };
   return (
     <div className="page">
       <Head>

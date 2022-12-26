@@ -13,17 +13,17 @@ export const renderResponseSiveSetting = (len: number) => {
     {
       breakpoint: 1200,
       settings: {
-        slidesToShow: 3,
+        slidesToShow: len >= 3 ? 3 : 1,
         slidesToScroll: 1,
-        infinite: len > 3,
+        infinite: len >= 3,
       },
     },
     {
       breakpoint: 992,
       settings: {
-        slidesToShow: 2,
+        slidesToShow: len >= 2 ? 2 : 1,
         slidesToScroll: 1,
-        infinite: len > 2,
+        infinite: len >= 2,
       },
     },
     {
@@ -31,7 +31,7 @@ export const renderResponseSiveSetting = (len: number) => {
       settings: {
         slidesToShow: 1,
         slidesToScroll: 1,
-        infinite: len > 1,
+        infinite: len >= 1,
       },
     },
   ];

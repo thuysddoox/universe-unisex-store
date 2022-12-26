@@ -22,7 +22,7 @@ const withPrivateLayout = (Component: NextComponentType<NextPageContext, object,
     const router = useRouter();
 
     const permissions = useMemo(() => {
-      if (userContext.contextLoaded) {
+      if (userContext.contextLoaded || userContext.currentUser) {
         const user = userContext.currentUser;
         if (!user) {
           router.push('/');
