@@ -7,4 +7,5 @@ export * from './cart';
 export * from './product';
 export * from './favorite';
 export * from './statistic';
+export * from './address';
 export * from './banner';

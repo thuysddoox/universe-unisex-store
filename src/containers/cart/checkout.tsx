@@ -46,7 +46,6 @@ const Checkout = () => {
     onSuccess: (response) => {
       const data = response?.data?.responseData;
       const error = response?.data?.error;
-      console.log(data);
       if (data) {
         Message.success(messages.createOrderSuccess);
         if (data.payment === 2) createCheckoutFunc(data);
@@ -59,6 +58,7 @@ const Checkout = () => {
       Message.error(error?.response?.data?.message ?? error.message);
     },
   });
+
   const handleSubmitCheckout = useCallback(async (data: SafeAny) => {
     const { fullName, phone, email, payment, dob, note, noHome, address, commune, district, city } = data;
     const order = {

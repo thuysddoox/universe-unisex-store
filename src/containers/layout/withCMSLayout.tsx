@@ -23,11 +23,10 @@ const withCMSLayout = (Component) => {
     const userContext = useContext(UserContext);
     const router = useRouter();
     const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-    const permissions = true;
-    useMemo(() => {
-      if (userContext.contextLoaded) {
-        const user = userContext.currentUser;
-        if (!user || user.role === 1) {
+    const permissions = useMemo(() => {
+      if (userContext.contextLoaded || userContext.currentUser) {
+        const user = userContext?.currentUser;
+        if (!user || user?.role === 1) {
           Message.warning('You dont have permission to access this page.');
           router.push('/');
           return false;

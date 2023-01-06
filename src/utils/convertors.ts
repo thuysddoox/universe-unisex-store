@@ -1,3 +1,4 @@
+import { CodeFilled } from '@ant-design/icons';
 import { CartItem, Category, Status } from '@interfaces/common';
 import dayjs from 'dayjs';
 
@@ -13,8 +14,8 @@ export function covertCategoryToOption(categories: Category[]) {
 export function covertCartItemToOrderItem(data: CartItem[]) {
   return data.map((item) => {
     const { quantity, product } = item;
-    const { _id, name, price, color, size, discount, thumbnails } = product;
-    return { productId: _id, productName: name, price, discount, color, size, thumbnails, quantity };
+    const { _id, name, price, color, size, discount, thumbnails, categoryId } = product;
+    return { productId: _id, productName: name, price, discount, color, size, thumbnails, quantity, categoryId };
   });
 }
 export function getTotal(cartItems: CartItem[]) {
@@ -35,4 +36,8 @@ export const getDateOfStatus = (status, statusList: Status[]) => {
 export const getDisableOptions = (status) => {
   if (status === 0) return [1, 2, 3, 4];
   else return Array.from({ length: status }, (_, i) => status - i);
+};
+
+export const convertAddress = (data: { code: number; name: string }[]) => {
+  return data?.map((item) => ({ value: item?.code, label: item?.name })) ?? [];
 };

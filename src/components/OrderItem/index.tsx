@@ -113,7 +113,7 @@ const OrderItem = ({
             className={`${isCheckout || isDropdown ? 'mt-1' : 'mt-4'} flex justify-between items-center flex-wrap mt-4`}
           >
             {!isCheckout ? (
-              <Quantity maxQuantity={data.product.stock} quantity={quantity} setQuantity={setQuantity} />
+              <Quantity maxQuantity={data?.product?.stock} quantity={quantity} setQuantity={setQuantity} />
             ) : (
               <></>
             )}

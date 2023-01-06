@@ -10,8 +10,8 @@ const Editor = ({ value, onChange }) => {
       data={value}
       config={{
         cloudServices: {
-          tokenUrl: 'https://93930.cke-cs.com/token/dev/an9T2aI24vbZH54x7wkJsrKoMaBNw8dEdDrb?limit=10',
-          uploadUrl: 'https://93930.cke-cs.com/easyimage/upload/',
+          tokenUrl: 'https://94658.cke-cs.com/token/dev/p74d7yAwphDyu2cHrjEfYZu12uOtcTRkgW6A?limit=10',
+          uploadUrl: 'https://94658.cke-cs.com/easyimage/upload/',
         },
       }}
       onChange={(event, editor) => {

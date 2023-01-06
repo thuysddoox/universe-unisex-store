@@ -4,9 +4,11 @@ import Input, { TextArea } from '@ui/input';
 import { RadioGroup } from '@ui/radio';
 import { Select } from '@ui/select';
 import { Col, DatePicker, FormInstance, Row } from 'antd';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { SafeAny } from '../../interfaces/common';
 import Form from '../../ui/form';
+import { useQueryCity, useQueryCommune, useQueryDistrict } from '../../network/queries/address';
+import { convertAddress } from '@utils/convertors';
 
 const CheckoutFrom = ({
   data,
@@ -22,6 +24,15 @@ const CheckoutFrom = ({
   const handleChangeValues = useCallback((_, allValues) => {
     getData({ ...data, ...allValues });
   }, []);
+  const [addressObj, setAddressObj] = useState<SafeAny>({ city: undefined, district: undefined });
+  const { data: cityRes } = useQueryCity();
+  const { data: communeRes, refetch: refetchCommune } = useQueryCommune(addressObj?.district);
+  const { data: districtRes, refetch: refetchDistrict } = useQueryDistrict(addressObj?.city);
+  useEffect(() => {
+    refetchCommune();
+    refetchDistrict();
+  }, [addressObj]);
+  console.log(districtRes);
   return (
     <CheckoutWrapper>
       <Form
@@ -32,7 +43,7 @@ const CheckoutFrom = ({
         onFinish={handleSubmitCheckout}
       >
         <Row>
-          <Col span={12}>
+          <Col span={12} sm={24}>
             <FormItem
               label="FullName"
               name="fullName"
@@ -44,7 +55,7 @@ const CheckoutFrom = ({
               <Input type="text" placeholder="Full Name" borderradius={'4px'} />
             </FormItem>
           </Col>
-          <Col span={12}>
+          <Col span={12} sm={24}>
             <FormItem
               name="dob"
               label="Date of Birth"
@@ -58,7 +69,7 @@ const CheckoutFrom = ({
           </Col>
         </Row>
         <Row>
-          <Col span={12}>
+          <Col span={12} sm={24}>
             <FormItem
               name="email"
               label="Email"
@@ -70,7 +81,7 @@ const CheckoutFrom = ({
               <Input type="email" placeholder="Email Address" borderradius={'4px'} />
             </FormItem>
           </Col>
-          <Col span={12}>
+          <Col span={12} sm={24}>
             <FormItem
               name="phone"
               label="Phone"
@@ -84,7 +95,7 @@ const CheckoutFrom = ({
           </Col>
         </Row>
         <Row>
-          <Col span={8}>
+          <Col span={8} sm={24}>
             <FormItem
               name="city"
               label="Province/City"
@@ -95,12 +106,15 @@ const CheckoutFrom = ({
             >
               <Select
                 placeholder="Choose province/city"
-                options={[{ label: 'He', value: 'he' }]}
+                options={convertAddress(cityRes?.data?.results)}
                 borderradius={'4px'}
+                onChange={(value) => {
+                  setAddressObj((prev) => ({ ...prev, city: value }));
+                }}
               />
             </FormItem>
           </Col>
-          <Col span={8}>
+          <Col span={8} sm={24}>
             <FormItem
               name="district"
               label="District"
@@ -112,12 +126,15 @@ const CheckoutFrom = ({
               <Select
                 size="large"
                 placeholder="Choose district"
-                options={[{ label: 'He', value: 'he' }]}
+                options={convertAddress(districtRes?.data?.results)}
                 borderradius={'4px'}
+                onChange={(value) => {
+                  setAddressObj((prev) => ({ ...prev, district: value }));
+                }}
               />
             </FormItem>
           </Col>
-          <Col span={8}>
+          <Col span={8} sm={24}>
             <FormItem
               name="commune"
               label="Commune"
@@ -126,7 +143,11 @@ const CheckoutFrom = ({
               className="m-2"
               hasFeedback
             >
-              <Select placeholder="Choose commune" options={[{ label: 'He', value: 'he' }]} borderradius={'4px'} />
+              <Select
+                placeholder="Choose commune"
+                options={convertAddress(communeRes?.data?.results)}
+                borderradius={'4px'}
+              />
             </FormItem>
           </Col>
         </Row>
