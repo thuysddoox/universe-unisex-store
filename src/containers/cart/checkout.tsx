@@ -90,7 +90,7 @@ const Checkout = () => {
           </Col>
           <Col xs={24} md={8}>
             <OrderItemList data={cartItems} />
-            <OrderInfo subtotal={totalCart} shipCost={totalCart > 200 || totalCart === 0 ? 0 : 3} />
+            <OrderInfo subtotal={totalCart} shipCost={totalCart > 800000 || totalCart === 0 ? 0 : 30000} />
             <Button
               borderradius={'3px'}
               hoverBgColor={'var(--navy)'}

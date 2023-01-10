@@ -65,11 +65,11 @@ const ProductDetail = ({ product }: { product: Product }) => {
       <div>
         <div>
           <span className="font-medium text-blue-800 line-through text-gray-500 text-base md:text-xl lg:text-2xl">
-            ${product?.price}
+            {product?.price.toLocaleString()} vnđ
           </span>
           <span className="font-semibold text-red-600 ml-2 text-xl md:text-2xl lg:text-3xl">
             {' '}
-            ${(product?.price * (100 - product?.discount)) / 100}
+            {((product?.price * (100 - product?.discount)) / 100).toLocaleString()} vnđ
           </span>
         </div>
         <span className="italic">Stock: {product?.stock > 0 ? product?.stock : 'Out of stock'}</span>
@@ -97,7 +97,7 @@ const ProductDetail = ({ product }: { product: Product }) => {
         <Quantity maxQuantity={product?.stock} quantity={quantity} setQuantity={setQuantity} containClass="mt-4" />
         <div className="flex items-center justify-between font-medium text-lg my-4">
           <span>Subtotal</span>
-          <span>${(((product?.price * (100 - product?.discount)) / 100) * quantity).toFixed(2)}</span>
+          <span>{((product?.price * (100 - product?.discount)) / 100) * quantity} vnđ</span>
         </div>
         <Button
           icon={<FaShoppingCart className="text-lg" />}

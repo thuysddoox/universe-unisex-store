@@ -4,11 +4,12 @@ import Input, { TextArea } from '@ui/input';
 import { RadioGroup } from '@ui/radio';
 import { Select } from '@ui/select';
 import { Col, DatePicker, FormInstance, Row } from 'antd';
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useContext } from 'react';
 import { SafeAny } from '../../interfaces/common';
 import Form from '../../ui/form';
 import { useQueryCity, useQueryCommune, useQueryDistrict } from '../../network/queries/address';
 import { convertAddress, getNameAddress } from '@utils/convertors';
+import { UserContext } from '@contexts';
 
 const CheckoutFrom = ({
   data,
@@ -21,28 +22,31 @@ const CheckoutFrom = ({
   getData?: React.Dispatch<SafeAny>;
   handleSubmitCheckout?: (data: SafeAny) => void;
 }) => {
+  const { currentUser } = useContext(UserContext);
+  const [addressObj, setAddressObj] = useState<SafeAny>({
+    city: currentUser?.city ?? undefined,
+    district: currentUser?.district ?? undefined,
+  });
+  const { data: cityRes } = useQueryCity();
+  const { data: communeRes, refetch: refetchCommune } = useQueryCommune(addressObj?.district);
+  const { data: districtRes, refetch: refetchDistrict } = useQueryDistrict(addressObj?.city);
   const handleChangeValues = useCallback((_, allValues) => {
     getData({
       ...data,
       ...allValues,
       address:
         (allValues?.noHome ? allValues?.noHome + ', ' : '') +
-        getNameAddress(allValues?.commune, communeRes?.data?.results) +
+        getNameAddress(allValues?.commune ?? '', communeRes?.data?.results) +
         ', ' +
-        getNameAddress(allValues?.district, districtRes?.data?.results) +
+        getNameAddress(allValues?.district ?? '', districtRes?.data?.results) +
         ', ' +
-        getNameAddress(allValues?.city, cityRes?.data?.results),
+        getNameAddress(allValues?.city ?? '', cityRes?.data?.results),
     });
   }, []);
-  const [addressObj, setAddressObj] = useState<SafeAny>({ city: undefined, district: undefined });
-  const { data: cityRes } = useQueryCity();
-  const { data: communeRes, refetch: refetchCommune } = useQueryCommune(addressObj?.district);
-  const { data: districtRes, refetch: refetchDistrict } = useQueryDistrict(addressObj?.city);
   useEffect(() => {
     refetchCommune();
     refetchDistrict();
   }, [addressObj]);
-  console.log(data);
   return (
     <CheckoutWrapper>
       <Form
@@ -50,7 +54,18 @@ const CheckoutFrom = ({
         form={form}
         initialValues={data}
         onValuesChange={handleChangeValues}
-        onFinish={handleSubmitCheckout}
+        onFinish={() =>
+          handleSubmitCheckout({
+            ...data,
+            address:
+              (data?.noHome ? data?.noHome + ', ' : '') +
+              getNameAddress(data?.commune ?? '', communeRes?.data?.results) +
+              ', ' +
+              getNameAddress(data?.district ?? '', districtRes?.data?.results) +
+              ', ' +
+              getNameAddress(data?.city ?? '', cityRes?.data?.results),
+          })
+        }
       >
         <Row>
           <Col span={12} sm={24}>
@@ -63,18 +78,6 @@ const CheckoutFrom = ({
               hasFeedback
             >
               <Input type="text" placeholder="Full Name" borderradius={'4px'} />
-            </FormItem>
-          </Col>
-          <Col span={12} sm={24}>
-            <FormItem
-              name="dob"
-              label="Date of Birth"
-              required={true}
-              rules={[{ required: true, message: 'Please input your phone number!' }]}
-              className="m-2"
-              hasFeedback
-            >
-              <DatePicker size="large" format={['DD/MM/YYYY', 'DD/MM/YY']} />
             </FormItem>
           </Col>
         </Row>
@@ -193,9 +196,9 @@ const CheckoutFrom = ({
   );
 };
 const CheckoutWrapper = styled.div`
-  .ant-input {
-    border: 1px solid transparent !important;
-  }
+  // .ant-input {
+  //   border: 1px solid transparent !important;
+  // }
   .ant-form-item-label > label {
     line-height: 3rem;
     font-weight: 600;

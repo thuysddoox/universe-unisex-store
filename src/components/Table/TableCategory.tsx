@@ -156,7 +156,7 @@ const TableCategory = ({ data, loading, handleSave }: TableProps) => {
         className: 'min-w-[200px]',
         sorter: (a, b) => a.total - b.total,
         sortDirections: ['descend', 'ascend'],
-        render: (value, _) => <span>${value}</span>,
+        render: (value, _) => <span>{value?.toLocaleString()} vnđ</span>,
       },
     ],
     [],

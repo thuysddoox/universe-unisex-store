@@ -3,7 +3,13 @@ import styled from '@emotion/styled';
 import FilterComponent from './FilterComponent';
 import { BaseListRequest, SafeAny } from '../../interfaces/common';
 const Categories = ['T-shirt', 'Shirt', 'Short', 'Hoodie/Sweater', 'Jeans/Pants', 'Accessories', 'Jacket'];
-const Price = ['Under 20$', '20$ to 40$', '40$ to 60$', '60$ to 100$', '100$ & above'];
+const Price = [
+  'Under 300,000 vnđ',
+  '300,000 vnđ to 500,000',
+  '500,000 vnđ to 1,000,000 vnđ',
+  '1,000,000 vnđ to 2,000,000 vnđ',
+  'Above 2,000,000 vnđ',
+];
 const Size = ['All', 'S', 'M', 'L', 'XL'];
 const Filter = ({
   hasCategory = true,

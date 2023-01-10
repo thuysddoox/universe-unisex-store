@@ -160,7 +160,7 @@ const ProductForm = ({
                   label="Price"
                   hasFeedback
                 >
-                  <Input placeholder="" prefix="$" min={0} type="number" borderradius="0px" />
+                  <Input placeholder="" prefix="vnđ" min={0} type="number" borderradius="0px" />
                 </FormItem>
               </Col>
               <Col span={24} sm={12}>

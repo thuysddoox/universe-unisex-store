@@ -43,7 +43,7 @@ export const convertAddress = (data: { code: string; name: string }[]) => {
 };
 
 export const getNameAddress = (code: string, data: { code: string; name: string }[]) => {
-  const value = data.find((item) => item?.code === code);
+  const value = data?.find((item) => item?.code === code);
   console.log(value);
   return value?.name ?? '';
 };

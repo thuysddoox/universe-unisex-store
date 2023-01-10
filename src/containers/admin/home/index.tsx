@@ -83,7 +83,7 @@ const AdminHomePage = () => {
         <CardStatistic
           className="w-1/4 mx-2"
           name="ALL PROCEEDS"
-          value={`$${statisticOverview?.profit ?? 0}`}
+          value={`${(statisticOverview?.profit ?? 0)?.toLocaleString()} vnđ`}
           icon={<FaMoneyBillAlt fontSize={'2.5rem'} />}
         />
         <CardStatistic

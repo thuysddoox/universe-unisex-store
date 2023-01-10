@@ -58,7 +58,7 @@ const OverviewCategory = ({ className, data }: { className?: string; data?: Cate
             </h5>
             <h3 className="text-sm italic">{best?.name}</h3>
             <h3 className="text-sm italic">{best?.sold} products</h3>
-            <h3 className="text-sm italic">${best?.total}</h3>
+            <h3 className="text-sm italic">{best?.total?.toLocaleString()} vnđ</h3>
           </div>
           <div className="max-w-[150px]">
             <Pie data={dataChart} options={options} />

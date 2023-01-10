@@ -157,7 +157,7 @@ const TableOrder = ({
         className: 'min-w-[80px]',
         render: (value, record) => (
           <span className="flex items-center">
-            ${value} {(record?.isPaid || record?.status === 4) && <FcOk className=" mx-1" />}
+            {value.toLocaleString()} vnđ {(record?.isPaid || record?.status === 4) && <FcOk className=" mx-1" />}
           </span>
         ),
       },

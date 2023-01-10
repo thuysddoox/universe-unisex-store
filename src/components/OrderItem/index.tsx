@@ -130,15 +130,15 @@ const OrderItem = ({
                       isCheckout ? 'text-base' : 'text-base md:text-lg'
                     } line-through font-semibold text-gray-500 mr-1`}
                   >
-                    ${data?.product?.price}
+                    {data?.product?.price.toLocaleString()}
                   </span>
                   <span className={`${isCheckout ? 'text-base' : 'text-lg md:text-xl'} font-semibold text-black mr-1`}>
-                    ${(data?.product?.price * (100 - data?.product?.discount)) / 100}
+                    {((data?.product?.price * (100 - data?.product?.discount)) / 100).toLocaleString()} vnđ
                   </span>
                 </>
               ) : (
                 <span className={`${isCheckout ? 'text-base' : 'text-lg md:text-xl'} font-semibold text-black mr-1`}>
-                  ${data?.product?.price}
+                  {data?.product?.price} vnđ
                 </span>
               )}
               x {quantity.toString().padStart(2, '0')}

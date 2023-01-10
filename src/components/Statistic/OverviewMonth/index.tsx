@@ -55,7 +55,7 @@ const OverviewMonth = ({ className, data }: { className?: string; data?: Statist
             </h5>
             <h3 className="text-sm italic ">{best?._id?.month + '-' + best?._id?.year}</h3>
             <h3 className="text-sm italic ">{best?.count} orders</h3>
-            <h3 className="text-sm italic ">${best?.total}</h3>
+            <h3 className="text-sm italic ">{best?.total?.toLocaleString()} vnđ</h3>
           </div>
           <div className="max-w-[400px] w-3/5">
             <Bar options={options} data={dataChart} />
