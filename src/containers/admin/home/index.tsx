@@ -49,12 +49,11 @@ const AdminHomePage = () => {
         <RangePicker
           onChange={(value) =>
             setFilterTime({
-              from: dayjs(value?.[0]?.toString())?.format('DD-MM-YYYY') ?? '',
-              to: dayjs(value?.[1]?.toString())?.format('DD-MM-YYYY') ?? '',
+              from: value?.[0] ? dayjs(value?.[0]?.toString())?.format('DD-MM-YYYY') : '',
+              to: value?.[1] ? dayjs(value?.[1]?.toString())?.format('DD-MM-YYYY') : '',
             })
           }
           format={['DD/MM/YYYY', 'DD/MM/YY']}
-          defaultValue={['', '']}
         />
         <div className="text-right ml-2">
           <span className="text-sm p-2 py-1 border border-blue-500 bg-blue-500 text-white rounded-sm inline-block mr-2 cursor-pointer">
