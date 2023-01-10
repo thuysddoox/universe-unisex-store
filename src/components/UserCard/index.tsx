@@ -65,7 +65,7 @@ const UserCard = ({ user }: { user: User }) => {
       tooltipItems.forEach(function (tooltipItem, index) {
         sum = statisticResp?.data?.responseData?.[index]?.total;
       });
-      return 'Total: $' + sum;
+      return 'Total: ' + sum?.toLocaleString() + ' vnđ';
     },
     [user?._id],
   );
@@ -144,7 +144,7 @@ const UserCard = ({ user }: { user: User }) => {
             <>
               <div className="pl-6">
                 <p className="font-medium">Order: {statisticResp?.data?.count}</p>
-                <p className="font-medium">Total: ${statisticResp?.data?.total}</p>
+                <p className="font-medium">Total: {statisticResp?.data?.total?.toLocaleString()} vnđ</p>
               </div>
               <div className="mt-6 px-5">
                 <Bar options={options} data={dataChart} />

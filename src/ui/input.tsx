@@ -7,10 +7,13 @@ import { TextAreaProps } from 'antd/lib/input';
 
 const InputWrapper: StyledComponent<SafeAny> = styled.div`
   font-family: var(--font-title);
-  .ant-input,
+  // .ant-input,
   .ant-input-password,
   .ant-input-affix-wrapper {
     border: 1px solid ${(props: SafeAny) => props?.bordercolor || 'var(--gray)'};
+    border-radius: ${(props: SafeAny) => props?.borderradius || '30px'};
+  }
+  .ant-input {
     border-radius: ${(props: SafeAny) => props?.borderradius || '30px'};
   }
   .ant-input::placeholder {
@@ -79,13 +82,14 @@ export interface InputProps extends AntdInputProps {
 // }
 
 export function Input(props: InputProps) {
-  const { containerClass, containerStyle, id: inputWrapId, inputId, borderradius, ...rests } = props;
+  const { containerClass, containerStyle, id: inputWrapId, inputId, borderradius, bordercolor, ...rests } = props;
   return (
     <InputWrapper
       className={`${containerClass || ''}`}
       style={containerStyle}
       borderradius={borderradius}
       id={inputWrapId}
+      bordercolor={bordercolor}
     >
       <AntdInput id={inputId} {...rests} />
     </InputWrapper>

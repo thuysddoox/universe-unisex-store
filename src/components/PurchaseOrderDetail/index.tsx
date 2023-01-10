@@ -105,19 +105,19 @@ export const PurchaseOrderInfo = ({ data, managePortal = false }: { data: Order;
             <Row className="font-medium my-3">
               <Col span={12}>SubTotal:</Col>
               <Col span={12} className="text-blue-500">
-                ${data?.total}
+                {data?.total.toLocaleString()} vnđ
               </Col>
             </Row>
             <Row className="font-medium my-3">
               <Col span={12}>Shipping Cost:</Col>
               <Col span={12} className="text-blue-500">
-                ${data?.shipCost}
+                {data?.shipCost.toLocaleString()} vnđ
               </Col>
             </Row>
             <Row className="font-medium my-3">
               <Col span={12}>Total: </Col>
               <Col span={12} className="text-blue-500">
-                ${data?.total + data?.shipCost}
+                {(data?.total + data?.shipCost).toLocaleString()} vnđ
               </Col>
             </Row>
             <Row className="font-medium my-3">

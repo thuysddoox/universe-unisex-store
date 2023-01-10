@@ -81,10 +81,15 @@ const ProductComponent = ({
           <div className="items-center py-4 border-t-2 border-blue-700">
             <div>
               {product?.discount > 0 && (
-                <span className="font-medium text-blue-800 line-through text-gray-500 text-sm">${product?.price}</span>
+                <span className="font-medium text-blue-800 line-through text-gray-500 text-sm">
+                  ${product?.price.toLocaleString()}
+                </span>
               )}
               <span className="font-semibold text-red-600 text-base ml-2">
-                ${product?.discount > 0 ? (product?.price * (100 - product?.discount)) / 100 : product?.price}
+                {product?.discount > 0
+                  ? ((product?.price * (100 - product?.discount)) / 100).toLocaleString()
+                  : product?.price.toLocaleString()}{' '}
+                vnđ
               </span>
             </div>
             <div className="flex justify-between flex-wrap">

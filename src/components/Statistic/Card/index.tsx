@@ -16,7 +16,7 @@ const CardStatistic = ({ icon, name, value, className }: CardStatisticProps) => 
               <h3 className="text-2xl">{value}/5</h3>
             )
           ) : (
-            <h3 className="text-2xl">{value?.toString()}</h3>
+            <h3 className="text-2xl">{value}</h3>
           )}
           <h5 className="uppercase text-gray-700">{name}</h5>
         </div>

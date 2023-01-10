@@ -3,8 +3,8 @@ import Button from '@ui/button';
 import FormItem from '@ui/formitem';
 import Input from '@ui/input';
 import { Select } from '@ui/select';
-import { Col, DatePicker, Row } from 'antd';
-import { useContext, useState } from 'react';
+import { Col, Row, DatePicker } from 'antd';
+import { useContext, useEffect, useState } from 'react';
 import { AiOutlineSave, AiTwotoneEdit, AiTwotoneLock, AiTwotoneSave } from 'react-icons/ai';
 import { UserContext } from '../../contexts/userContext';
 import { Ellipsis } from '../../ui/ellipsis';
@@ -17,11 +17,17 @@ import SyntheticEvent from 'react';
 import { SafeAny } from '../../interfaces/common';
 import { useQueryCity, useQueryCommune, useQueryDistrict } from '../../network/queries/address';
 import { convertAddress } from '../../utils/convertors';
+import dayjs from 'dayjs';
+import moment from 'moment';
+
 const ProfileForm = () => {
   const [form] = useForm();
   const [disableForm, setDisableForm] = useState<boolean>(true);
   const { currentUser, setCurrentUser, updateUserInfo } = useContext(UserContext);
-  const [addressObj, setAddressObj] = useState<SafeAny>({ city: undefined, district: undefined });
+  const [addressObj, setAddressObj] = useState<SafeAny>({
+    city: currentUser?.city ?? undefined,
+    district: currentUser?.district ?? undefined,
+  });
   const { data: cityRes } = useQueryCity();
   const { data: communeRes, refetch: refetchCommune } = useQueryCommune(addressObj?.district);
   const { data: districtRes, refetch: refetchDistrict } = useQueryDistrict(addressObj?.city);
@@ -47,7 +53,8 @@ const ProfileForm = () => {
       title: 'Confirm',
       content: 'Do you want to update your profile?',
       onOk: () => {
-        const { firstName, lastName, ...rest } = form.getFieldsValue();
+        const { firstName, lastName, dob, ...rest } = form.getFieldsValue();
+        console.log(dob);
         updateUserFunc({ ...currentUser, username: lastName + firstName, ...rest, firstName, lastName });
       },
       onCancel: () => {
@@ -55,6 +62,11 @@ const ProfileForm = () => {
       },
     });
   };
+  useEffect(() => {
+    refetchCommune();
+    refetchDistrict();
+  }, [addressObj]);
+  console.log(currentUser);
   return (
     <ProfileWrapper>
       <Form size="large" form={form} initialValues={currentUser} disabled={disableForm}>
@@ -129,7 +141,7 @@ const ProfileForm = () => {
             </Col>
           </Row>
           <Row>
-            <Col span={24} md={12} lg={8}>
+            {/* <Col span={24} md={12} lg={8}>
               <FormItem
                 name="dob"
                 label="Date of Birth"
@@ -138,9 +150,9 @@ const ProfileForm = () => {
                 className="m-2"
                 hasFeedback
               >
-                <DatePicker size="large" format={['DD/MM/YYYY', 'DD/MM/YY']} />
+                <DatePicker size="large" defaultValue={moment(currentUser?.dob)} format={'DD/MM/YYYY'} />
               </FormItem>
-            </Col>
+            </Col> */}
             <Col span={24} md={12} lg={8}>
               <FormItem
                 name="email"
@@ -212,7 +224,13 @@ const ProfileForm = () => {
                 className="m-2"
                 hasFeedback
               >
-                <Select placeholder="Choose province/city" options={convertAddress(cityRes?.data?.results)} />
+                <Select
+                  placeholder="Choose province/city"
+                  options={convertAddress(cityRes?.data?.results)}
+                  onChange={(value) => {
+                    setAddressObj((prev) => ({ ...prev, city: value }));
+                  }}
+                />
               </FormItem>
             </Col>
             <Col span={24} sm={12} md={8}>
@@ -228,6 +246,9 @@ const ProfileForm = () => {
                   size="large"
                   placeholder="Choose district"
                   options={convertAddress(districtRes?.data?.results)}
+                  onChange={(value) => {
+                    setAddressObj((prev) => ({ ...prev, district: value }));
+                  }}
                 />
               </FormItem>
             </Col>
@@ -245,7 +266,7 @@ const ProfileForm = () => {
             </Col>
           </Row>
           <Row>
-            <Col span={24} sm={12} md={8}>
+            <Col span={24}>
               <FormItem name="address" label="No.Home/Street" className="m-2">
                 <Input type="text" placeholder="No.Home, Street" />
               </FormItem>

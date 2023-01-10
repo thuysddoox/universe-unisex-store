@@ -76,7 +76,10 @@ const PurchaseOrder = ({ data, refetch, index }: { data?: Order; refetch?: SafeA
           More detail
         </span>
         <span className="text-base font-medium">
-          Total: <span className="text-2xl text-blue-500 ml-5 inline-block">${data?.total + data?.shipCost}</span>
+          Total:{' '}
+          <span className="text-2xl text-blue-500 ml-5 inline-block">
+            {(data?.total + data?.shipCost).toLocaleString()} vnđ
+          </span>
         </span>
       </div>
       <div className="flex justify-between items-end mb-3">

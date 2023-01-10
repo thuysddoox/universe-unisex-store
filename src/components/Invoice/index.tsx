@@ -34,7 +34,8 @@ const Invoice = React.forwardRef<SafeAny, InvoiceProps>(({ data, className }, re
         </div>
         <div className="flex flex-wrap px-2 py-3">
           <div className="w-full sm:w-1/2">
-            Tiền thu người nhận: <b className="text-lg">{data?.isPaid ? '0' : data?.total + data?.shipCost} vnđ</b>
+            Tiền thu người nhận:{' '}
+            <b className="text-lg">{(data?.isPaid ? '0' : data?.total + data?.shipCost)?.toLocaleString()} vnđ</b>
           </div>
           <div className="w-full sm:w-1/2">
             <div>

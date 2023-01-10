@@ -165,7 +165,7 @@ const TableProduct = ({
         className: 'min-w-[120px]',
         sorter: (a, b) => a.price - b.price,
         sortDirections: ['descend', 'ascend'],
-        render: (value, record) => <span>${value}</span>,
+        render: (value, record) => <span>{value.toLocaleString()} vnđ</span>,
       },
       {
         title: 'Stock',
