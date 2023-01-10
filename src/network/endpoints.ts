@@ -29,6 +29,7 @@ export const ENDPOINTS = {
 
   STATISTIC: '/statistic',
   STATISTIC_MONTH: '/statistic/month',
+  STATISTIC_PRODUCT: '/statistic/product',
   STATISTIC_USER: '/statistic/user',
 
   UPLOAD_SINGLE: '/upload/single',

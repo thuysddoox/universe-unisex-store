@@ -156,8 +156,8 @@ const TableOrder = ({
         width: '10%',
         className: 'min-w-[80px]',
         render: (value, record) => (
-          <span>
-            ${value} {record?.isPaid && <FcOk />}
+          <span className="flex items-center">
+            ${value} {(record?.isPaid || record?.status === 4) && <FcOk className=" mx-1" />}
           </span>
         ),
       },
@@ -170,7 +170,7 @@ const TableOrder = ({
         render: (value, record) => (
           <span className="flex items-center">
             {value === 1 ? 'COD' : 'Card'}
-            {record?.isPaid && (
+            {(record?.isPaid || record?.status === 4) && (
               <Ellipsis placement="top" title="Paid" className=" mx-1 cursor-pointer">
                 <FcApproval className="text-lg" />
               </Ellipsis>

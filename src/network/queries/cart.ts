@@ -6,9 +6,10 @@ import { SafeAny } from '../../interfaces/common';
 
 const CART_INFO = 'CART_INFO';
 
-export const useQueryCart = () =>
-  useQuery([CART_INFO], () => getCart(), {
+export const useQueryCart = (currentUser) =>
+  useQuery([CART_INFO ?? 'CART_INFO', currentUser], () => getCart(), {
     refetchOnWindowFocus: false,
+    enabled: !!currentUser,
   });
 
 export const useAddToCart = (options: UseMutationOptions<BaseResponse<Cart>, ErrorResponse, AddToCartRequest>) =>

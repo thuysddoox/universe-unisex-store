@@ -57,7 +57,7 @@ const ReviewComponent = ({
         <div className="w-full">
           <p className="my-2" dangerouslySetInnerHTML={{ __html: comment?.content ?? '' }}></p>
           <div className="flex items-center justify-between">
-            <span>{dayjs(comment?.updatedAt ?? comment?.createdAt).format('DD-MM-YYYY HH:MM')}</span>
+            <span>{dayjs(comment?.createdAt).format('DD-MM-YYYY HH:MM')}</span>
             {comment?.replyComments?.length > 0 && (
               <span className="flex items-center cursor-pointer" onClick={() => setOpenResponse(!openResponse)}>
                 <span>Seller Response</span>
@@ -68,8 +68,8 @@ const ReviewComponent = ({
         </div>
       </List.Item>
       {openResponse &&
-        comment?.replyComments?.map((comment) => (
-          <ReviewComponent className="my-4 ml-10" key={comment?._id} isSeller={true} comment={comment} />
+        comment?.replyComments?.map((item) => (
+          <ReviewComponent className="my-4 ml-10" key={item?._id} isSeller={true} comment={item} />
         ))}
     </ReviewComponentWrap>
   );

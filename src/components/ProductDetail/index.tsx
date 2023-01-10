@@ -23,7 +23,7 @@ const ProductDetail = ({ product }: { product: Product }) => {
   ];
   const [quantity, setQuantity] = useState<number>(1);
   const { currentUser } = useContext(UserContext);
-  const { refetch } = currentUser ? useQueryCart() : { refetch: undefined };
+  const { refetch } = useQueryCart(currentUser);
   const { mutate: addToCartFunc, isLoading } = useAddToCart({
     onSuccess: (response) => {
       const cartDataResp = response?.data?.responseData;
@@ -48,7 +48,7 @@ const ProductDetail = ({ product }: { product: Product }) => {
       <h3 className="product-title text-xl md:text-2xl xl:text-3xl font-semibold mb-4 md:mb-0">{product?.name}</h3>
       <div className="flex items-center justify-between">
         <div>
-          <Rate allowClear={true} defaultValue={3} allowHalf={true} className={'text-sm'} />
+          <Rate allowClear={true} defaultValue={product?.rate} allowHalf={true} className={'text-sm'} />
           <span className="text-sm text-gray-500">| Đã Bán {product?.sold ?? 0}</span>
         </div>
 

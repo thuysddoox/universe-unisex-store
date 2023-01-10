@@ -6,14 +6,16 @@ import Button from '../../ui/button';
 import HeadingSection from '@components/HeadingSection';
 import Link from 'next/link';
 import { useQueryCart } from '@api/api';
-import { useMemo } from 'react';
+import { useMemo, useContext } from 'react';
 import { Product } from '@interfaces/index';
 import { CartItem } from '../../interfaces/common';
 import NoResults from '../../components/NoResults/index';
 import { getTotal } from '../../utils/convertors';
+import { UserContext } from '../../contexts/userContext';
 
 const Cart = () => {
-  const { data: CartResp, refetch } = useQueryCart();
+  const { currentUser } = useContext(UserContext);
+  const { data: CartResp, refetch } = useQueryCart(currentUser);
   const cartItems: CartItem[] = useMemo(() => CartResp?.data?.responseData?.products ?? [], [CartResp]);
   const totalCart: number = useMemo(() => getTotal(cartItems), [CartResp]);
   return (

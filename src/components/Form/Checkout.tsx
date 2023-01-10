@@ -8,7 +8,7 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { SafeAny } from '../../interfaces/common';
 import Form from '../../ui/form';
 import { useQueryCity, useQueryCommune, useQueryDistrict } from '../../network/queries/address';
-import { convertAddress } from '@utils/convertors';
+import { convertAddress, getNameAddress } from '@utils/convertors';
 
 const CheckoutFrom = ({
   data,
@@ -22,7 +22,17 @@ const CheckoutFrom = ({
   handleSubmitCheckout?: (data: SafeAny) => void;
 }) => {
   const handleChangeValues = useCallback((_, allValues) => {
-    getData({ ...data, ...allValues });
+    getData({
+      ...data,
+      ...allValues,
+      address:
+        (allValues?.noHome ? allValues?.noHome + ', ' : '') +
+        getNameAddress(allValues?.commune, communeRes?.data?.results) +
+        ', ' +
+        getNameAddress(allValues?.district, districtRes?.data?.results) +
+        ', ' +
+        getNameAddress(allValues?.city, cityRes?.data?.results),
+    });
   }, []);
   const [addressObj, setAddressObj] = useState<SafeAny>({ city: undefined, district: undefined });
   const { data: cityRes } = useQueryCity();
@@ -32,7 +42,7 @@ const CheckoutFrom = ({
     refetchCommune();
     refetchDistrict();
   }, [addressObj]);
-  console.log(districtRes);
+  console.log(data);
   return (
     <CheckoutWrapper>
       <Form
@@ -183,6 +193,9 @@ const CheckoutFrom = ({
   );
 };
 const CheckoutWrapper = styled.div`
+  .ant-input {
+    border: 1px solid transparent !important;
+  }
   .ant-form-item-label > label {
     line-height: 3rem;
     font-weight: 600;

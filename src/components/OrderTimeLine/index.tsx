@@ -4,6 +4,7 @@ import { Timeline } from 'antd';
 import { FcInspection, FcPaid, FcShipped, FcShop } from 'react-icons/fc';
 import { ImTruck } from 'react-icons/im';
 import { Status } from '../../interfaces/common';
+import { format } from '../../utils/utils';
 
 const TimelineItem = ({
   icon,
@@ -16,6 +17,7 @@ const TimelineItem = ({
   content: string;
   status: boolean;
 }) => {
+  console.log(content);
   return (
     <li className="flex items-center mb-8 ">
       <span
@@ -33,6 +35,7 @@ const TimelineItem = ({
   );
 };
 const OrderTimeLine = ({ timeline }: { timeline: Status[] }) => {
+  console.log(timeline);
   return (
     <OrderTimeLineWrap>
       <Timeline mode="left" className="">

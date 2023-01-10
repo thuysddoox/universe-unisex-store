@@ -60,7 +60,12 @@ const ManageOrders = () => {
         handleSave={handleSave}
         loading={isFetching || isLoading}
       />
-      <PurchaseOrderDetail data={order} handleOpen={() => setIsOpen((prev) => !prev)} isOpen={isOpen} />
+      <PurchaseOrderDetail
+        data={order}
+        handleOpen={() => setIsOpen((prev) => !prev)}
+        isOpen={isOpen}
+        managePortal={true}
+      />
     </>
   );
 };

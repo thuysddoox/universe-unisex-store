@@ -63,7 +63,6 @@ const RateModal = ({
       console.log(data);
     }
   }, [comments]);
-  console.log(comments);
   return (
     <Modal
       centered

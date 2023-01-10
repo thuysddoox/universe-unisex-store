@@ -32,6 +32,7 @@ const Shop = ({
     ...QueryParam,
     keyword,
     pageSize: 12,
+    pageIndex: 1,
     ...(category ? { category: [category] } : {}),
   });
   const [filter, setFilter] = useState<SafeAny>();
@@ -39,9 +40,9 @@ const Shop = ({
   const products = useMemo(() => productsResp?.data?.responseData, [productsResp]);
   const total = useMemo(() => productsResp?.data?.total, [productsResp?.data?.total]);
   const { currentUser } = useContext(UserContext);
-  const { refetch: refetchCart } = currentUser ? useQueryCart() : { refetch: undefined };
+  const { refetch: refetchCart } = useQueryCart(currentUser);
   const handleChangePageIndex = (page: number, pageSize: number) => {
-    setQueries((prev) => ({ ...prev, pageIndex: page - 1 }));
+    setQueries((prev) => ({ ...prev, pageIndex: page }));
   };
   const handleApplyFilter = () => {
     const { color = 'All', size = 'All', ...rest } = filter;
@@ -118,8 +119,8 @@ const Shop = ({
                 className="flex"
                 total={total}
                 defaultPageSize={queries?.pageSize}
-                defaultCurrent={queries?.pageIndex + 1 ?? 1}
-                current={queries?.pageIndex + 1 ?? 1}
+                defaultCurrent={queries?.pageIndex ?? 1}
+                current={queries?.pageIndex ?? 1}
                 onChange={handleChangePageIndex}
               />
             )}

@@ -282,6 +282,9 @@ const SignupWrap = styled.div`
     text-overflow: ellipsis;
     overflow: hidden;
   }
+  .ant-input {
+    border: 1px solid transparent;
+  }
 `;
 
 export default SignupPopup;

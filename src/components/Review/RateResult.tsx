@@ -11,7 +11,7 @@ const RateResult = ({ rateList, total, average }: { rateList?: SafeAny; total: n
         <Col span={12}>
           <div className="text-center">
             <h3 className="text-3xl font-semibold">{average}/5</h3>
-            <Rate allowClear={true} defaultValue={4} allowHalf={true} className={'text-lg'} />
+            <Rate allowClear={true} defaultValue={average} allowHalf={true} className={'text-lg'} />
             <p className="mt-2">{total} Review</p>
           </div>
         </Col>

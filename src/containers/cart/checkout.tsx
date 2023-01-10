@@ -21,7 +21,7 @@ import { useRouter } from 'next/router';
 const Checkout = () => {
   const router = useRouter();
   const { currentUser } = useContext(UserContext);
-  const { data: CartResp, refetch } = useQueryCart();
+  const { data: CartResp, refetch } = useQueryCart(currentUser);
   const cartItems: CartItem[] = useMemo(() => CartResp?.data?.responseData?.products ?? [], [CartResp]);
   const totalCart: number = useMemo(() => getTotal(cartItems), [CartResp]);
   const [data, setData] = useState<SafeAny>({ ...currentUser, payment: 1 });
@@ -69,7 +69,10 @@ const Checkout = () => {
       phone,
       payment,
       note,
-      address: noHome + commune + district + city,
+      commune,
+      district,
+      city,
+      address: noHome + ' ' + address,
       total: totalCart,
       status: payment === 1 ? 0 : 1,
       products: covertCartItemToOrderItem(cartItems),

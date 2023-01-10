@@ -162,6 +162,9 @@ const LoginWrap = styled.div`
   .btn-group {
     justify-content: space-between;
   }
+  .ant-input {
+    border: 1px solid transparent !important;
+  }
   .ant-form-item-label > label {
     line-height: 2.6rem;
     font-weight: 600;

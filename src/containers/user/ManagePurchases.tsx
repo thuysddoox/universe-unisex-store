@@ -111,7 +111,7 @@ const PurchaseList = ({
       <Row className="justify-start">
         {data?.length > 0
           ? data?.map((order, index) => (
-              <Col span={8} className="p-4" key={order?._id}>
+              <Col span={24} sm={12} lg={8} className="p-4" key={order?._id}>
                 <PurchaseOrder index={index} refetch={refetch} data={order} />
               </Col>
             ))

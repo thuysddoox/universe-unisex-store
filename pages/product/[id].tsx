@@ -34,7 +34,7 @@ export function ProductDetailPage({ productDetailSSR }: { productDetailSSR: Prod
     size: productDetailSSR?.size,
     category: [productDetailSSR?.categoryId],
   });
-  const { refetch: refetchCart } = currentUser || contextLoaded ? useQueryCart() : { refetch: undefined };
+  const { refetch: refetchCart } = useQueryCart(currentUser);
   return (
     <div className="page">
       <Head>

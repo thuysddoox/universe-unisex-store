@@ -14,10 +14,17 @@ import messages from '@constants/messages';
 import { Message } from '@ui/message';
 import { confirm } from '@ui/modal';
 import SyntheticEvent from 'react';
+import { SafeAny } from '../../interfaces/common';
+import { useQueryCity, useQueryCommune, useQueryDistrict } from '../../network/queries/address';
+import { convertAddress } from '../../utils/convertors';
 const ProfileForm = () => {
   const [form] = useForm();
   const [disableForm, setDisableForm] = useState<boolean>(true);
   const { currentUser, setCurrentUser, updateUserInfo } = useContext(UserContext);
+  const [addressObj, setAddressObj] = useState<SafeAny>({ city: undefined, district: undefined });
+  const { data: cityRes } = useQueryCity();
+  const { data: communeRes, refetch: refetchCommune } = useQueryCommune(addressObj?.district);
+  const { data: districtRes, refetch: refetchDistrict } = useQueryDistrict(addressObj?.city);
   const { mutate: updateUserFunc, isLoading } = useUpdateUser({
     onSuccess: (response) => {
       const error = response?.data?.error;
@@ -113,7 +120,7 @@ const ProfileForm = () => {
                 label="Full Name"
                 name="fullName"
                 required={true}
-                rules={[{ required: true, message: 'Please input your full name!' }]}
+                // rules={[{ required: true, message: 'Please input your full name!' }]}
                 className="m-2"
                 hasFeedback
               >
@@ -196,45 +203,49 @@ const ProfileForm = () => {
             </Ellipsis>
           </h4>
           <Row>
-            <Col span={8}>
+            <Col span={24} sm={12} md={8}>
               <FormItem
                 name="city"
                 label="Province/City"
-                required={true}
-                rules={[{ required: true, message: 'Please choose your province/city!' }]}
+                // required={true}
+                // rules={[{ required: true, message: 'Please choose your province/city!' }]}
                 className="m-2"
                 hasFeedback
               >
-                <Select placeholder="Choose province/city" options={[{ label: 'He', value: 'he' }]} />
+                <Select placeholder="Choose province/city" options={convertAddress(cityRes?.data?.results)} />
               </FormItem>
             </Col>
-            <Col span={8}>
+            <Col span={24} sm={12} md={8}>
               <FormItem
                 name="district"
                 label="District"
-                required={true}
-                rules={[{ required: true, message: 'Please choose your district!' }]}
+                // required={true}
+                // rules={[{ required: true, message: 'Please choose your district!' }]}
                 className="m-2"
                 hasFeedback
               >
-                <Select size="large" placeholder="Choose district" options={[{ label: 'He', value: 'he' }]} />
+                <Select
+                  size="large"
+                  placeholder="Choose district"
+                  options={convertAddress(districtRes?.data?.results)}
+                />
               </FormItem>
             </Col>
-            <Col span={8}>
+            <Col span={24} sm={12} md={8}>
               <FormItem
                 name="commune"
                 label="Commune"
-                required={true}
-                rules={[{ required: true, message: 'Please choose your commune!' }]}
+                // required={true}
+                // rules={[{ required: true, message: 'Please choose your commune!' }]}
                 className="m-2"
                 hasFeedback
               >
-                <Select placeholder="Choose commune" options={[{ label: 'He', value: 'he' }]} />
+                <Select placeholder="Choose commune" options={convertAddress(communeRes?.data?.results)} />
               </FormItem>
             </Col>
           </Row>
           <Row>
-            <Col span={24}>
+            <Col span={24} sm={12} md={8}>
               <FormItem name="address" label="No.Home/Street" className="m-2">
                 <Input type="text" placeholder="No.Home, Street" />
               </FormItem>
@@ -251,6 +262,9 @@ const ProfileWrapper = styled.div`
     font-weight: 600;
     display: block;
     font-size: 15px;
+  }
+  .ant-input {
+    border: 1px solid transparent !important;
   }
   .ant-select-selection-item {
     font-size: 15px;

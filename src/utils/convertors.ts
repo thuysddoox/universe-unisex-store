@@ -29,15 +29,21 @@ export function getTotal(cartItems: CartItem[]) {
     0,
   );
 }
-export const getDateOfStatus = (status, statusList: Status[]) => {
+export const getDateOfStatus = (status: number, statusList: Status[]) => {
   const values = statusList?.find((item) => item?.status === status);
-  return values ? dayjs(values?.date, 'DD-MM-YYYY, HH:mm:ss').toString() : '--';
+  return values?.date ? dayjs(values?.date).format('DD-MM-YYYY, HH:mm:ss') : '--';
 };
 export const getDisableOptions = (status) => {
   if (status === 0) return [1, 2, 3, 4];
   else return Array.from({ length: status }, (_, i) => status - i);
 };
 
-export const convertAddress = (data: { code: number; name: string }[]) => {
+export const convertAddress = (data: { code: string; name: string }[]) => {
   return data?.map((item) => ({ value: item?.code, label: item?.name })) ?? [];
+};
+
+export const getNameAddress = (code: string, data: { code: string; name: string }[]) => {
+  const value = data.find((item) => item?.code === code);
+  console.log(value);
+  return value?.name ?? '';
 };

@@ -70,7 +70,7 @@ const ProductComponent = ({
           containerClass={'right-0 mr-5 top-5 -translate-y-1 shadow rounded-circle'}
           refetch={refetch}
         />
-        <div className="product-info p-2">
+        <div className="product-info py-2">
           <Link href={`/product/${product?._id}`} passHref>
             <a>
               <h3 className="product-name truncate whitespace-nowrap transition-all font-semibold my-4 text-base">
@@ -78,21 +78,25 @@ const ProductComponent = ({
               </h3>
             </a>
           </Link>
-          <div className="flex justify-between flex-wrap items-center py-4 border-t-2 border-blue-700">
+          <div className="items-center py-4 border-t-2 border-blue-700">
             <div>
-              <span className="font-medium text-blue-800 line-through text-gray-500 text-sm">${product?.price}</span>
+              {product?.discount > 0 && (
+                <span className="font-medium text-blue-800 line-through text-gray-500 text-sm">${product?.price}</span>
+              )}
               <span className="font-semibold text-red-600 text-base ml-2">
-                ${(product?.price * (100 - product?.discount)) / 100}
+                ${product?.discount > 0 ? (product?.price * (100 - product?.discount)) / 100 : product?.price}
               </span>
             </div>
-
-            <Rate
-              allowClear={true}
-              disabled={true}
-              defaultValue={product?.rate ?? 0}
-              allowHalf={true}
-              className={'text-sm'}
-            />
+            <div className="flex justify-between flex-wrap">
+              <span className="text-gray-400 italic text-sm">{product?.sold ?? 0} sold</span>
+              <Rate
+                allowClear={true}
+                disabled={true}
+                defaultValue={product?.rate ?? 0}
+                allowHalf={true}
+                className={'text-sm'}
+              />
+            </div>
           </div>
           <Button
             icon={<FaShoppingCart className="text-lg" />}

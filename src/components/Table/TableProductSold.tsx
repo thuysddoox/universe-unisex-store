@@ -1,38 +1,17 @@
 import { SearchOutlined } from '@ant-design/icons';
-import { Product, SafeAny } from '@interfaces/common';
-import { Ellipsis } from '@ui/ellipsis';
+import { OrderItem, Product } from '@interfaces/common';
 import { truncate } from '@utils';
 import { Button, Image, Input, InputRef, Space, Table } from 'antd';
-import type { ColumnsType, ColumnType } from 'antd/es/table';
+import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import dayjs from 'dayjs';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
-import { AiFillStar, AiOutlineDelete, AiOutlineEdit, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { TableProps } from './TableProduct';
 
-type DataIndex = keyof Product;
+type DataIndex = keyof OrderItem;
 
-export interface TableProps {
-  handleOpenEdit?: (product?: SafeAny) => void;
-  handleDelete?: (product?: SafeAny) => void;
-  handleSave?: (product?: SafeAny, resetFunc?: SafeAny) => void;
-  handleOpenDetail?: (product?: SafeAny) => void;
-  data: SafeAny[];
-  total?: number;
-  pageSize?: number;
-  loading?: boolean;
-  name?: string;
-  handleChangePageIndex?: (page: number, pageSize: number) => void;
-}
-const TableProduct = ({
-  handleOpenEdit,
-  handleDelete,
-  data,
-  total,
-  pageSize,
-  loading,
-  handleChangePageIndex,
-}: TableProps) => {
+const TableProductSold = ({ data, total, pageSize, loading, handleChangePageIndex }: TableProps) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef<InputRef>(null);
@@ -53,7 +32,7 @@ const TableProduct = ({
   };
 
   const getColumnSearchProps = useCallback(
-    (dataIndex: DataIndex): ColumnType<Product> => ({
+    (dataIndex: DataIndex): ColumnType<OrderItem> => ({
       filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
         <div style={{ padding: 8 }}>
           <Input
@@ -117,12 +96,12 @@ const TableProduct = ({
     [],
   );
 
-  const columns: ColumnsType<Product> = useMemo(
+  const columns: ColumnsType<OrderItem> = useMemo(
     () => [
       {
         title: 'ID',
-        dataIndex: '_id',
-        key: 'id',
+        dataIndex: 'productId',
+        key: 'productId',
         width: '4%',
         className: 'min-w-[40px]',
         render: (value, record, index) => <>{index + 1}</>,
@@ -131,7 +110,7 @@ const TableProduct = ({
         title: 'Image',
         dataIndex: 'thumbnails',
         key: 'image',
-        width: '10%',
+        width: '15%',
         className: 'min-w-[130px]',
         render: (value, record) => (
           <Image preview={false} width={'100%'} className="max-h-[60px] object-contain mx-auto" src={value?.[0]} />
@@ -139,87 +118,48 @@ const TableProduct = ({
       },
       {
         title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-        width: '17%',
-        className: 'min-w-[180px]',
-        ...getColumnSearchProps('name'),
-        sorter: (a, b) => a.name.localeCompare(b.name),
-        sortDirections: ['descend', 'ascend'],
-      },
-      {
-        title: 'Description',
-        dataIndex: 'description',
-        key: 'description',
+        dataIndex: 'productName',
+        key: 'productName',
         width: '20%',
-        className: 'max-w-[210px]',
-        render: (value) => (
-          <div className="truncate whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: truncate(value, 80) }}></div>
-        ),
+        className: 'min-w-[180px]',
+        ...getColumnSearchProps('productName'),
+        sorter: (a, b) => a.productName.localeCompare(b.productName),
+        sortDirections: ['descend', 'ascend'],
       },
       {
         title: 'Price',
         dataIndex: 'price',
         key: 'price',
-        width: '10%',
-        className: 'min-w-[120px]',
+        width: '20%',
+        className: 'min-w-[150px]',
         sorter: (a, b) => a.price - b.price,
         sortDirections: ['descend', 'ascend'],
         render: (value, record) => <span>${value}</span>,
       },
       {
-        title: 'Stock',
-        dataIndex: 'stock',
-        key: 'stock',
+        title: 'Color',
+        dataIndex: 'color',
+        key: 'color',
         width: '10%',
-        className: 'min-w-[100px]',
+        className: 'max-w-[120px]',
+        render: (value) => <span className="capitalize">{value} </span>,
+      },
+      {
+        title: 'Size',
+        dataIndex: 'size',
+        key: 'size',
+        width: '10%',
+        className: 'max-w-[120px]',
+        render: (value) => <span className="uppercase">{value} </span>,
       },
       {
         title: 'Sold',
-        dataIndex: 'sold',
-        key: 'sold',
-        width: '10%',
-        className: 'min-w-[100px]',
-      },
-      {
-        title: 'Discount',
-        dataIndex: 'discount',
-        key: 'discount',
-        width: '5%',
-        className: 'min-w-[100px]',
-        render: (value, record) => <span>{value}%</span>,
-      },
-      {
-        title: 'Published Date',
-        dataIndex: 'publishedAt',
-        key: 'publishedAt',
-        width: '12%',
-        className: 'min-w-[150px]',
-        render: (value) => <span>{dayjs(value).format('DD MMM YYYY')}</span>,
-      },
-      {
-        title: 'Actions',
-        dataIndex: 'actions',
-        key: 'actions',
-        className: 'min-w-[150px]',
-        render: (value, record) => (
-          <div className="flex items-center">
-            <Ellipsis placement="top" title="Edit" className=" mr-1 cursor-pointer">
-              <AiOutlineEdit className="text-lg" onClick={() => handleOpenEdit(record)} />
-            </Ellipsis>
-            <Ellipsis placement="top" title="Delete" className=" mr-1 cursor-pointer">
-              <AiOutlineDelete className="text-lg" onClick={() => handleDelete(record)} />
-            </Ellipsis>
-            {/* <Ellipsis placement="top" title="Hidden" className=" mr-1 cursor-pointer">
-              <AiOutlineEyeInvisible className="text-lg" />
-            </Ellipsis> */}
-            <Ellipsis placement="top" title="Hot" className=" mr-1 cursor-pointer">
-              <AiFillStar className="text-lg" />
-            </Ellipsis>
-
-            {/* <MdVisibility /> */}
-          </div>
-        ),
+        dataIndex: 'quantity',
+        key: 'quantity',
+        width: '15%',
+        className: 'min-w-[120px]',
+        sorter: (a, b) => a?.quantity - b?.quantity,
+        sortDirections: ['descend', 'ascend'],
       },
     ],
     [data],
@@ -227,12 +167,14 @@ const TableProduct = ({
 
   return (
     <Table
+      className="mb-5"
       columns={columns}
       dataSource={data}
       loading={loading}
-      pagination={{ pageSize: pageSize ?? 5, total: total ?? data.length, onChange: handleChangePageIndex }}
+      title={() => <h3 className="font-medium text-base">Products Sold</h3>}
+      pagination={{ pageSize: pageSize ?? 5, total: total ?? data?.length, onChange: handleChangePageIndex }}
     />
   );
 };
 
-export default React.memo(TableProduct);
+export default React.memo(TableProductSold);

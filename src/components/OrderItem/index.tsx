@@ -13,6 +13,7 @@ import messages from '@constants/messages';
 import { SafeAny } from '../../interfaces/common';
 import { Message } from '@ui/message';
 import { UserContext } from '../../contexts/userContext';
+import { mixin } from '@styles/theme/mixin';
 
 const Quantity = dynamic(() => import('@components/Quantity'), { ssr: false });
 
@@ -88,7 +89,11 @@ const OrderItem = ({
         </Col>
         <Col span={isCheckout ? 18 : 19} className="px-5">
           <div className="flex justify-between items-center">
-            <h4 className={`${isCheckout || isDropdown ? 'text-base' : 'sm:text-base lg:text-lg'} font-semibold`}>
+            <h4
+              className={`${
+                isCheckout || isDropdown ? 'text-base product-name' : 'sm:text-base lg:text-lg'
+              } font-semibold`}
+            >
               {data?.product?.name ?? data?.product?.productName}
             </h4>
             {!isCheckout ? (
@@ -148,6 +153,9 @@ const OrderItemWrap = styled.div`
   .ant-input-number-lg input {
     height: 28px;
     font-size: 14px;
+  }
+  .product-name {
+    ${mixin.cutString(1.2)}
   }
   button {
     font-size: 10px;

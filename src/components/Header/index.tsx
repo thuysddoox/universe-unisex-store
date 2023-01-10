@@ -333,7 +333,7 @@ export const Account = ({ tabs }: { tabs: Tab[] }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const screens = useBreakpoint();
   const userCurrent = userContext.currentUser;
-  const { data: CartResp, refetch } = useQueryCart();
+  const { data: CartResp, refetch } = useQueryCart(userCurrent);
   const menu = useMemo(() => {
     return (
       <>

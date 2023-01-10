@@ -12,7 +12,7 @@ const Banner = dynamic(() => import('@components/Banner'), { ssr: false });
 
 export const HomePage = ({ banners }: HomePageProps) => {
   const { currentUser } = useContext(UserContext);
-  const { refetch: refetchCart } = currentUser ? useQueryCart() : { refetch: undefined };
+  const { refetch: refetchCart } = useQueryCart(currentUser);
   return (
     <>
       <Banner bannersList={banners} />

@@ -232,5 +232,8 @@ const ProductFormWrapper = styled.div`
     width: 100%;
     flex: unset;
   }
+  .ant-input {
+    border: 1px solid transparent !important;
+  }
 `;
 export default ProductForm;

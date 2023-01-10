@@ -151,6 +151,9 @@ const ChangePasswordPopup = ({
   );
 };
 const ChangePasswordWrap = styled.div`
+  .ant-input {
+    border: 1px solid transparent !important;
+  }
   .btn-group {
     justify-content: space-between;
   }

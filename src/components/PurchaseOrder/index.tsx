@@ -43,7 +43,6 @@ const PurchaseOrder = ({ data, refetch, index }: { data?: Order; refetch?: SafeA
   const handleOpenRate = () => {
     setIsOpenRate(!isOpenRate);
   };
-  console.log(isOpenRate);
   return (
     <PurchaseOrderWrapper className="bg-gray-200 p-5 rounded">
       <div className="flex justify-between items-center py-2">
@@ -85,7 +84,6 @@ const PurchaseOrder = ({ data, refetch, index }: { data?: Order; refetch?: SafeA
           <IoTimeOutline />
           <span className="text-xs font-medium ml-1">{dayjs(data?.createdAt).format('HH:mm, DD-MM-YYYY')}</span>
         </div>
-
         {data?.status === 4 && (
           <Button
             borderradius={'3px'}
@@ -107,9 +105,8 @@ const PurchaseOrder = ({ data, refetch, index }: { data?: Order; refetch?: SafeA
             bgColor={'var(--navy)'}
             size="small"
             className="text-sm font-medium flex justify-end"
-            onClick={() => handleUpdateOrder('Do you want to cancel this order!')}
           >
-            Cancel
+            <span onClick={() => handleUpdateOrder('Do you want to cancel this order!')}>Cancel</span>
           </Button>
         )}
         {data?.status === 3 && !data?.isPaid && (

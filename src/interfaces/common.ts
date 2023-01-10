@@ -57,8 +57,8 @@ export interface Cart {
   products: CartItem[];
 }
 export interface Status {
-  status: string;
-  date: Date;
+  status: number;
+  date: string;
 }
 export interface Order {
   _id?: string;
@@ -75,6 +75,9 @@ export interface Order {
   createdAt?: string;
   shipCost?: number;
   timeline?: Status[];
+  city?: string;
+  commune?: string;
+  district?: string;
 }
 export interface Comment {
   _id?: string;
@@ -113,6 +116,9 @@ export type User = {
   isAdmin?: string;
   username?: string;
   fullName?: string;
+  city?: string;
+  commune?: string;
+  district?: string;
 };
 export interface Role {
   id: number;

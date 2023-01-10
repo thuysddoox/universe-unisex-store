@@ -2,22 +2,28 @@ import OrderItem from '@components/OrderItem';
 import OrderTimeLine from '@components/OrderTimeLine';
 import { STATUS_ORDER } from '@constants/enum';
 import { useBreakpoints } from '@contexts';
-import styled from '@emotion/styled';
 import Button from '@ui/button';
 import { Modal } from '@ui/modal';
 import { Col, Row } from 'antd';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Order } from '../../interfaces/common';
 import { FcPaid } from 'react-icons/fc';
 import SimpleBar from 'simplebar-react';
+import { AiOutlineFilePdf } from 'react-icons/ai';
+import Invoice from '@components/Invoice';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
+import styled from '@emotion/styled';
 const PurchaseOrderDetail = ({
   isOpen,
   handleOpen,
   data,
+  managePortal = false,
 }: {
   isOpen?: boolean;
   handleOpen?: () => void;
   data?: Order;
+  managePortal?: boolean;
 }) => {
   const { width, mobileMode } = useBreakpoints();
   return (
@@ -45,11 +51,26 @@ const PurchaseOrderDetail = ({
       onCancel={handleOpen}
       footer={<></>}
     >
-      <PurchaseOrderInfo data={data} />
+      <PurchaseOrderInfo data={data} managePortal={managePortal} />
     </Modal>
   );
 };
-export const PurchaseOrderInfo = ({ data }: { data: Order }) => {
+export const PurchaseOrderInfo = ({ data, managePortal = false }: { data: Order; managePortal?: boolean }) => {
+  const invoiceRef = useRef();
+  const [open, setOpen] = useState<boolean>(false);
+  const { width, mobileMode } = useBreakpoints();
+  const handleDownloadPdf = async () => {
+    const canvas = await html2canvas(invoiceRef?.current);
+    const dataFile = canvas.toDataURL('image/png');
+
+    const pdf = new jsPDF();
+    const imgProperties = pdf.getImageProperties(dataFile);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+
+    pdf.addImage(dataFile, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save(`invoice_${data?._id}.pdf`);
+  };
   return (
     <PurchaseOrderDetailWrapper className="px-1 lg:px-4 lg:py-2">
       <h4 className="font-medium text-xl lg:text-2xl">Order Detail</h4>
@@ -106,11 +127,53 @@ export const PurchaseOrderInfo = ({ data }: { data: Order }) => {
               </Col>
             </Row>
           </div>
+          <Modal
+            title={
+              <div className="flex justify-start">
+                <Button
+                  icon={<AiOutlineFilePdf className="mr-1 text-xl" />}
+                  borderradius="3px"
+                  bordercolor="var(--navy)"
+                  bgColor="var(--navy)"
+                  textcolor="white"
+                  lineheight={'30px'}
+                  size="small"
+                  className="flex justify-end"
+                  // disabled={false}
+                >
+                  <span onClick={handleDownloadPdf}>Export</span>
+                </Button>
+              </div>
+            }
+            width={width > 992 ? '60vw' : '80vw'}
+            centered
+            open={open}
+            closable={true}
+            keyboard={true}
+            maskClosable={true}
+            onCancel={() => setOpen(!open)}
+            footer={<></>}
+          >
+            <Invoice ref={invoiceRef} data={data} />
+          </Modal>
+          {managePortal && (
+            <Button
+              borderradius="3px"
+              bordercolor="var(--navy)"
+              bgColor="var(--navy)"
+              textcolor="white"
+              lineheight={'30px'}
+              size="small"
+              className="flex justify-end mt-8"
+            >
+              <span onClick={() => setOpen(!open)}>See Invoice</span>
+            </Button>
+          )}
         </Col>
       </Row>
     </PurchaseOrderDetailWrapper>
   );
 };
 
-const PurchaseOrderDetailWrapper = styled.div`s`;
+const PurchaseOrderDetailWrapper = styled.div``;
 export default React.memo(PurchaseOrderDetail);
