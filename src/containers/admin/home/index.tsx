@@ -56,14 +56,14 @@ const AdminHomePage = () => {
           format={['DD/MM/YYYY', 'DD/MM/YY']}
         />
         <div className="text-right ml-2">
-          <span className="text-sm p-2 py-1 border border-blue-500 bg-blue-500 text-white rounded-sm inline-block mr-2 cursor-pointer">
+          {/* <span className="text-sm p-2 py-1 border border-blue-500 bg-blue-500 text-white rounded-sm inline-block mr-2 cursor-pointer">
             Apply
-          </span>
+          </span> */}
           <span
             className="text-sm p-2 py-1 border border-blue-500 text-blue-500 rounded-sm inline-block cursor-pointer"
             onClick={() => setFilterTime({})}
           >
-            Clear
+            Reset
           </span>
         </div>
       </div>
