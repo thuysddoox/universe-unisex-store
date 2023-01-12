@@ -173,6 +173,8 @@ const TableProduct = ({
         key: 'stock',
         width: '10%',
         className: 'min-w-[100px]',
+        sorter: (a, b) => a.stock - b.stock,
+        sortDirections: ['descend', 'ascend'],
       },
       {
         title: 'Sold',
@@ -180,6 +182,8 @@ const TableProduct = ({
         key: 'sold',
         width: '10%',
         className: 'min-w-[100px]',
+        sorter: (a, b) => a.sold - b.sold,
+        sortDirections: ['descend', 'ascend'],
       },
       {
         title: 'Discount',
@@ -191,8 +195,8 @@ const TableProduct = ({
       },
       {
         title: 'Published Date',
-        dataIndex: 'publishedAt',
-        key: 'publishedAt',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
         width: '12%',
         className: 'min-w-[150px]',
         render: (value) => <span>{dayjs(value).format('DD MMM YYYY')}</span>,

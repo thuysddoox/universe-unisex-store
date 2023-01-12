@@ -49,22 +49,22 @@ const AdminHomePage = () => {
         <RangePicker
           onChange={(value) =>
             setFilterTime({
-              from: value?.[0] ? dayjs(value?.[0]?.toString())?.format('DD-MM-YYYY') : '',
-              to: value?.[1] ? dayjs(value?.[1]?.toString())?.format('DD-MM-YYYY') : '',
+              from: value?.[0] ? dayjs(value?.[0]?.toString())?.format('YYYY-MM-DD') : '',
+              to: value?.[1] ? dayjs(value?.[1]?.toString())?.format('YYYY-MM-DD') : '',
             })
           }
-          format={['DD/MM/YYYY', 'DD/MM/YY']}
+          format={['DD/MM/YYYY', 'DD/MM/YYYY']}
         />
         <div className="text-right ml-2">
           {/* <span className="text-sm p-2 py-1 border border-blue-500 bg-blue-500 text-white rounded-sm inline-block mr-2 cursor-pointer">
             Apply
           </span> */}
-          <span
+          {/* <span
             className="text-sm p-2 py-1 border border-blue-500 text-blue-500 rounded-sm inline-block cursor-pointer"
             onClick={() => setFilterTime({})}
           >
             Reset
-          </span>
+          </span> */}
         </div>
       </div>
       <div className="flex items-center justify-between my-4">

@@ -72,7 +72,7 @@ const Checkout = () => {
       commune,
       district,
       city,
-      address: noHome + ' ' + address,
+      address: noHome ?? '' + ' ' + address,
       total: totalCart,
       status: payment === 1 ? 0 : 1,
       products: covertCartItemToOrderItem(cartItems),

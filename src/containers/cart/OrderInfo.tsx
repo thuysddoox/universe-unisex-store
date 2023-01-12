@@ -13,13 +13,11 @@ const OrderInfo = ({ shipCost, subtotal }: OrderInfoProps) => {
         </p>
         <p className="flex justify-between items-center my-4">
           <span>Shipping cost:</span>
-          <span>${shipCost.toLocaleString()} vnđ</span>
+          <span>{shipCost.toLocaleString()} vnđ</span>
         </p>
         <p className="flex justify-between items-center">
           <span className="text-lg sm:text-xl font-semibold">Total:</span>
-          <span className="text-xl sm:text-2xl font-semibold">
-            ${(subtotal + (shipCost ?? 0)).toLocaleString()} vnđ
-          </span>
+          <span className="text-xl sm:text-2xl font-semibold">{(subtotal + (shipCost ?? 0)).toLocaleString()} vnđ</span>
         </p>
       </div>
     </div>

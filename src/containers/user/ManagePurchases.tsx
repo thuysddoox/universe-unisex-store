@@ -63,7 +63,7 @@ const ManagePurchases = () => {
           />
         ),
       })),
-    [orderResp],
+    [orderResp, statisticResp],
   );
   useEffect(() => {
     refetch();
