@@ -35,7 +35,7 @@ const CheckoutFrom = ({
       ...data,
       ...allValues,
       address:
-        (allValues?.noHome ? allValues?.noHome + ', ' : '') +
+        (allValues?.noHome != undefined ? allValues?.noHome + ', ' : '') +
         getNameAddress(allValues?.commune ?? '', communeRes?.data?.results) +
         ', ' +
         getNameAddress(allValues?.district ?? '', districtRes?.data?.results) +
@@ -58,7 +58,7 @@ const CheckoutFrom = ({
           handleSubmitCheckout({
             ...data,
             address:
-              (data?.noHome ? data?.noHome + ', ' : '') +
+              (data?.noHome != undefined ? data?.noHome + ', ' : '') +
               getNameAddress(data?.commune ?? '', communeRes?.data?.results) +
               ', ' +
               getNameAddress(data?.district ?? '', districtRes?.data?.results) +

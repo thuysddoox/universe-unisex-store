@@ -155,6 +155,8 @@ const TableOrder = ({
         key: 'total',
         width: '10%',
         className: 'min-w-[80px]',
+        sorter: (a, b) => a.total - b.total,
+        sortDirections: ['descend', 'ascend'],
         render: (value, record) => (
           <span className="flex items-center">
             {value.toLocaleString()} vnđ {(record?.isPaid || record?.status === 4) && <FcOk className=" mx-1" />}
@@ -180,10 +182,12 @@ const TableOrder = ({
       },
       {
         title: 'Created Date',
-        dataIndex: 'createAt',
-        key: 'createAt',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
         width: '12%',
         className: 'min-w-[150px]',
+        sorter: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+        sortDirections: ['descend', 'ascend'],
         render: (value) => <span>{dayjs(value).format('DD MMM YYYY')}</span>,
       },
       {

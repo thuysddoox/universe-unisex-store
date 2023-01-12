@@ -90,15 +90,8 @@ const ManageComment = () => {
         open={openModal}
         footer={
           <>
-            <Button
-              className="font-semibold mr-4"
-              block
-              size="large"
-              type="primary"
-              loading={isLoading}
-              onClick={handleReply}
-            >
-              Reply
+            <Button className="font-semibold mr-4" block size="large" type="primary" loading={isLoading}>
+              <span onClick={handleReply}>Reply</span>
             </Button>
             <Button
               className="font-semibold"

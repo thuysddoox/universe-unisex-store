@@ -209,7 +209,7 @@ export enum STATUS_COLOR {
 }
 
 export const QueryParam = {
-  orderBy: 'updatedAt',
+  orderBy: 'createdAt',
   orderDirection: 'desc',
   pageSize: 10,
   pageIndex: 0,

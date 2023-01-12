@@ -19,6 +19,7 @@ const ReviewComponent = ({
   isSeller?: boolean;
 }) => {
   const [openResponse, setOpenResponse] = useState<boolean>(false);
+  console.log(comment);
   return (
     <ReviewComponentWrap className={className}>
       <List.Item
